@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  color: rgb(200, 200, 200);
+}
+
+body {
+  background-image: url("../assets/img/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+body::before {
+  background: rgba(0, 0, 0, 0.75);
+  content: "";
+  inset: 0;
+  position: fixed;
+  z-index: -1;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.auth div:has(> form) {
+  border-radius: 16px;
+  width: 720px;
+  overflow: hidden;
+}
+.auth div:has(> form) form {
+  width: 100%;
+  padding: 32px;
+}
+.auth div:has(> form) form .input-group {
+  position: relative;
+  width: 100%;
+}
+.auth div:has(> form) form .input-group input {
+  background-color: rgba(200, 200, 200, 0.08);
+  border-radius: 10px;
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: 100%;
+  padding: 16px;
+}
+.auth div:has(> form) form .input-group input:-webkit-autofill, .auth div:has(> form) form .input-group input:-webkit-autofill:hover, .auth div:has(> form) form .input-group input:-webkit-autofill:focus, .auth div:has(> form) form .input-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.auth div:has(> form) form .input-group input:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) form .input-group input:is(:focus, :not(:placeholder-shown)) + label {
+  top: -0.2em;
+  transform: translateY(-68%) scale(0.85);
+  color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) form .input-group label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 0.95rem;
+}
+.auth div:has(> form) form input[type=checkbox] {
+  display: none;
+}
+.auth div:has(> form) form input[type=checkbox] + #remember-toggle {
+  display: inline-block;
+  background-color: rgba(200, 200, 200, 0.15);
+  width: 30px;
+  height: 20px;
+  top: 4px;
+  border-radius: 16px;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s ease;
+}
+.auth div:has(> form) form input[type=checkbox] + #remember-toggle::before {
+  position: absolute;
+  content: "";
+  background-color: rgb(200, 200, 200);
+  width: 15px;
+  height: 15px;
+  top: 0.5px;
+  border-radius: 50px;
+  margin: 2px;
+  transition: 0.2s ease;
+}
+.auth div:has(> form) form input[type=checkbox] + #remember-toggle + label {
+  pointer-events: none;
+}
+.auth div:has(> form) form input[type=checkbox]:checked + #remember-toggle {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) form input[type=checkbox]:checked + #remember-toggle::before {
+  transform: translateX(11px);
+}
+.auth div:has(> form) form button {
+  width: 100%;
+  height: 25px;
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 16px;
+}
+.auth div:has(> form) form button:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) div:last-child {
+  display: flex;
+  width: 100%;
+}
+.auth div:has(> form) div:last-child button {
+  width: 100%;
+  background-color: transparent;
+  padding: 16px;
+}
+.auth div:has(> form) div:last-child button.active {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) div:last-child button:not(.active):hover {
+  background-color: rgba(200, 200, 200, 0.15);
+}
+
+.app {
+  display: block;
+}
+
+.blur {
+  background: rgba(200, 200, 200, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/*# sourceMappingURL=style.css.map */
