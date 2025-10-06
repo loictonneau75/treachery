@@ -1,14 +1,14 @@
-<form method="post" class="flex-column-center" hidden>
+<form method="post" id="formRegister" class="flex-column-center align-start" hidden>
     <div class="input-group">
-        <input type="text" id="mail" name="mail" placeholder="" autocomplete="email">
-        <label for="mail">Entrez votre email</label>
+        <input type="text" id="mail-r" name="mail-r" placeholder="" autocomplete="email">
+        <label for="mail-r">Entrez votre email</label>
     </div>
     <div class="input-group">
         <input type="text" id="pseudo" name="pseudo" placeholder="" autocomplete="username">
         <label for="pseudo">Entrez votre pseudo</label>
     </div>
     <div class="input-group">
-        <input type="password" id="password" name="password" placeholder="" autocomplete="new-password">
+        <input type="password" id="password-r" name="password-r" placeholder="" autocomplete="new-password">
         <label for="password">Entrez votre mot de passe</label>
     </div>
     <div class="input-group">
@@ -16,9 +16,9 @@
         <label for="confirm">Confirmez votre mot de passe</label>
     </div>
     <div>
-        <input type="checkbox" id="remember" name="remember">
-        <label for="remember" id="remember-toggle"></label>
-        <label for="remember">Se souvenir de moi</label>
+        <input type="checkbox" id="remember-r" name="remember-r">
+        <label for="remember-r" class="remember-toggle"></label>
+        <label for="remember-r">Se souvenir de moi</label>
     </div>
     <button type="submit" formaction="">S'inscrire</button>
 </form>

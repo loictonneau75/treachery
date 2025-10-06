@@ -40,7 +40,7 @@ button {
 }
 .auth div:has(> form) form {
   width: 100%;
-  padding: 32px;
+  padding: 24px;
 }
 .auth div:has(> form) form .input-group {
   position: relative;
@@ -80,7 +80,7 @@ button {
 .auth div:has(> form) form input[type=checkbox] {
   display: none;
 }
-.auth div:has(> form) form input[type=checkbox] + #remember-toggle {
+.auth div:has(> form) form input[type=checkbox] + .remember-toggle {
   display: inline-block;
   background-color: rgba(200, 200, 200, 0.15);
   width: 30px;
@@ -91,7 +91,7 @@ button {
   position: relative;
   transition: 0.2s ease;
 }
-.auth div:has(> form) form input[type=checkbox] + #remember-toggle::before {
+.auth div:has(> form) form input[type=checkbox] + .remember-toggle::before {
   position: absolute;
   content: "";
   background-color: rgb(200, 200, 200);
@@ -102,13 +102,13 @@ button {
   margin: 2px;
   transition: 0.2s ease;
 }
-.auth div:has(> form) form input[type=checkbox] + #remember-toggle + label {
+.auth div:has(> form) form input[type=checkbox] + .remember-toggle + label {
   pointer-events: none;
 }
-.auth div:has(> form) form input[type=checkbox]:checked + #remember-toggle {
+.auth div:has(> form) form input[type=checkbox]:checked + .remember-toggle {
   background-color: rgba(200, 200, 200, 0.5);
 }
-.auth div:has(> form) form input[type=checkbox]:checked + #remember-toggle::before {
+.auth div:has(> form) form input[type=checkbox]:checked + .remember-toggle::before {
   transform: translateX(11px);
 }
 .auth div:has(> form) form button {
@@ -151,6 +151,14 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 16px;
+}
+
+.align-start {
+  align-items: initial;
+}
+
+.no-gap {
+  gap: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

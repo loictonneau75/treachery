@@ -1,4 +1,4 @@
-<form method="post" class="flex-column-center">
+<form method="post" id="formLogin" class="flex-column-center align-start">
     <div class="input-group">
         <input type="text" id="mail" name="mail" placeholder="" autocomplete="email">
         <label for="mail">Entrez votre email</label>
@@ -9,8 +9,8 @@
     </div>
     <div>
         <input type="checkbox" id="remember" name="remember">
-        <label for="remember" id="remember-toggle"></label>
+        <label for="remember" class="remember-toggle"></label>
         <label for="remember">Se souvenir de moi</label>
     </div>
-    <button type="submit" formaction="">S'inscrire</button>
+    <button type="submit" formaction="">Se connecter</button>
 </form>

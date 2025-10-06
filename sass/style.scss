@@ -63,7 +63,7 @@ button{
 
         form{
             width: 100%;
-            padding: calc($padding*2);
+            padding: calc($padding*1.5);
 
             .input-group{
                 position: relative;
@@ -103,7 +103,7 @@ button{
             input[type="checkbox"]{
                 display: none;
 
-                + #remember-toggle{
+                + .remember-toggle{
                     display: inline-block;
                     background-color: $shade-medium;
                     width: 30px;
@@ -131,7 +131,7 @@ button{
                     }
                 }
 
-                &:checked + #remember-toggle{
+                &:checked + .remember-toggle{
                     background-color: $shade-strong;
 
                     &::before{
@@ -191,4 +191,11 @@ button{
     gap: $gap;
 }
 
+.align-start {
+    align-items: initial;
+}
+
+.no-gap{
+    gap: 0;
+}
 
