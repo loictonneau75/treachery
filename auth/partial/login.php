@@ -1,6 +1,6 @@
 <form method="post" id="formLogin" class="flex-column-center align-start">
     <div class="input-group">
-        <input type="text" id="mail" name="mail" placeholder="" autocomplete="email">
+        <input type="email" id="mail" name="mail" placeholder="" autocomplete="email">
         <label for="mail">Entrez votre email</label>
     </div>
     <div class="input-group">

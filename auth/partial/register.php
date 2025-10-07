@@ -1,6 +1,6 @@
 <form method="post" id="formRegister" class="flex-column-center align-start" hidden>
     <div class="input-group">
-        <input type="text" id="mail-r" name="mail-r" placeholder="" autocomplete="email">
+        <input type="email" id="mail-r" name="mail-r" placeholder="" autocomplete="email">
         <label for="mail-r">Entrez votre email</label>
     </div>
     <div class="input-group">
