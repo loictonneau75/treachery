@@ -1,18 +1,18 @@
-<form method="post" id="formRegister" class="flex-column-center align-start" action="<?=BASE_PATH?>auth/register.php" hidden>
+<form method="post" id="formRegister" class="flex-column-center align-start" action="<?= BASE_URL ?>auth/register.php" hidden>
     <div class="input-group">
         <input type="email" id="mail-r" name="mail-r" placeholder="" autocomplete="email">
         <label for="mail-r">Entrez votre email</label>
     </div>
     <div class="input-group">
-        <input type="text" id="pseudo" name="pseudo" placeholder="" autocomplete="username">
+        <input type="text" id="pseudo" name="pseudo" placeholder="" autocomplete="new-username">
         <label for="pseudo">Entrez votre pseudo</label>
     </div>
     <div class="input-group">
-        <input type="password" id="password-r" name="password-r" placeholder="" autocomplete="new-password">
+        <input type="password" id="password-r" name="password-r" placeholder="" autocomplete="password">
         <label for="password">Entrez votre mot de passe</label>
     </div>
     <div class="input-group">
-        <input type="password" id="confirm" name="confirm" placeholder="" autocomplete="new-password">
+        <input type="password" id="confirm" name="confirm" placeholder="" autocomplete="password">
         <label for="confirm">Confirmez votre mot de passe</label>
     </div>
     <div>

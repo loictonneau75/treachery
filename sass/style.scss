@@ -87,6 +87,9 @@ button{
                         transform: translateY(-68%) scale(.85);
                         color: $shade-strong;
                     }
+                    &.invalid{
+                        border-color: $warning;
+                    }
                 }
 
                 label{
@@ -148,6 +151,13 @@ button{
                 &:hover{
                     background-color: $shade-strong;
                 }
+            }
+            p.error{
+                color: $warning;
+                font-size: 0.7rem;
+                margin-top: -15px;
+                margin-left: 10px;
+                white-space: pre;
             }
         }
 

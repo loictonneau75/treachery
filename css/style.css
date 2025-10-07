@@ -68,6 +68,9 @@ button {
   transform: translateY(-68%) scale(0.85);
   color: rgba(200, 200, 200, 0.5);
 }
+.auth div:has(> form) form .input-group input.invalid {
+  border-color: rgb(251, 44, 54);
+}
 .auth div:has(> form) form .input-group label {
   position: absolute;
   left: 16px;
@@ -119,6 +122,13 @@ button {
 }
 .auth div:has(> form) form button:hover {
   background-color: rgba(200, 200, 200, 0.5);
+}
+.auth div:has(> form) form p.error {
+  color: rgb(251, 44, 54);
+  font-size: 0.7rem;
+  margin-top: -15px;
+  margin-left: 10px;
+  white-space: pre;
 }
 .auth div:has(> form) div:last-child {
   display: flex;
