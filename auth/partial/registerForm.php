@@ -1,4 +1,4 @@
-<form method="post" id="formRegister" class="flex-column-center align-start" hidden>
+<form method="post" id="formRegister" class="flex-column-center align-start" action="<?=BASE_PATH?>/auth/register.php" hidden>
     <div class="input-group">
         <input type="email" id="mail-r" name="mail-r" placeholder="" autocomplete="email">
         <label for="mail-r">Entrez votre email</label>
@@ -20,5 +20,5 @@
         <label for="remember-r" class="remember-toggle"></label>
         <label for="remember-r">Se souvenir de moi</label>
     </div>
-    <button type="submit" formaction="">S'inscrire</button>
+    <button type="submit">S'inscrire</button>
 </form>
