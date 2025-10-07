@@ -1,4 +1,4 @@
-<form method="post" id="formLogin" class="flex-column-center align-start" action="<?=BASE_PATH?>/auth/login.php">
+<form method="post" id="formLogin" class="flex-column-center align-start" action="<?=BASE_PATH?>auth/login.php">
     <div class="input-group">
         <input type="email" id="mail" name="mail" placeholder="" autocomplete="email">
         <label for="mail">Entrez votre email</label>
