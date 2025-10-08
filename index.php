@@ -1,13 +1,11 @@
 <?php 
-define("BASE_PATH", __DIR__ . "/");
-define("BASE_URL", "http://localhost/treachery/");
-define("TITLE", "Draw Your Fate");
+require_once __DIR__ . '/config.php';
 
 $loggedIn = false;
 
-include BASE_PATH . "partial/header.php";
+include __DIR__ . "/partial/header.php";
 
-include $loggedIn ? BASE_PATH . "app/app.php" : BASE_PATH . "auth/auth.php";
+include $loggedIn ? __DIR__ . "/app/app.php" : __DIR__ . "/auth/auth.php";
 
-include BASE_PATH . "partial/footer.php";
+include __DIR__ . "/partial/footer.php";
 ?>

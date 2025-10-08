@@ -3,8 +3,8 @@
     <h1>Bienvenue sur <?=TITLE?></h1>
     <div class = "blur flex-column-center no-gap">
         <?php 
-        include BASE_PATH . "auth/partial/registerForm.php";
-        include BASE_PATH . "auth/partial/loginForm.php"
+        include __DIR__."/partial/registerForm.php";
+        include __DIR__."/partial/loginForm.php" ;
         ?>
         <div>
                 <button type="button" id="btnLogin" class="active">Connexion</button>
