@@ -70,6 +70,6 @@ if(!empty($errors)){
 }else{
     $id = createUser($pdo, $pseudo, $email, $password);
     createSession($id, $remember);
-    echo json_encode(["ok" => true]);
+    echo json_encode(["valid" => true]);
     exit;
 }
