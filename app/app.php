@@ -1,0 +1,1 @@
+<a href = "auth/logout.php">Se deconnecter</a>
