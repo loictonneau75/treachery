@@ -8,11 +8,11 @@
         <label for="pseudo">Entrez votre pseudo</label>
     </div>
     <div class="input-group">
-        <input type="password" id="password-r" name="password-r" placeholder="" autocomplete="password">
+        <input type="password" id="password-r" name="password-r" placeholder="" autocomplete="new-password">
         <label for="password">Entrez votre mot de passe</label>
     </div>
     <div class="input-group">
-        <input type="password" id="confirm" name="confirm" placeholder="" autocomplete="password">
+        <input type="password" id="confirm" name="confirm" placeholder="" autocomplete="new-password">
         <label for="confirm">Confirmez votre mot de passe</label>
     </div>
     <div>
