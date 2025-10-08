@@ -56,15 +56,13 @@ function setErrors(errorList, form){
 
 async function handleFormSubmit(errorList, form) {
     const data = await (await fetch(form.action, { method: "POST", body: new FormData(form) })).json();
-    if(!data.ok){
+    if(!data.valid){
         for(const [mess, ids] of data.errors){
             const inputs = (ids || []).map(id => form.querySelector(`#${id}`)).filter(Boolean);
             errorList.push([mess, inputs]);
         }
-        console.log()
         setErrors(errorList, form);
-    }
-    if(data.redirect) window.location.href = data.redirect;
+    }else{window.location.href = "./index.php"}
 }
 
 function toggleForms(showLoginForm) {
