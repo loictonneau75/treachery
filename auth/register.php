@@ -63,13 +63,13 @@ validEmail($email);
 validPseudo($pseudo);
 validPassword($password, $confirm);
 if(userExist($pdo, $email, $pseudo)){
-    $errors[] = ["Cet email ou ce pseudo sont déjà utilisé", ["email-r", "pseudo"]];
+    $errors[] = ["Cet email ou ce pseudo sont déjà utilisé", ["mail-r", "pseudo"]];
 }
 if(!empty($errors)){
     echo json_encode(["valid" => false, "errors" => $errors], JSON_UNESCAPED_UNICODE);
 }else{
     $id = createUser($pdo, $pseudo, $email, $password);
     createSession($id, $remember);
-    echo json_encode(["valid" => true]);
+    echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
     exit;
 }
