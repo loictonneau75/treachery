@@ -28,3 +28,10 @@ function throttle(string $action, int $delaySeconds = 5): void {
     }
     $_SESSION[$key] = time();
 }
+
+function requirePostMethod(): void{
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        exit('Méthode non autorisée');
+    }
+}

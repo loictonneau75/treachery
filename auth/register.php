@@ -3,6 +3,7 @@ header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
 require_once dirname(__DIR__) . "/db/utils.php";
 require_once dirname(__DIR__) . "/security/utils.php";
+require_once dirname(__DIR__) . "/session/utils.php";
 session_start();
 
 
@@ -31,18 +32,7 @@ function validPassword(string $password, string $confirm): void{
     }
 }
 
-function createSession(int $id, bool $remember): void{
-    $_SESSION["id"] = $id;
-    if($remember){
-        setcookie("id", $id, time() + (30*24*60*60), "/");
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit('Méthode non autorisée');
-}
-
+requirePostMethod();
 honeyPot($_POST["website-r"]);
 rateLimite("register");
 throttle("register");
@@ -63,8 +53,7 @@ if(userEmailOrPseudoExist($pdo, $email, $pseudo)){
 if(!empty($errors)){
     echo json_encode(["valid" => false, "errors" => $errors], JSON_UNESCAPED_UNICODE);
 }else{
-    $id = createUser($pdo, $pseudo, $email, $password);
-    createSession($id, $remember);
+    createSession(createUser($pdo, $pseudo, $email, $password), $remember);
     echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
     exit;
 }

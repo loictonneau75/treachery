@@ -3,6 +3,7 @@ header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
 require_once dirname(__DIR__) . "/db/utils.php";
 require_once dirname(__DIR__) . "/security/utils.php";
+require_once dirname(__DIR__) . "/session/utils.php";
 session_start();
 
 function validEmail(string $email): void{
@@ -19,21 +20,7 @@ function validPassword(string $password): void{
     }
 }
 
-function createSession(int $id, bool $remember): void{
-    $_SESSION["id"] = $id;
-    if($remember){
-        setcookie("id", $id, time() + (30*24*60*60), "/");
-    }
-}
-
-
-
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit('Méthode non autorisée');
-}
-
+requirePostMethod();
 honeyPot($_POST["website"]);
 rateLimite("login");
 throttle("login");
@@ -52,8 +39,7 @@ if (!($hash && password_verify($password, $hash))) {
 if(!empty($errors)){
     echo json_encode(["valid" => false, "errors" => $errors], JSON_UNESCAPED_UNICODE);
 }else{
-    $id = getIdByEmail($pdo, $email);
-    createSession($id, $remember);
+    createSession(getIdByEmail($pdo, $email), $remember);
     echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
     exit;
 }
