@@ -4,10 +4,6 @@ require_once dirname(__DIR__) . "/db/connexion.php";
 require_once dirname(__DIR__) . "/security/utils.php";
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    exit('Méthode non autorisée');
-}
 
 function validEmail(string $email): void{
     if($email === "" || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254) {
@@ -51,6 +47,11 @@ function createSession(int $id, bool $remember): void{
     if($remember){
         setcookie("id", $id, time() + (30*24*60*60), "/");
     }
+}
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    exit('Méthode non autorisée');
 }
 
 honeyPot($_POST["website-r"]);
