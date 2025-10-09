@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
+require_once dirname(__DIR__) . "/db/utils.php";
 require_once dirname(__DIR__) . "/security/utils.php";
 session_start();
 
@@ -28,18 +29,6 @@ function validPassword(string $password, string $confirm): void{
         http_response_code(400);
         exit("les mot de passe ne correspondent pas");
     }
-}
-
-function userExist(PDO $pdo, string $email, string $pseudo): bool{
-    $stmt = $pdo -> prepare("SELECT 1 FROM users WHERE email = ? OR pseudo = ? LIMIT 1");
-    $stmt -> execute([$email, $pseudo]);
-    return (bool)$stmt->fetch();
-}
-
-function createUser(PDO $pdo, string $pseudo, string $email, string $password): int{
-    $stmt = $pdo -> prepare("INSERT INTO users (pseudo, email, password) VALUE (?, ?, ?)");
-    $stmt -> execute([$pseudo, $email, password_hash($password, PASSWORD_DEFAULT)]);
-    return (int)$pdo -> lastInsertId();
 }
 
 function createSession(int $id, bool $remember): void{
