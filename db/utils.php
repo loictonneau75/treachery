@@ -10,3 +10,17 @@ function createUser(PDO $pdo, string $pseudo, string $email, string $password): 
     $stmt -> execute([$pseudo, $email, password_hash($password, PASSWORD_DEFAULT)]);
     return (int)$pdo -> lastInsertId();
 }
+
+function getHashByEmail(PDO $pdo, string $email): string|bool {
+    $stmt = $pdo->prepare("SELECT password FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['password'] ?? false;
+}
+
+function getIdByEmail(PDO $pdo, string $email): int{
+    $stmt =$pdo->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['id'] ?? false;
+}
