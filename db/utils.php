@@ -1,6 +1,5 @@
 <?php
-
-function userExist(PDO $pdo, string $email, string $pseudo): bool{
+function userEmailOrPseudoExist(PDO $pdo, string $email, string $pseudo): bool{
     $stmt = $pdo -> prepare("SELECT 1 FROM users WHERE email = ? OR pseudo = ? LIMIT 1");
     $stmt -> execute([$email, $pseudo]);
     return (bool)$stmt->fetch();

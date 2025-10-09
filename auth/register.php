@@ -57,7 +57,7 @@ $remember = isset($_POST['remember-r']);
 validEmail($email);
 validPseudo($pseudo);
 validPassword($password, $confirm);
-if(userExist($pdo, $email, $pseudo)){
+if(userEmailOrPseudoExist($pdo, $email, $pseudo)){
     $errors[] = ["Cet email ou ce pseudo sont déjà utilisé", ["mail-r", "pseudo"]];
 }
 if(!empty($errors)){
