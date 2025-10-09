@@ -2,10 +2,9 @@
 
 session_start();
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/session/utils.php';
 
-if(!isset($_SESSION["id"]) && isset($_COOKIE["id"])){
-    $_SESSION["id"] = $_COOKIE["id"];
-}
+resetSession();
 $loggedIn = isset($_SESSION["id"]);
 
 include __DIR__ . "/partial/header.php";
