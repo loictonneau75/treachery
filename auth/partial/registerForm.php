@@ -20,5 +20,6 @@
         <label for="remember-r" class="remember-toggle"></label>
         <label for="remember-r">Se souvenir de moi</label>
     </div>
+    <input type="text" name="website-r" id="website-r" autocomplete="off" style="display:none">
     <button type="submit">S'inscrire</button>
 </form>
