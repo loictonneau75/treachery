@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
+require_once dirname(__DIR__) . "/security/utils.php";
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -51,6 +52,10 @@ function createSession(int $id, bool $remember): void{
         setcookie("id", $id, time() + (30*24*60*60), "/");
     }
 }
+
+honeyPot($_POST["website-r"]);
+rateLimite("register");
+throttle("register");
 
 $errors = [];
 $email = trim((string)$_POST["mail-r"]);
