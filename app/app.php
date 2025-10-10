@@ -11,15 +11,27 @@ include __DIR__ . "/navbar/navbar.php";
 </div>
 <div class="row alone">
         <form class="blur">
+
+
+
             <div class="select-group">
-                <label for="card-type">Type de carte:</label>
-                <select id="card-type" name="card-type">
-                    <option value="">-- Choisir--</option>
+                <div class="input-group">
+                    <input type="text" id="type" placeholder="">
+                    <label for="type">type</label>
+                    <div class="carret"></div>
+                </div>
+                <div class="dropdown">
+                    <button type="button" value ="">--Choisir--</button>
                     <?php foreach (getRolesTypes($pdo) as $type): ?>
-                        <option value="<?= htmlspecialchars($type)?>"><?= htmlspecialchars($type)?></option>
-                    <?php endforeach;?>
-                </select>
+                        <button type="button" value="<?= htmlspecialchars($type)?>"><?= htmlspecialchars($type)?></button>
+                    <?php endforeach?>
+                </div>
             </div>
+
+
+
+
+
             <div class="file-input-group">
                 <label for="card-img">Image de la carte:</label>
                 <input type="file" id="card-img" name="card-img">
