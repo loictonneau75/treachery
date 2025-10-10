@@ -21,7 +21,9 @@ $indication-font-size: 0.7rem;
         transition: background-color 5000s ease-in-out 0s;
     }
 }
-
+.test{
+    height: 100vh;
+}
 *{
     box-sizing: border-box;
     margin: 0;
@@ -181,6 +183,7 @@ body{
     display: block;
     nav{
         position: fixed;
+        top:0;
         left: 0;
         right: 0;
         z-index: 1000;

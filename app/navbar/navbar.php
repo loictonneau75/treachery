@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__) . "/db/connexion.php";
-require_once dirname(__DIR__) . "/db/utils.php";
+require_once dirname(__DIR__,2) . "/db/connexion.php";
+require_once dirname(__DIR__,2) . "/db/utils.php";
 ?>
 
 
@@ -8,7 +8,7 @@ require_once dirname(__DIR__) . "/db/utils.php";
     <div id="navbar">
         <img src="assets/img/logo_horizontal.png" alt="img/logo_horizontal.png">
         <div id="navbar-container">
-            <h2><?=getPseudoById($pdo, $_SESSION["id"])?></h2>
+            <h1><?=getPseudoById($pdo, $_SESSION["id"])?></h1>
             <button class="burger"><span></span><span></span><span></span></button>
         </div>
     </div>
