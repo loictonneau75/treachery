@@ -28,7 +28,7 @@ throttle("login");
 $errors = [];
 $email = trim((string)$_POST["mail"]);
 $password = trim((string)$_POST["password"]);
-$remember = isset($_POST['remember-r']);
+$remember = isset($_POST['remember']);
 
 validEmail($email);
 validPassword($password);
