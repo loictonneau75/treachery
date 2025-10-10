@@ -32,18 +32,35 @@ body::before {
   align-items: center;
   height: 100vh;
 }
+.auth > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
 .auth div:has(> form) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
   border-radius: 16px;
   width: 720px;
   overflow: hidden;
 }
 .auth div:has(> form) form {
+  display: flex;
+  flex-direction: column;
+  align-items: initial;
+  gap: 16px;
   width: 100%;
   padding: 24px;
 }
 .auth div:has(> form) form .input-group {
   position: relative;
   width: 100%;
+}
+.auth div:has(> form) form .input-group *, .auth div:has(> form) form .input-group *::before, .auth div:has(> form) form .input-group *::after {
+  box-sizing: border-box;
 }
 .auth div:has(> form) form .input-group input {
   background-color: rgba(200, 200, 200, 0.08);
@@ -52,6 +69,7 @@ body::before {
   outline: none;
   width: 100%;
   padding: 16px;
+  line-height: 1.2;
 }
 .auth div:has(> form) form .input-group input:-webkit-autofill, .auth div:has(> form) form .input-group input:-webkit-autofill:hover, .auth div:has(> form) form .input-group input:-webkit-autofill:focus, .auth div:has(> form) form .input-group input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
@@ -63,7 +81,6 @@ body::before {
   border-color: rgba(200, 200, 200, 0.5);
 }
 .auth div:has(> form) form .input-group input:is(:focus, :not(:placeholder-shown)) + label {
-  top: -0.2em;
   transform: translateY(-68%) scale(0.85);
   color: rgba(200, 200, 200, 0.5);
 }
@@ -73,11 +90,15 @@ body::before {
 .auth div:has(> form) form .input-group label {
   position: absolute;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
   transition: all 0.2s ease;
   pointer-events: none;
   font-size: 0.95rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  transform-origin: left center;
 }
 .auth div:has(> form) form input[type=checkbox] {
   display: none;
@@ -203,6 +224,9 @@ body::before {
   position: relative;
   width: auto;
 }
+.app .input-group *, .app .input-group *::before, .app .input-group *::after {
+  box-sizing: border-box;
+}
 .app .input-group input {
   background-color: rgba(200, 200, 200, 0.08);
   border-radius: 10px;
@@ -210,6 +234,7 @@ body::before {
   outline: none;
   width: auto;
   padding: 16px;
+  line-height: 1.2;
 }
 .app .input-group input:-webkit-autofill, .app .input-group input:-webkit-autofill:hover, .app .input-group input:-webkit-autofill:focus, .app .input-group input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
@@ -221,7 +246,6 @@ body::before {
   border-color: rgba(200, 200, 200, 0.5);
 }
 .app .input-group input:is(:focus, :not(:placeholder-shown)) + label {
-  top: -0.2em;
   transform: translateY(-68%) scale(0.85);
   color: rgba(200, 200, 200, 0.5);
 }
@@ -231,11 +255,15 @@ body::before {
 .app .input-group label {
   position: absolute;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
   transition: all 0.2s ease;
   pointer-events: none;
   font-size: 0.95rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  transform-origin: left center;
 }
 
 button {
@@ -247,21 +275,6 @@ button {
   background: rgba(200, 200, 200, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-}
-
-.flex-column-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.align-start {
-  align-items: initial;
-}
-
-.no-gap {
-  gap: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

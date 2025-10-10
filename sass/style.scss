@@ -25,6 +25,7 @@ $indication-font-size: 0.7rem;
 @mixin input-group($width){
     position: relative;
     width: $width;
+    *, *::before, *::after { box-sizing: border-box; }
 
     input{
         background-color: $shade-light;
@@ -33,14 +34,12 @@ $indication-font-size: 0.7rem;
         outline: none;
         width: $width;
         padding: $padding;
+        line-height: 1.2;
         @include autofill-fix($shade-light, $base);
 
-        &:focus{
-            border-color: $shade-strong;
-        }
+        &:focus{border-color: $shade-strong;}
 
         &:is(:focus, :not(:placeholder-shown)) + label{
-            top: -.2em;
             transform: translateY(-68%) scale(.85);
             color: $shade-strong;
         }
@@ -52,12 +51,23 @@ $indication-font-size: 0.7rem;
     label{
         position: absolute;
         left: $padding;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
         transition: all .2s ease;
         pointer-events: none;
         font-size: .95rem;
+        transition: transform .2s ease, color .2s ease;
+        transform-origin: left center;
     }
+}
+
+@mixin flex-column-center($align-items, $gap){
+    display: flex;
+    flex-direction: column;
+    align-items: $align-items;
+    gap: $gap;
 }
 
 .test{
@@ -92,17 +102,23 @@ body{
     align-items: center;
     height: 100vh;
 
+    > *{
+        @include flex-column-center(center, $gap);
+    }
+
     div:has(> form){
+        @include flex-column-center(center, 0);
         border-radius: $radius;
         width: 720px;
         overflow: hidden;
 
         form{
+            @include flex-column-center(initial, $gap);
             width: 100%;
             padding: calc($padding*1.5);
 
             .input-group{
-                @include input-group($width: 100%)
+                @include input-group(100%)
             }
 
             input[type="checkbox"]{
@@ -242,7 +258,7 @@ body{
 
     }
     .input-group{
-        @include input-group(auto)
+        @include input-group(auto);
     }
 }
 
@@ -259,18 +275,4 @@ button{
     -webkit-backdrop-filter: blur($blur);
 }
 
-.flex-column-center{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $gap;
-}
-
-.align-start {
-    align-items: initial;
-}
-
-.no-gap{
-    gap: 0;
-}
 

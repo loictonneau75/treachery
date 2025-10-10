@@ -1,7 +1,7 @@
-<div class="flex-column-center">
+<div>
     <img src="assets/img/logo.png" alt="logo" height="100px"/>
     <h1>Bienvenue sur <?=TITLE?></h1>
-    <div class = "blur flex-column-center no-gap">
+    <div class = "blur">
         <?php 
         include __DIR__."/partial/registerForm.php";
         include __DIR__."/partial/loginForm.php" ;
