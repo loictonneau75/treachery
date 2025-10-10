@@ -199,6 +199,44 @@ body::before {
 .app nav #dropdown a:hover {
   text-decoration-color: rgb(200, 200, 200);
 }
+.app .input-group {
+  position: relative;
+  width: auto;
+}
+.app .input-group input {
+  background-color: rgba(200, 200, 200, 0.08);
+  border-radius: 10px;
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: auto;
+  padding: 16px;
+}
+.app .input-group input:-webkit-autofill, .app .input-group input:-webkit-autofill:hover, .app .input-group input:-webkit-autofill:focus, .app .input-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.app .input-group input:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+.app .input-group input:is(:focus, :not(:placeholder-shown)) + label {
+  top: -0.2em;
+  transform: translateY(-68%) scale(0.85);
+  color: rgba(200, 200, 200, 0.5);
+}
+.app .input-group input.invalid {
+  border-color: rgb(251, 44, 54);
+}
+.app .input-group label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 0.95rem;
+}
 
 button {
   border: none;

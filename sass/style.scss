@@ -21,6 +21,45 @@ $indication-font-size: 0.7rem;
         transition: background-color 5000s ease-in-out 0s;
     }
 }
+
+@mixin input-group($width){
+    position: relative;
+    width: $width;
+
+    input{
+        background-color: $shade-light;
+        border-radius: 10px;
+        border: 2px solid $shade-light;
+        outline: none;
+        width: $width;
+        padding: $padding;
+        @include autofill-fix($shade-light, $base);
+
+        &:focus{
+            border-color: $shade-strong;
+        }
+
+        &:is(:focus, :not(:placeholder-shown)) + label{
+            top: -.2em;
+            transform: translateY(-68%) scale(.85);
+            color: $shade-strong;
+        }
+        &.invalid{
+            border-color: $warning;
+        }
+    }
+
+    label{
+        position: absolute;
+        left: $padding;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: all .2s ease;
+        pointer-events: none;
+        font-size: .95rem;
+    }
+}
+
 .test{
     height: 100vh;
 }
@@ -63,41 +102,7 @@ body{
             padding: calc($padding*1.5);
 
             .input-group{
-                position: relative;
-                width: 100%;
-
-                input{
-                    background-color: $shade-light;
-                    border-radius: 10px;
-                    border: 2px solid $shade-light;
-                    outline: none;
-                    width: 100%;
-                    padding: $padding;
-                    @include autofill-fix($shade-light, $base);
-
-                    &:focus{
-                        border-color: $shade-strong;
-                    }
-
-                    &:is(:focus, :not(:placeholder-shown)) + label{
-                        top: -.2em;
-                        transform: translateY(-68%) scale(.85);
-                        color: $shade-strong;
-                    }
-                    &.invalid{
-                        border-color: $warning;
-                    }
-                }
-
-                label{
-                    position: absolute;
-                    left: $padding;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    transition: all .2s ease;
-                    pointer-events: none;
-                    font-size: .95rem;
-                }
+                @include input-group($width: 100%)
             }
 
             input[type="checkbox"]{
@@ -235,6 +240,9 @@ body{
             }
         }
 
+    }
+    .input-group{
+        @include input-group(auto)
     }
 }
 
