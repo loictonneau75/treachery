@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .test {
   height: 100vh;
 }
@@ -143,6 +144,10 @@ body::before {
 .auth div:has(> form) form button:hover {
   background-color: rgba(200, 200, 200, 0.5);
 }
+.auth div:has(> form) form button:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
 .auth div:has(> form) form p.error {
   color: rgb(251, 44, 54);
   font-size: 0.7rem;
@@ -225,7 +230,7 @@ body::before {
   gap: 16px;
   margin: 16px;
 }
-.app .row > form {
+.app .row form {
   flex: 1;
   padding: 16px;
   display: flex;
@@ -233,39 +238,39 @@ body::before {
   gap: 16px;
   border-radius: 16px;
 }
-.app .row > form .input-group {
+.app .row form .input-group {
   position: relative;
-  width: auto;
+  width: 50%;
 }
-.app .row > form .input-group *, .app .row > form .input-group *::before, .app .row > form .input-group *::after {
+.app .row form .input-group *, .app .row form .input-group *::before, .app .row form .input-group *::after {
   box-sizing: border-box;
 }
-.app .row > form .input-group input {
+.app .row form .input-group input {
   background-color: rgba(200, 200, 200, 0.08);
   border-radius: 10px;
   border: 2px solid rgba(200, 200, 200, 0.08);
   outline: none;
-  width: auto;
+  width: 100%;
   padding: 16px;
   line-height: 1.2;
 }
-.app .row > form .input-group input:-webkit-autofill, .app .row > form .input-group input:-webkit-autofill:hover, .app .row > form .input-group input:-webkit-autofill:focus, .app .row > form .input-group input:-webkit-autofill:active {
+.app .row form .input-group input:-webkit-autofill, .app .row form .input-group input:-webkit-autofill:hover, .app .row form .input-group input:-webkit-autofill:focus, .app .row form .input-group input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
   -webkit-text-fill-color: rgb(200, 200, 200);
   caret-color: rgb(200, 200, 200);
   transition: background-color 5000s ease-in-out 0s;
 }
-.app .row > form .input-group input:focus {
+.app .row form .input-group input:focus {
   border-color: rgba(200, 200, 200, 0.5);
 }
-.app .row > form .input-group input:is(:focus, :not(:placeholder-shown)) + label {
+.app .row form .input-group input:is(:focus, :not(:placeholder-shown)) + label {
   transform: translateY(-68%) scale(0.85);
   color: rgba(200, 200, 200, 0.5);
 }
-.app .row > form .input-group input.invalid {
+.app .row form .input-group input.invalid {
   border-color: rgb(251, 44, 54);
 }
-.app .row > form .input-group label {
+.app .row form .input-group label {
   position: absolute;
   left: 16px;
   top: 0;
@@ -278,17 +283,95 @@ body::before {
   transition: transform 0.2s ease, color 0.2s ease;
   transform-origin: left center;
 }
-.app .row > form .input-group input[type=number]::-webkit-inner-spin-button {
+.app .row form .input-group input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
-.app .row > form button {
+.app .row form .file-input-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.app .row form .file-input-group input[type=file] {
+  flex: 1;
+}
+.app .row form .file-input-group input[type=file]::file-selector-button {
+  width: 75%;
+  height: auto;
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 16px;
+  padding: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  color: rgb(200, 200, 200);
+}
+.app .row form .file-input-group input[type=file]::file-selector-button:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app .row form .file-input-group input[type=file]::file-selector-button:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
+.app .row form .file-input-group input[type=file]:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
+.app .row form .select-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.app .row form .select-group select {
+  appearance: none; /* Supprime le style par défaut du navigateur */
+  -webkit-appearance: none; /* Pour Safari/Chrome */
+  -moz-appearance: none; /* Pour Firefox */
+  width: 100%;
+  height: auto;
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 16px;
+  flex: 1;
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  padding: 8px;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 15px;
+}
+.app .row form .select-group select:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app .row form .select-group select:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
+.app .row form .select-group select select::-ms-expand {
+  display: none;
+}
+.app .row form .select-group select option {
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+}
+.app .row form .button-wrapper {
+  display: flex;
+  gap: 16px;
+}
+.app .row form button {
   width: 100%;
   height: 50px;
   background-color: rgba(200, 200, 200, 0.15);
   border-radius: 16px;
 }
-.app .row > form button:hover {
+.app .row form button:hover {
   background-color: rgba(200, 200, 200, 0.5);
+}
+.app .row form button:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
+.app .alone {
+  width: 75%;
+  margin-inline: auto;
 }
 
 button {

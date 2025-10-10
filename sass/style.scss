@@ -32,7 +32,7 @@ $indication-font-size: 0.7rem;
         border-radius: 10px;
         border: 2px solid $shade-light;
         outline: none;
-        width: $width;
+        width: 100%;
         padding: $padding;
         line-height: 1.2;
         @include autofill-fix($shade-light, $base);
@@ -70,13 +70,17 @@ $indication-font-size: 0.7rem;
     gap: $gap;
 }
 
-@mixin button($height){
-    width: 100%;
+@mixin button($height, $width){
+    width: $width;
     height: $height;
     background-color: $shade-medium;
     border-radius: $radius;
     &:hover{
         background-color: $shade-strong;
+    }
+    &:focus{
+        background-color: $shade-strong;
+        outline: none;
     }
 }
 
@@ -172,7 +176,7 @@ body{
             }
 
             button{
-                @include button(25px)
+                @include button(25px, 100%)
             }
             p.error{
                 color: $warning;
@@ -262,13 +266,13 @@ body{
         }
 
     }
+
     .row{
         display: flex;
         gap: $gap;
         margin: $gap;
-        //background-color: blue;
 
-        > form {
+        form {
             flex: 1;
             padding: $padding;
             display: flex;
@@ -276,21 +280,83 @@ body{
             gap: $gap;
             border-radius: $radius;
 
+
             .input-group{
-                @include input-group(auto);
+                @include input-group(50%);
                 input[type=number]::-webkit-inner-spin-button {
                     -webkit-appearance: none;
                 }
             }
 
+            .file-input-group{
+                display: flex;
+                align-items: center;
+                gap: $gap;
+
+                input[type=file]{
+                    flex: 1;
+                    
+
+                    &::file-selector-button{
+                        @include button(auto, 75%);
+                        padding: calc($padding /2);
+                        font-weight: bold;
+                        border: none;
+                        cursor: pointer;
+                        color: $base
+                    }
+                    &:focus{
+                        background-color: $shade-strong;
+                        outline: none;
+                    }
+                }
+            }
+
+            .select-group{
+                display: flex;
+                align-items: center;
+                gap: $gap;
+
+                select{
+                    appearance: none; /* Supprime le style par défaut du navigateur */
+                    -webkit-appearance: none; /* Pour Safari/Chrome */
+                    -moz-appearance: none; /* Pour Firefox */
+                    @include button(auto, 100%);
+                    flex: 1;
+                    background-color: $shade-light;
+                    border: 2px solid $shade-light;
+                    padding: calc($padding /2);
+                    background-image: url("data:image/svg+xml;utf8,<svg fill='white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z'/></svg>");
+                    background-repeat: no-repeat;
+                    background-position: right 10px center;
+                    background-size: 15px;
+                    select::-ms-expand {
+                        display: none;
+                    }
+                    option{
+                        background-color: $shade-light;
+                        border: 2px solid $shade-light;
+                    }
+                    
+
+                }
+            }
+
+            .button-wrapper{
+                display: flex;
+                gap: $gap;
+            }
+
             button{
-                @include button(50px)
-                
+                @include button(50px, 100%)
             }
         }
-        
     }
-    
+
+    .alone{
+        width: 75%;
+        margin-inline: auto;
+    }
 }
 
 // ========= Utilitaires =========

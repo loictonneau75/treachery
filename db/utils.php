@@ -31,3 +31,10 @@ function getPseudoById(PDO $pdo, int $id): string{
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row['pseudo'];
 }
+
+function getAllCollumnFromTable(PDO $pdo, string $table, string $column){
+    $stmt = $pdo->prepare("SHOW COLUMNS FROM `$table` LIKE :column");
+    $stmt->execute([':column' => $column]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row;
+}
