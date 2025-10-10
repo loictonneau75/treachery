@@ -13,5 +13,5 @@
         <label for="remember">Se souvenir de moi</label>
     </div>
     <input type="text" name="website" id="website" autocomplete="off" style="display:none">
-    <button type="submit" formaction="">Se connecter</button>
+    <button type="submit">Se connecter</button>
 </form>
