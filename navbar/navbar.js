@@ -1,3 +1,8 @@
+function handleNavResize(nav){
+    const ro = ResizeObserver(() => {document.body.style.paddingTop = nav.offsetHeight + "px"});
+    ro.observe(nav);
+}
+
 nav = document.querySelector("nav")
 burger = nav.querySelector(".burger")
 dropdown = nav.querySelector("#dropdown")
@@ -16,3 +21,5 @@ document.addEventListener("click", (e) =>{
         dropdown.hidden = true
     }
 })
+
+handleNavResize(nav)
