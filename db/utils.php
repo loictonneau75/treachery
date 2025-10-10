@@ -24,3 +24,10 @@ function getIdByEmail(PDO $pdo, string $email): int{
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     return $row['id'] ?? false;
 }
+
+function getPseudoById(PDO $pdo, int $id): string{
+    $stmt =$pdo->prepare("SELECT pseudo FROM users WHERE id = ?");
+    $stmt->execute([$id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['pseudo'];
+}

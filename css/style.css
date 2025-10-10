@@ -18,11 +18,6 @@ body::before {
   z-index: -1;
 }
 
-button {
-  border: none;
-  cursor: pointer;
-}
-
 [hidden] {
   display: none !important;
 }
@@ -148,6 +143,61 @@ button {
 
 .app {
   display: block;
+}
+.app nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 16px;
+  border-radius: 0 0 8px 8px;
+}
+.app nav #navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app nav #navbar #navbar-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.app nav #navbar #navbar-container .burger {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent;
+  transition: 0.2s ease;
+}
+.app nav #navbar #navbar-container .burger:hover {
+  transform: scale(1.2);
+}
+.app nav #navbar #navbar-container .burger span {
+  display: block;
+  height: 2px;
+  width: 22px;
+  background-color: rgb(200, 200, 200);
+}
+.app nav #navbar img {
+  height: 70px;
+}
+.app nav #dropdown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.app nav #dropdown a {
+  text-decoration-color: transparent;
+  transition: 0.3s ease;
+}
+.app nav #dropdown a:hover {
+  text-decoration-color: rgb(200, 200, 200);
+}
+
+button {
+  border: none;
+  cursor: pointer;
 }
 
 .blur {

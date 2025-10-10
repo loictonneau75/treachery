@@ -43,11 +43,6 @@ body{
     }
 }
 
-button{
-    border: none;
-    cursor: pointer;
-}
-
 [hidden] { display: none !important; }
 
 .auth{
@@ -184,9 +179,68 @@ button{
 
 .app{
     display: block;
+    nav{
+        position: fixed;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        padding: $padding;
+        border-radius: 0 0 calc($radius/2) calc($radius/2);
+        #navbar{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            #navbar-container{
+                display: flex;
+                align-items: center;
+                gap: $gap;
+                .burger{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+                    background: transparent;
+                    transition: 0.2s ease;
+
+                    &:hover{
+                        transform: scale(1.2);
+                    }
+
+                    span{
+                        display: block;
+                        height: 2px;
+                        width: 22px;
+                        background-color: $base;
+                    }
+                }
+            }
+            img{
+                height: 70px;
+            }
+        }
+        #dropdown{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: $gap;
+            a{
+                text-decoration-color: transparent;
+                transition: 0.3s ease;
+                &:hover{
+                    text-decoration-color: $base;
+                }
+            }
+        }
+
+    }
 }
 
 // ========= Utilitaires =========
+
+button{
+    border: none;
+    cursor: pointer;
+}
 
 .blur{
     background: $shade-light;

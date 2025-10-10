@@ -9,6 +9,8 @@
     <?php
     if (!$loggedIn){
         echo "<script src='auth/auth.js' defer></script>";
+    }else{
+        echo"<script src='navbar/navbar.js' defer></script>";
     }
     ?>
 </head>
