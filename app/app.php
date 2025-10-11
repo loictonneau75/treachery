@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ ."/card/utils.php";
+require_once dirname(__DIR__) ."/db/connexion.php";
+require_once dirname(__DIR__) ."/db/utils.php";
 include __DIR__ . "/navbar/navbar.php";
 ?>
 
@@ -15,17 +16,13 @@ include __DIR__ . "/navbar/navbar.php";
 
 
             <div class="select-group">
-                <div class="input-group">
-                    <input type="text" id="type" placeholder="">
-                    <label for="type">type</label>
-                    <div class="carret"></div>
-                </div>
-                <div class="dropdown">
-                    <button type="button" value ="">--Choisir--</button>
-                    <?php foreach (getRolesTypes($pdo) as $type): ?>
-                        <button type="button" value="<?= htmlspecialchars($type)?>"><?= htmlspecialchars($type)?></button>
-                    <?php endforeach?>
-                </div>
+                <label for="card-type">Type:</label>
+                <select name="card-type" id="card-type">
+                    <option value="">-- Choisir --</option>
+                    <?php foreach (getTypesIdName($pdo) as $id => $name): ?>
+                        <option value="<?= (int)$id ?>"><?= htmlspecialchars($name) ?></option>
+                    <?php endforeach ?>
+                </select>
             </div>
 
 

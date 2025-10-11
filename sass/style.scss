@@ -70,6 +70,11 @@ $indication-font-size: 0.7rem;
     gap: $gap;
 }
 
+@mixin button-base(){
+    border: none;
+    cursor: pointer;
+}
+
 @mixin button($height, $width){
     width: $width;
     height: $height;
@@ -295,7 +300,6 @@ body{
 
                 input[type=file]{
                     flex: 1;
-                    
 
                     &::file-selector-button{
                         @include button(auto, 75%);
@@ -314,20 +318,20 @@ body{
 
             .select-group{
 
-                .carret{
-                    position: absolute;
-                    right: $padding;
-                    top: 50%;
-                    bottom: 0;
-                    display: flex;
-                    align-items: center;
-                    pointer-events: none;
-                    border-left: 5px solid transparent;
-                    border-right: 5px solid transparent;
-                    border-top: 6px solid $base;
-                }
-                .dropdown{
-                    width: 50%;
+                select{
+                    @include button-base();
+                    @include button(100%, 50%);
+
+                    &, &::picker(select){
+                        appearance: base-select;
+                    }
+
+                    &::picker(select){
+                        background-color: $shade-medium;
+                        border-radius: calc($radius/2);
+                        backdrop-filter: blur($blur);
+                        -webkit-backdrop-filter: blur($blur);
+                    }
                 }
             }
 
@@ -351,8 +355,7 @@ body{
 // ========= Utilitaires =========
 
 button{
-    border: none;
-    cursor: pointer;
+    @include button-base()
 }
 
 .blur{

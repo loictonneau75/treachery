@@ -315,20 +315,29 @@ body::before {
   background-color: rgba(200, 200, 200, 0.5);
   outline: none;
 }
-.app .row form .select-group .carret {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid rgb(200, 200, 200);
-}
-.app .row form .select-group .dropdown {
+.app .row form .select-group select {
+  border: none;
+  cursor: pointer;
   width: 50%;
+  height: 100%;
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 16px;
+}
+.app .row form .select-group select:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app .row form .select-group select:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
+.app .row form .select-group select, .app .row form .select-group select::picker(select) {
+  appearance: base-select;
+}
+.app .row form .select-group select::picker(select) {
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .app .row form .button-wrapper {
   display: flex;

@@ -32,9 +32,12 @@ function getPseudoById(PDO $pdo, int $id): string{
     return $row['pseudo'];
 }
 
-function getAllCollumnFromTable(PDO $pdo, string $table, string $column){
-    $stmt = $pdo->prepare("SHOW COLUMNS FROM `$table` LIKE :column");
-    $stmt->execute([':column' => $column]);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $row;
+function getTypesIdName(PDO $pdo): array {
+    $stmt = $pdo->query("SELECT `id`, `name` FROM `type` ORDER BY `name` ASC");
+    $res = [];
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $res[(int)$row['id']] = $row['name'];
+    }
+    return $res;
 }
+
