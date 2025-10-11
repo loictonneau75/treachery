@@ -41,3 +41,13 @@ function getTypesIdName(PDO $pdo): array {
     return $res;
 }
 
+function getEnumValues(PDO $pdo, string $table, string $column): array {
+    $sql = "SHOW COLUMNS FROM `{$table}` LIKE " . $pdo->quote($column);
+    $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+    $type = $row['Type'];
+    if (preg_match_all("/'((?:[^'\\\\]|\\\\.)*)'/", $type, $m)) {
+        return $m[1];
+    }
+    return [];
+}
+

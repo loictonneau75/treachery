@@ -1,8 +1,11 @@
+-- DROP TABLE `cards`, `users`;
+-- DROP TABLE `type`;
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
--- Table référencée d'abord
 CREATE TABLE `type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -10,12 +13,10 @@ CREATE TABLE `type` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Puis la table qui référence `type`
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
   `path` varchar(255) DEFAULT NULL,
-  `rarity` varchar(100) NOT NULL,
+  `rarity` ENUM('commune','peu commune','rare','mythique','chaos'),
   `type_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_cards_type_id` (`type_id`),
