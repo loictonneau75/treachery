@@ -1,4 +1,4 @@
-<form class="blur">
+<form>
     <div class="select-group">
         <label for="card-type">Type:</label>
         <select name="card-type" id="card-type">
@@ -25,7 +25,7 @@
     </div>
     <div class="button-wrapper">
         <button type="submit">Enregister</button>
-        <button type="button">Annuler</button>
+        <button type="button" id="removeAddCardButton">Annuler</button>
     </div>
 </form>
-<button type="button" hidden>Ajouter un nouvelle carte</button>
+<button hidden type="button" class="show-toggle">Ajouter une carte</button>

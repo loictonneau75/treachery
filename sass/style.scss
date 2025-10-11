@@ -344,12 +344,23 @@ body{
                 @include button(50px, 100%)
             }
         }
+
+        &:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden="true"])){
+            padding: $padding;
+            button.show-toggle:last-child{
+                @include button-base();
+                @include button(50px, 25%);
+                width:100%;
+            }
+        }
     }
 
-    .alone{
-        width: 75%;
+    .alone{ //changer ici pour le remettre coller a gauche
+        width: 50%;
         margin-inline: auto;
+        border-radius: $radius;
     }
+
 }
 
 // ========= Utilitaires =========

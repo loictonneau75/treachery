@@ -356,9 +356,29 @@ body::before {
   background-color: rgba(200, 200, 200, 0.5);
   outline: none;
 }
+.app .row:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden=true])) {
+  padding: 16px;
+}
+.app .row:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden=true])) button.show-toggle:last-child {
+  border: none;
+  cursor: pointer;
+  width: 25%;
+  height: 50px;
+  background-color: rgba(200, 200, 200, 0.15);
+  border-radius: 16px;
+  width: 100%;
+}
+.app .row:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden=true])) button.show-toggle:last-child:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app .row:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden=true])) button.show-toggle:last-child:focus {
+  background-color: rgba(200, 200, 200, 0.5);
+  outline: none;
+}
 .app .alone {
-  width: 75%;
+  width: 50%;
   margin-inline: auto;
+  border-radius: 16px;
 }
 
 button {

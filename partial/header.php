@@ -11,6 +11,7 @@
         echo "<script src='auth/auth.js' defer></script>";
     }else{
         echo"<script src='app/navbar/navbar.js' defer></script>";
+        echo"<script src='app/app.js' defer></script>";
     }
     ?>
 </head>

@@ -11,7 +11,7 @@ include __DIR__ . "/navbar/navbar.php";
         include __DIR__ . "/partial/createRoomForm.php";
     ?>
 </div>
-<div class="row alone">
+<div class="row alone blur">
     <?php
         include __DIR__ . "/partial/addCardForm.php";
     ?>
