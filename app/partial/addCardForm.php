@@ -3,8 +3,11 @@
         <label for="card-type">Type:</label>
         <select name="card-type" id="card-type">
             <option value="">-- Choisir --</option>
-            <?php foreach (getTypesIdName($pdo) as $id => $name): ?>
-                <option value="<?= (int)$id ?>"><?= htmlspecialchars($name) ?></option>
+            <?php foreach (getTypesIdName($pdo) as $id => $data): ?>
+                <option value="<?= (int)$id ?>">
+                    <img src="assets/img/roles/<?= htmlspecialchars($data['url'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($data['name'], ENT_QUOTES) ?>", height="20px"/>
+                    <?= htmlspecialchars($data["name"]) ?>
+                </option>
             <?php endforeach ?>
         </select>
     </div>

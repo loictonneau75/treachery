@@ -33,10 +33,10 @@ function getPseudoById(PDO $pdo, int $id): string{
 }
 
 function getTypesIdName(PDO $pdo): array {
-    $stmt = $pdo->query("SELECT `id`, `name` FROM `type` ORDER BY `name` ASC");
+    $stmt = $pdo->query("SELECT `id`, `name`, `url` FROM `type` ORDER BY `id` ASC");
     $res = [];
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-        $res[(int)$row['id']] = $row['name'];
+        $res[(int)$row['id']] = ['name'=>$row['name'], "url"=>$row['url']];
     }
     return $res;
 }
