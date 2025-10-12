@@ -33,7 +33,7 @@ function getPseudoById(PDO $pdo, int $id): string{
 }
 
 function getTypesIdName(PDO $pdo): array {
-    $stmt = $pdo->query("SELECT `id`, `name`, `url` FROM `type` ORDER BY `id` ASC");
+    $stmt = $pdo->query("SELECT `id`, `name`, `url` FROM `types` ORDER BY `id` ASC");
     $res = [];
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
         $res[(int)$row['id']] = ['name'=>$row['name'], "url"=>$row['url']];
@@ -41,13 +41,12 @@ function getTypesIdName(PDO $pdo): array {
     return $res;
 }
 
-function getEnumValues(PDO $pdo, string $table, string $column): array {
-    $sql = "SHOW COLUMNS FROM `{$table}` LIKE " . $pdo->quote($column);
-    $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
-    $type = $row['Type'];
-    if (preg_match_all("/'((?:[^'\\\\]|\\\\.)*)'/", $type, $m)) {
-        return $m[1];
+function getRaritiesIdName(PDO $pdo): array {
+    $stmt = $pdo->query("SELECT `id`, `name`, `url` FROM `rarities` ORDER BY `id` ASC");
+    $res = [];
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $res[(int)$row['id']] = ['name'=>$row['name'], "url"=>$row['url']];
     }
-    return [];
+    return $res;
 }
 

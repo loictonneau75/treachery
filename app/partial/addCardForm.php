@@ -1,4 +1,4 @@
-<form>
+<form id="formAddCard" action="<?= BASE_URL ?>app/card/addCard.php" >
     <div class="select-group">
         <label for="card-type">Type:</label>
         <select name="card-type" id="card-type">
@@ -16,9 +16,13 @@
         <label for="card-rarity">Rarity:</label>
         <select name="card-rarity" id="card-rarity">
             <option value="">-- Choisir --</option>
-            <?php foreach (getEnumValues($pdo, 'cards', 'rarity') as $rarity): ?>
-                <option value="<?= htmlspecialchars($rarity, ENT_QUOTES) ?>"><?= htmlspecialchars($rarity) ?></option>
+            <?php foreach (getRaritiesIdName($pdo) as $id => $data): ?>
+                <option value="<?= (int)$id ?>">
+                    <img src="assets/img/rarity/<?= htmlspecialchars($data['url'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($data['name'], ENT_QUOTES) ?>", height="20px"/>
+                    <?= htmlspecialchars($data["name"]) ?>
+                </option>
             <?php endforeach ?>
+            <option value="other">Autre</option>
         </select>
     </div>
 
