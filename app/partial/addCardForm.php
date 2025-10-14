@@ -1,6 +1,6 @@
 <form id="formAddCard" action="<?= BASE_URL ?>app/card/addCard.php" >
     <div class="select-group">
-        <label for="card-type">Type:</label>
+        <label for="card-type">Type :</label>
         <select name="card-type" id="card-type">
             <option value="">-- Choisir --</option>
             <?php foreach (getTypesIdName($pdo) as $id => $data): ?>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="select-group">
-        <label for="card-rarity">Rarity:</label>
+        <label for="card-rarity">Rareté :</label>
         <select name="card-rarity" id="card-rarity">
             <option value="">-- Choisir --</option>
             <?php foreach (getRaritiesIdName($pdo) as $id => $data): ?>
@@ -27,9 +27,10 @@
     </div>
 
     <div class="file-input-group">
-        <label for="card-img">Image de la carte:</label>
+        <label for="card-img">Image de la carte :</label>
         <input type="file" id="card-img" name="card-img">
     </div>
+
     <input type="text" name="website-a" id="website-a" autocomplete="off" style="display:none">
 
     <div class="button-wrapper">

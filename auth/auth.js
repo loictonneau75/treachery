@@ -6,7 +6,7 @@ const formRegister = document.getElementById("formRegister");
 function validEmail(errorList, form){
     const input = ((form.id === "formLogin") ? formLogin : formRegister).querySelector((form.id === "formLogin") ? "#mail" : "#mail-r");
     const value = input.value.trim();
-    if(value === ""){errorList.push(["Veuillez entrer votre adresse mail !", [input]])}
+    if(value === "")errorList.push(["Veuillez entrer votre adresse mail !", [input]])
     else if(!(form.id === "formLogin")){
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)){errorList.push(["Adresse mail invalide !", [input]])}
         else if(value.length > 100){errorList.push(["Votre adresse mail doit faire moins de 100 charactère !", [input]])};
