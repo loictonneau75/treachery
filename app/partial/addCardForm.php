@@ -30,6 +30,8 @@
         <label for="card-img">Image de la carte:</label>
         <input type="file" id="card-img" name="card-img">
     </div>
+    <input type="text" name="website-a" id="website-a" autocomplete="off" style="display:none">
+
     <div class="button-wrapper">
         <button type="submit">Enregister</button>
         <button type="button" id="removeAddCardButton">Annuler</button>

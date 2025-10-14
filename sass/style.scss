@@ -301,11 +301,18 @@ body{
                 input[type=file]{
                     flex: 1;
 
+                    &.invalid{
+                        &::file-selector-button{
+                            border-color: $warning;
+                        }
+                    }
+
                     &::file-selector-button{
                         @include button(auto, 75%);
                         padding: calc($padding /2);
                         font-weight: bold;
-                        border: none;
+                        border-color: transparent;
+                        //border: none;
                         cursor: pointer;
                         color: $base
                     }
@@ -317,10 +324,13 @@ body{
             }
 
             .select-group{
-
                 select{
                     @include button-base();
-                    @include button(100%, 50%);
+                    @include input-group(50%);
+                    background-color: $shade-medium;
+                    &:hover{
+                        background-color: $shade-strong;
+                    }
 
                     &, &::picker(select){
                         appearance: base-select;
@@ -332,6 +342,9 @@ body{
                         backdrop-filter: blur($blur);
                         -webkit-backdrop-filter: blur($blur);
                     }
+                    &.invalid{
+                        border: 2px solid $warning;
+                    }
                 }
             }
 
@@ -342,6 +355,14 @@ body{
 
             button{
                 @include button(50px, 100%)
+            }
+
+            p.error{
+                color: $warning;
+                font-size: 0.7rem;
+                margin-top: -15px;
+                margin-left: 10px;
+                white-space: pre;
             }
         }
 

@@ -293,6 +293,9 @@ body::before {
 .app .row form .file-input-group input[type=file] {
   flex: 1;
 }
+.app .row form .file-input-group input[type=file].invalid::file-selector-button {
+  border-color: rgb(251, 44, 54);
+}
 .app .row form .file-input-group input[type=file]::file-selector-button {
   width: 75%;
   height: auto;
@@ -300,7 +303,7 @@ body::before {
   border-radius: 16px;
   padding: 8px;
   font-weight: bold;
-  border: none;
+  border-color: transparent;
   cursor: pointer;
   color: rgb(200, 200, 200);
 }
@@ -318,17 +321,54 @@ body::before {
 .app .row form .select-group select {
   border: none;
   cursor: pointer;
+  position: relative;
   width: 50%;
-  height: 100%;
   background-color: rgba(200, 200, 200, 0.15);
-  border-radius: 16px;
+  
+}
+.app .row form .select-group select *, .app .row form .select-group select *::before, .app .row form .select-group select *::after {
+  box-sizing: border-box;
+}
+.app .row form .select-group select input {
+  background-color: rgba(200, 200, 200, 0.08);
+  border-radius: 10px;
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: 100%;
+  padding: 16px;
+  line-height: 1.2;
+}
+.app .row form .select-group select input:-webkit-autofill, .app .row form .select-group select input:-webkit-autofill:hover, .app .row form .select-group select input:-webkit-autofill:focus, .app .row form .select-group select input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.app .row form .select-group select input:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+.app .row form .select-group select input:is(:focus, :not(:placeholder-shown)) + label {
+  transform: translateY(-68%) scale(0.85);
+  color: rgba(200, 200, 200, 0.5);
+}
+.app .row form .select-group select input.invalid {
+  border-color: rgb(251, 44, 54);
+}
+.app .row form .select-group select label {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  transform-origin: left center;
 }
 .app .row form .select-group select:hover {
   background-color: rgba(200, 200, 200, 0.5);
-}
-.app .row form .select-group select:focus {
-  background-color: rgba(200, 200, 200, 0.5);
-  outline: none;
 }
 .app .row form .select-group select, .app .row form .select-group select::picker(select) {
   appearance: base-select;
@@ -338,6 +378,9 @@ body::before {
   border-radius: 8px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+.app .row form .select-group select.invalid {
+  border: 2px solid rgb(251, 44, 54);
 }
 .app .row form .button-wrapper {
   display: flex;
@@ -355,6 +398,13 @@ body::before {
 .app .row form button:focus {
   background-color: rgba(200, 200, 200, 0.5);
   outline: none;
+}
+.app .row form p.error {
+  color: rgb(251, 44, 54);
+  font-size: 0.7rem;
+  margin-top: -15px;
+  margin-left: 10px;
+  white-space: pre;
 }
 .app .row:has(> button.show-toggle:last-child:not(.hidden):not([hidden]):not([aria-hidden=true])) {
   padding: 16px;

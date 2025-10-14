@@ -77,7 +77,7 @@ function toggleForms(showLoginForm) {
 }
 
 for(const form of [formLogin, formRegister]){
-    form.addEventListener("input", (e) => {
+    form.addEventListener("change", (e) => {
         e.target.classList.remove("invalid");
         form.querySelector(`p.error[data-for="${e.target.id}"]`)?.remove();
     });
