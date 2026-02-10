@@ -1,45 +1,51 @@
 <?php
+use App\DB\DbTools;
+use App\Session\SessionTools;
+use App\Security\CsrfTools;
+use App\Security\FormSecurity;
+
 header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
-require_once dirname(__DIR__) . "/db/utils.php";
-require_once dirname(__DIR__) . "/security/utils.php";
-require_once dirname(__DIR__) . "/session/utils.php";
-session_start();
+require_once dirname(__DIR__) . "/db/tools.php";
+require_once dirname(__DIR__) . "/session/tools.php";
+require_once dirname(__DIR__) . "/security/tools.php";
 
 function validEmail(string $email): void{
-    if($email === "") {
+    $maxlength = 255;
+    if($email === "" || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $maxlength) {
         http_response_code(400);
         exit("Email invalide");
     }
 }
 
 function validPassword(string $password): void{
-    if($password === ""){
+    $minLength = 5;
+    $maxLength = 255;
+    $passwordRegex = "/(?=.*[A-Z])(?=.*\d)/";
+    if($password === "" || strlen($password) < $minLength || strlen($password) > $maxLength || !preg_match($passwordRegex, $password)){
         http_response_code(400);
         exit("mot de passe invalide");
     }
 }
-
-requirePostMethod();
-honeyPot($_POST["website"]);
-rateLimite("login");
-throttle("login");
-
+SessionTools::sessionStart();
+FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $errors = [];
-$email = trim((string)$_POST["mail"]);
-$password = trim((string)$_POST["password"]);
-$remember = isset($_POST['remember']);
+$email = trim((string)$_POST["mailLogin"]);
+$password = trim((string)$_POST["passwordLogin"]);
+$remember = isset($_POST["rememberLogin"]);
 
 validEmail($email);
 validPassword($password);
-$hash = getHashByEmail($pdo, $email);
-if (!($hash && password_verify($password, $hash))) {
-    $errors[] = ["Cette combinaison d'identifiant n'existe pas !", ["mail", "password"]];
-}
-if(!empty($errors)){
-    echo json_encode(["valid" => false, "errors" => $errors], JSON_UNESCAPED_UNICODE);
-}else{
-    createSession(getIdByEmail($pdo, $email), $remember);
-    echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
+$id = DbTools::verifyUser($pdo, $email, $password);
+if($id === false){
+    echo json_encode([
+        'valid'  => false,
+        'errors' => [["email ou mot de passe invalide", ["mailLogin", "passwordLogin"]]]
+    ], JSON_UNESCAPED_UNICODE);
     exit;
 }
+SessionTools::createSession($pdo,$id, $remember);
+CsrfTools::regenerateToken();
+echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
+exit;
+

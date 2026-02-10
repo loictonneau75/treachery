@@ -1,0 +1,18 @@
+
+@use "base";
+@use "background";
+@use "auth";
+@use "navbar";
+@use "variables" as var;
+select {
+    img{height: 20px;}
+    &, &::picker(select){
+        appearance: base-select;
+    }
+
+    &::picker(select){
+        background-color: var.$shade-medium;
+        border-radius: 8;
+        @include var.blur()
+    }
+}

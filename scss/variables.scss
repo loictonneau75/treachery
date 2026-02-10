@@ -1,0 +1,83 @@
+$base: rgb(200 200 200);
+$shade-light: rgba($base, 0.08);
+$shade-medium: rgba($base, 0.15);
+$shade-strong: rgba($base, 0.5);
+$shade-stronger: rgba($base, 0.7);
+$warning: rgb(251 44 54);
+
+
+@mixin blur(){
+    $blur: 16px;
+    background: $shade-light;
+    backdrop-filter: blur($blur);
+    -webkit-backdrop-filter: blur($blur);
+}
+
+@mixin flex-column($align-item: center){
+    display: flex;
+    flex-direction:column;
+    align-items: $align-item;
+}
+
+@mixin autofill-fix($box-color: $shade-light, $text-color: $base) {
+    &:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus,&:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px #{$box-color} inset;
+        -webkit-text-fill-color: #{$text-color};
+        caret-color: #{$text-color};
+        transition: background-color 5000s ease-in-out 0s;
+    }
+}
+
+@mixin label-out-when-focus(){
+    position: relative;
+    label{
+            position: absolute;
+            left: 16px;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            transition: all .2s ease;
+            pointer-events: none;
+            font-size: .95rem;
+            }
+
+    input:is(:focus, :not(:placeholder-shown)) + label{
+        transform: translateY(-68%) scale(.85);
+
+    }
+}
+
+@mixin better-checkbox($bg-color: $shade-medium, $button-color:$base, $checked-color:$shade-strong){
+    display: none;
+    + .remember-toggle{
+        position:relative;
+        display: inline-block;
+        background-color: $bg-color;
+        width:30px;
+        height:20px;
+        top:4px;
+        border-radius: 16px;
+        cursor:pointer;
+        transition: all .2s ease;
+
+        &::before{
+            position: absolute;
+            content:"";
+            background-color: $button-color;
+            width:15px;
+            height:15px;
+            border-radius: 50px;
+            margin:2px;
+            transition: all .2s ease
+        }
+    }
+
+    &:checked + .remember-toggle{
+        background-color: $checked-color;
+
+        &::before{
+            transform: translateX(11px);
+        }
+    }
+}

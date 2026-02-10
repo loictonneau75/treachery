@@ -20,4 +20,11 @@ document.addEventListener("click", (e) =>{
     }
 })
 
+document.getElementById('deleteAccountBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (confirm("Cette action est irréversible. Supprimer votre compte ?")) {
+        document.getElementById('deleteAccountForm').submit();
+    }
+});
+
 handleNavResize(nav)

@@ -1,28 +1,38 @@
 <?php
+use App\DB\DbTools;
+use App\Session\SessionTools;
+use App\Security\CsrfTools;
+use App\Security\FormSecurity;
+
 header("Content-Type: application/json; charset=utf-8");
 require_once dirname(__DIR__) . "/db/connexion.php";
-require_once dirname(__DIR__) . "/db/utils.php";
-require_once dirname(__DIR__) . "/security/utils.php";
-require_once dirname(__DIR__) . "/session/utils.php";
-session_start();
+require_once dirname(__DIR__) . "/db/tools.php";
+require_once dirname(__DIR__) . "/session/tools.php";
+require_once dirname(__DIR__) . "/security/tools.php";
 
 
 function validEmail(string $email): void{
-    if($email === "" || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254) {
+    $maxlength = 255;
+    if($email === "" || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $maxlength) {
         http_response_code(400);
         exit("Email invalide");
     }
 }
 
 function validPseudo(string $pseudo): void{
-    if($pseudo === "" || strlen($pseudo) < 3 || strlen($pseudo) > 50){
+    $minLength = 3;
+    $maxLength = 50;
+    if($pseudo === "" || strlen($pseudo) < $minLength || strlen($pseudo) > $maxLength){
         http_response_code(400);
         exit("Pseudo invalide");
     }
 }
 
 function validPassword(string $password, string $confirm): void{
-    if($password === "" || strlen($password) < 5 || strlen($password) > 255 || !preg_match('/^(?=.*[A-Z])(?=.*\d)/', $password)){
+    $minLength = 5;
+    $maxLength = 255;
+    $passwordRegex = "/(?=.*[A-Z])(?=.*\d)/";
+    if($password === "" || strlen($password) < $minLength || strlen($password) > $maxLength || !preg_match($passwordRegex, $password)){
         http_response_code(400);
         exit("mot de passe invalide");
     }
@@ -32,28 +42,29 @@ function validPassword(string $password, string $confirm): void{
     }
 }
 
-requirePostMethod();
-honeyPot($_POST["website-r"]);
-rateLimite("register");
-throttle("register");
+SessionTools::sessionStart();
 
+FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $errors = [];
-$email = trim((string)$_POST["mail-r"]);
-$pseudo = trim((string)$_POST["pseudo"]);
-$password = trim((string)$_POST["password-r"]);
-$confirm = trim((string)$_POST["confirm"]);
-$remember = isset($_POST['remember-r']);
+$email = trim((string)$_POST["mailRegister"]);
+$pseudo = trim((string)$_POST["pseudoRegister"]);
+$password = trim((string)$_POST["passwordRegister"]);
+$confirm = trim((string)$_POST["confirmRegister"]);
+$remember = isset($_POST["rememberRegister"]);
 
 validEmail($email);
 validPseudo($pseudo);
 validPassword($password, $confirm);
-if(userEmailOrPseudoExist($pdo, $email, $pseudo)){
-    $errors[] = ["Cet email ou ce pseudo sont déjà utilisé", ["mail-r", "pseudo"]];
-}
-if(!empty($errors)){
-    echo json_encode(["valid" => false, "errors" => $errors], JSON_UNESCAPED_UNICODE);
-}else{
-    createSession(createUser($pdo, $pseudo, $email, $password), $remember);
-    echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
+if(DbTools::userEmailOrPseudoExist($pdo, $email, $pseudo)){
+    echo json_encode([
+        'valid'  => false,
+        'errors' => [['Cet email ou ce pseudo sont déjà utilisés', ['mailRegister', 'pseudoRegister']]]
+    ], JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+$id = DbTools::createUser($pdo, $pseudo, $email, $password);
+SessionTools::createSession($pdo,$id, $remember);
+CsrfTools::regenerateToken();
+echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
+exit;

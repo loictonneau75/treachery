@@ -1,13 +1,19 @@
 <?php
+use App\DB\DbTools;
+use App\Session\SessionTools;
+
+require_once dirname(__DIR__) . "/db/connexion.php";
+require_once dirname(__DIR__) . "/db/tools.php";
+require_once dirname(__DIR__) . "/session/tools.php";
 require_once dirname(__DIR__) . "/config.php";
 
-session_start();
-if (isset($_COOKIE["id"])) {
-    setcookie("id", $_SESSION["id"], time() - 36000, "/");
-    unset($_COOKIE["id"]);
+SessionTools::sessionStart();
+
+if (isset($_COOKIE['remember_me'])) {
+    DbTools::deleteRememberTokenForHash($pdo, hash('sha256', $_COOKIE['remember_me']));
+    SessionTools::clearRememberCookie();
 }
-session_unset();
-session_destroy();
+
+SessionTools::deleteSession();
 header("Location: " . BASE_URL);
-
-
+exit;

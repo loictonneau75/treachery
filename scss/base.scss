@@ -1,0 +1,14 @@
+@use "variables" as var;
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    color: var.$base;
+}
+
+button{
+    border: none;
+    cursor:pointer
+}
+
+[hidden] {display: none !important;}
