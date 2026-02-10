@@ -14,7 +14,7 @@ require_once dirname(__DIR__) . "/session/tools.php";
     <link rel="stylesheet" href="css/style.css">
     <?php
     if(SessionTools::getData("id") === null) {
-        echo "<script type='module' src='auth/auth.js' defer></script>";
+        echo "<script type='module' src='auth/authForm.js' defer></script>";
         echo "<script type='module' src='auth/toggle.js' defer></script>";
     }
     else{
