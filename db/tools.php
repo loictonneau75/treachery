@@ -12,7 +12,7 @@ class DbTools{
     }
 
     public static function createUser(PDO $pdo, string $pseudo, string $email, string $password): int{
-        $stmt = $pdo -> prepare("INSERT INTO users (pseudo, email, password) VALUE (?, ?, ?)");
+        $stmt = $pdo -> prepare("INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)");
         $stmt -> execute([$pseudo, $email, password_hash($password, PASSWORD_DEFAULT)]);
         return (int)$pdo -> lastInsertId();
     }
@@ -23,13 +23,13 @@ class DbTools{
         $token     = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token);
         $expiresAt = new DateTime('+30 days');
-        $stmt = $pdo->prepare('INSERT INTO remember_tokens (user_id, token_hash, expires_at)VALUES (?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO remember_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)');
         $stmt->execute([$userId,$tokenHash,$expiresAt->format('Y-m-d H:i:s')]);
         return ['token' => $token, 'expiresAt' => $expiresAt];
     }
 
     public static function findRememberToken(PDO $pdo, string $tokenHash): ?array {
-        $stmt = $pdo->prepare('SELECT user_id, expires_atFROM remember_tokensWHERE token_hash = ?LIMIT 1');
+        $stmt = $pdo->prepare('SELECT user_id, expires_at FROM remember_tokens WHERE token_hash = ? LIMIT 1');
         $stmt->execute([$tokenHash]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
