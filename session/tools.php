@@ -7,6 +7,7 @@ use PDO;
 class SessionTools {
 
     public static function sessionStart(){
+        session_name('TREACHERY_SESSION');
         session_start();
     }
 

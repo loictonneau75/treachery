@@ -62,8 +62,6 @@ include __DIR__ . "/navbar/navbar.php";
     </div>
     
 </form>
-<?php
-var_dump($_SESSION)
-?>
+
 
 
