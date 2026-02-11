@@ -1,3 +1,6 @@
+import { clearAllErrors, setErrors } from "../../tools.js";
+
+
 function validEmail(errorList, form){
     const input = form.querySelector((form === formLogin) ? "#mailLogin" : "#mailRegister");
     const value = input.value.trim();
@@ -41,24 +44,6 @@ function validConfirmPassword(errorList, form){
     else if (initInput.value.trim() !== value) errorList.push(["les deux champs mot de passe doivent être identiques !", [input, initInput]]);
 }
 
-export function clearAllErrors(form){
-    form.querySelectorAll("p.error").forEach(err => err.remove());
-    form.querySelectorAll("input.error").forEach(input => input.classList.remove("error"));
-}
-
-function setErrors(errorList, form){
-    clearAllErrors(form);
-    for(const [msg, inputs] of errorList){
-        inputs.forEach(input => input.classList.add("error"));
-        const input = inputs[inputs.length -1];
-        const err = document.createElement("p");
-        err.dataset.for = input.id;
-        err.classList.add("error");
-        err.textContent = msg;
-        input.parentElement.insertAdjacentElement("afterend", err);
-    };
-}
-
 async function handleFormSubmit(errorList, form) {
     const data = await fetch(form.action, { method: "POST", body: new FormData(form) }).then(res => res.json());
     if(data.valid) {window.location.href = "./index.php"}
@@ -84,16 +69,10 @@ async function handleFormSubmitEvent(e, form) {
     else await handleFormSubmit(errors, form);
 }
 
-function handleFormChangeEvent(e, form) {
-    e.target.classList.remove("error");
-    const errorElem = form.querySelector(`p.error[data-for="${e.target.id}"]`);
-    if (errorElem) errorElem.remove();
-}
-
 
 const formLogin = document.querySelector("#formLogin");
 const formRegister = document.querySelector("#formRegister");
 for(const form of [formLogin, formRegister]){
     form.addEventListener("submit",  (e) => handleFormSubmitEvent(e, form))
-    form.addEventListener("input", (e) => handleFormChangeEvent(e, form));
+    form.addEventListener("input", () => clearAllErrors(form));
 }

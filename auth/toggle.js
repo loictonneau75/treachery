@@ -1,4 +1,4 @@
-import { clearAllErrors } from "./auth.js";
+import { clearAllErrors } from "../tools.js";
 
 function toggleForms(showLoginForm) {
     btnLogin.classList.toggle("active", showLoginForm);
