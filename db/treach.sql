@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS treach;
 CREATE DATABASE IF NOT EXISTS treach;
 
 DROP TABLE IF EXISTS `cards`, `remember_tokens`;
