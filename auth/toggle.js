@@ -1,8 +1,5 @@
 import { clearAllErrors } from "./auth.js";
 
-const btnLogin = document.getElementById("btnShowLoginForm");
-const btnRegister = document.getElementById("btnShowRegisterForm");
-
 function toggleForms(showLoginForm) {
     btnLogin.classList.toggle("active", showLoginForm);
     btnRegister.classList.toggle("active", !showLoginForm);
@@ -18,5 +15,7 @@ function toggleForms(showLoginForm) {
     };
 }
 
+const btnLogin = document.getElementById("btnShowLoginForm");
+const btnRegister = document.getElementById("btnShowRegisterForm");
 btnLogin.addEventListener("click", () => toggleForms(true));
 btnRegister.addEventListener("click", () => toggleForms(false));

@@ -1,6 +1,3 @@
-const formLogin = document.querySelector("#formLogin");
-const formRegister = document.querySelector("#formRegister");
-
 function validEmail(errorList, form){
     const input = form.querySelector((form === formLogin) ? "#mailLogin" : "#mailRegister");
     const value = input.value.trim();
@@ -93,6 +90,9 @@ function handleFormChangeEvent(e, form) {
     if (errorElem) errorElem.remove();
 }
 
+
+const formLogin = document.querySelector("#formLogin");
+const formRegister = document.querySelector("#formRegister");
 for(const form of [formLogin, formRegister]){
     form.addEventListener("submit",  (e) => handleFormSubmitEvent(e, form))
     form.addEventListener("input", (e) => handleFormChangeEvent(e, form));

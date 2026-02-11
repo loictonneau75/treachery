@@ -1,10 +1,10 @@
 <?php
 use App\Session\SessionTools;
 
-require_once dirname(__DIR__, 2) . "/session/tools.php";
+require_once dirname(__DIR__, 3) . "/session/tools.php";
 ?>
 
-<form>
+<form action="<?=BASE_URL?>app/partial/createRoom/createRoom.php" id="createRoomForm">
     <h2>Rejoindre un salon</h2>
     <div>
         <input type="text" id="code">

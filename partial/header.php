@@ -14,11 +14,14 @@ require_once dirname(__DIR__) . "/session/tools.php";
     <link rel="stylesheet" href="css/style.css">
     <?php
     if(SessionTools::getData("id") === null) {
-        echo "<script type='module' src='auth/authForm.js' defer></script>";
+        echo "<script type='module' src='auth/partial/authForm.js' defer></script>";
         echo "<script type='module' src='auth/toggle.js' defer></script>";
     }
     else{
         echo "<script src='app/navbar/navbar.js' defer></script>";
+        echo "<script src='app/partial/addCard/addCardForm.js' defer></script>";
+        echo "<script src='app/partial/createRoom/createRoomForm.js' defer></script>";
+        echo "<script src='app/partial/joinRoom/joinRoomForm.js' defer></script>";
     }
 
     ?>

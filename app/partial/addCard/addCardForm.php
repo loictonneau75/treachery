@@ -2,15 +2,13 @@
 use App\DB\DbTools;
 use App\Session\SessionTools;
 
-require_once dirname(__DIR__,2) . "/session/tools.php";
-require_once dirname(__DIR__,2) . "/db/connexion.php";
-require_once dirname(__DIR__,2) . "/db/tools.php";
+require_once dirname(__DIR__,3) . "/session/tools.php";
+require_once dirname(__DIR__,3) . "/db/connexion.php";
+require_once dirname(__DIR__,3) . "/db/tools.php";
 
-include __DIR__ . "/partial/createRoomForm.php";
-include __DIR__ . "/partial/joinRoomForm.php";
 ?>
 
-<form>
+<form action="<?=BASE_URL?>app/partial/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
     <div>
         <label for="card-type">Type :</label>
