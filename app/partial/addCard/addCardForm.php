@@ -11,8 +11,8 @@ require_once dirname(__DIR__,3) . "/db/tools.php";
 <form action="<?=BASE_URL?>app/partial/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
     <div>
-        <label for="card-type">Type :</label>
-        <select id="card-type">
+        <label for="card-role">Rôle :</label>
+        <select id="card-role">
             <option value="">-- Choisir --</option>
             <?php foreach (DbTools::getTypesData($pdo) as $data) :?>
                 <option value="<?=(int)$data["id"]?>">
@@ -23,7 +23,7 @@ require_once dirname(__DIR__,3) . "/db/tools.php";
         </select>
     </div>
     <div>
-        <label for="card-rarity">Type :</label>
+        <label for="card-rarity">Rareté :</label>
         <select id="card-rarity">
             <option value="">-- Choisir --</option>
             <?php foreach (DbTools::getRarityData($pdo) as $data) :?>
