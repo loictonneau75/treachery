@@ -1,4 +1,4 @@
-import { clearAllErrors, setErrors } from "../../tools.js";
+import { clearAllErrors, setErrors, handlePostFormSubmit } from "../../tools.js";
 
 
 function validEmail(errorList, form){
@@ -33,7 +33,6 @@ function validPassword(errorList, form){
         !passwordRegex.test(value))){
             errorList.push([`Votre mot de passe doit :\n\t- Faire entre ${minLength} et ${maxLength} charactères\n\t- Contenir au minimum une majuscule et un chiffre !`, [input]]);
         } 
-    
 }
 
 function validConfirmPassword(errorList, form){
@@ -42,18 +41,6 @@ function validConfirmPassword(errorList, form){
     const value = input.value.trim();
     if(value === "") errorList.push(["Veuillez confirmer votre mot de passe !", [input]])
     else if (initInput.value.trim() !== value) errorList.push(["les deux champs mot de passe doivent être identiques !", [input, initInput]]);
-}
-
-async function handleFormSubmit(errorList, form) {
-    const data = await fetch(form.action, { method: "POST", body: new FormData(form) }).then(res => res.json());
-    if(data.valid) {window.location.href = "./index.php"}
-    else {
-        for(const [mess, ids] of data.errors){
-            const inputs = (ids || []).map(id => form.querySelector(`#${id}`)).filter(Boolean);
-            errorList.push([mess, inputs]);
-        }
-        setErrors(errorList, form);
-    };
 }
 
 async function handleFormSubmitEvent(e, form) {
@@ -66,7 +53,7 @@ async function handleFormSubmitEvent(e, form) {
     validEmail(errors, form);
     validPassword(errors, form);
     if (errors.length >0) setErrors(errors, form)
-    else await handleFormSubmit(errors, form);
+    else await handlePostFormSubmit(errors, form);
 }
 
 

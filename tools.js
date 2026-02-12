@@ -15,3 +15,15 @@ export function setErrors(errorList, form){
         input.parentElement.insertAdjacentElement("afterend", err);
     };
 }
+
+export async function handlePostFormSubmit(errorList, form) {
+    const data = await fetch(form.action, { method: "POST", body: new FormData(form) }).then(res => res.json());
+    if(data.valid) {window.location.href = "./index.php"}
+    else {
+        for(const [mess, ids] of data.errors){
+            const inputs = (ids || []).map(id => form.querySelector(`#${id}`)).filter(Boolean);
+            errorList.push([mess, inputs]);
+        }
+        setErrors(errorList, form);
+    };
+}
