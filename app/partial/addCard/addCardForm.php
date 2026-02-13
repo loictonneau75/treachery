@@ -37,7 +37,7 @@ require_once dirname(__DIR__,3) . "/db/tools.php";
     </div>
     <div>
         <label for="card-img">Image de la carte :</label>
-        <input type="file" id="card-img" name="card-img">
+        <input type="file" id="card-img">
     </div>
     <div>
         <button type="submit">Enregister</button>
