@@ -11,7 +11,7 @@ require_once dirname(__DIR__,3) . "/db/tools.php";
 <form action="<?=BASE_URL?>app/partial/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
     <?php
-    renderCustomSelect($pdo, "Rôle", "role", "getTypesData");
+    renderCustomSelect($pdo, "Rôle", "role", "getRolesData");
     renderCustomSelect($pdo, "Rareté", "rarity", "getRarityData")
     ?>
     <div>

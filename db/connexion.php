@@ -1,6 +1,6 @@
 <?php
 $host = "localhost";
-$dbname = "treach";
+$dbname = "treachery";
 $username = "root";
 $password = "";
 

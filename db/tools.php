@@ -74,8 +74,8 @@ class DbTools{
         $stmt->execute([$userId]);
     }
 
-    public static function getTypesData(PDO $pdo){
-        $stmt = $pdo->query("SELECT * From `types`");
+    public static function getRolesData(PDO $pdo){
+        $stmt = $pdo->query("SELECT * From `roles`");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

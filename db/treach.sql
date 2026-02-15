@@ -1,10 +1,11 @@
-DROP DATABASE IF EXISTS treach;
-CREATE DATABASE IF NOT EXISTS treach;
+DROP DATABASE IF EXISTS treachery;
+CREATE DATABASE IF NOT EXISTS treachery;
+USE treachery;
 
 DROP TABLE IF EXISTS `cards`, `remember_tokens`;
-DROP TABLE IF EXISTS`rarities`, `types`, `users`;
+DROP TABLE IF EXISTS`rarities`, `roles`, `users`;
 
-CREATE TABLE `types` (
+CREATE TABLE `roles` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(50) NOT NULL,
     `url` varchar(255) NOT NULL,
@@ -22,15 +23,15 @@ CREATE TABLE `cards` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `path` varchar(255) NOT NULL,
     `rarity_id` int(11) NULL,
-    `type_id` int(11) NOT NULL,
+    `role_id` int(11) NOT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_cards_rarity_id` (`rarity_id`),
-    KEY `idx_cards_type_id` (`type_id`),
+    KEY `idx_cards_type_id` (`role_id`),
     CONSTRAINT `fk_cards_rarity`
         FOREIGN KEY (`rarity_id`) REFERENCES `rarities` (`id`)
         ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT `fk_cards_type`
-        FOREIGN KEY (`type_id`) REFERENCES `types` (`id`)
+    CONSTRAINT `fk_cards_role`
+        FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -52,7 +53,7 @@ CREATE TABLE remember_tokens (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-INSERT INTO `types` (`id`, `name`, `url`) VALUES
+INSERT INTO `roles` (`id`, `name`, `url`) VALUES
 (1, 'Seigneur', 'icon-ldr.png'),
 (2, 'Gardien', 'icon-gdn.png'),
 (3, 'Assassin', 'icon-ass.png'),
