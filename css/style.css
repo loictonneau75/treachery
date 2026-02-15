@@ -245,4 +245,27 @@ select::picker(select) {
   -webkit-backdrop-filter: blur(16px);
 }
 
+
+.custom-select > div:first-child > div{
+    cursor: pointer;
+}
+
+.custom-select > div:first-child > div span{
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.custom-select > div:first-child > div.active span{
+    transform: rotate(-180deg);
+}
+
+.custom-select > div:nth-child(2){
+    display: none;
+}
+
+.custom-select > div:nth-child(2) > div{
+    cursor: pointer;
+}
+
+
 /*# sourceMappingURL=style.css.map */
