@@ -4,15 +4,26 @@
 @use "auth";
 @use "navbar";
 @use "variables" as var;
-select {
-    img{height: 20px;}
-    &, &::picker(select){
-        appearance: base-select;
+
+.custom-select{
+
+    > div:first-child > div{
+        cursor: pointer;
+        span{
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
     }
 
-    &::picker(select){
-        background-color: var.$shade-medium;
-        border-radius: 8;
-        @include var.blur()
+    > div:first-child > div.active span{
+        transform: rotate(-180deg);
+    }
+
+    > div:nth-child(2){
+        display: none;
+
+        > div{
+            cursor: pointer;
+        }
     }
 }

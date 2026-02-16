@@ -11,7 +11,7 @@ class AppTools{
 ?>
         <div class="custom-select">
             <div>
-                <label><?= htmlspecialchars($label) ?> :</label>
+                <label><?=htmlspecialchars($label)?> :</label>
                 <div>
                     <div></div>
                     <span>▼</span>
@@ -24,14 +24,14 @@ class AppTools{
                 </div>
 
                 <?php foreach (DbTools::$dbFunction($pdo) as $data): ?>
-                    <div data-value="<?= (int)$data["id"] ?>">
+                    <div data-value="<?=(int)$data["id"]?>">
                         <div class="caret"></div>
-                        <img src="assets/img/<?= $inputName ?>/<?= htmlspecialchars($data['url'], ENT_QUOTES) ?>" alt="<?= htmlspecialchars($data['name'], ENT_QUOTES) ?>">
+                        <img src="assets/img/<?=$inputName?>/<?=htmlspecialchars($data['url'], ENT_QUOTES)?>" alt="<?=htmlspecialchars($data['name'], ENT_QUOTES)?>">
                         <span><?= htmlspecialchars($data["name"]) ?></span>
                     </div>
                 <?php endforeach; ?>
             </div>
-            <input type="hidden" name="<?= $inputName ?>">
+            <input type="hidden" id="card-<?=$inputName?>" name="<?=$inputName?>">
         </div>
 <?php
     }

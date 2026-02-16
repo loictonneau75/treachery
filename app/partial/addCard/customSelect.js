@@ -21,13 +21,15 @@ function changeSelectedOption(optionsList, option, currentValue, input, optionsW
     changeCaretPosition(optionsList, option)
     currentValue.innerText = option.querySelector("span").innerText
     input.value = option.dataset.value
+    input.dispatchEvent(new Event("input", { bubbles: true }));
     optionsWrapper.style.display = "none"
 }
 
-function setupOptionSelection(optionsWrapper, currentValue, input, optionsList){
+function setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, optionsList){
     optionsList.forEach(option => {
         option.addEventListener("click", () => {
             changeSelectedOption(optionsList, option, currentValue, input, optionsWrapper)
+            fakeSelect.classList.remove("active")
         })
     })
 }
@@ -75,18 +77,23 @@ function setupKeyboardNavigation(fakeSelect, optionsWrapper, currentValue, input
 
 function getSelectElements(customSelect) {
     const fakeSelect = customSelect.querySelector(":scope > div:first-child > div")
-    const currentValue = fakeSelect.querySelector("div")
+    const currentValue = fakeSelect.querySelector(":scope div")
     const optionsWrapper = customSelect.querySelector(":scope > div:nth-child(2)")
     const optionsList = optionsWrapper.querySelectorAll(":scope > div")
-    const input = customSelect.querySelector("input")
+    const input = customSelect.querySelector(":scope input")
     return { fakeSelect, currentValue, optionsWrapper, optionsList, input }
+}
+
+export function resetSelect(optionsWrapper, optionsList, currentValue, input){
+    initializeDefaultSelection(optionsWrapper, currentValue, input);
+    changeCaretPosition(optionsList, optionsWrapper.firstElementChild)
 }
 
 const customSelects = Array.from(document.querySelectorAll(".custom-select")).map(customSelect => {
     const elements = getSelectElements(customSelect)
     initializeDefaultSelection(elements.optionsWrapper, elements.currentValue, elements.input)
     setupToggleBehavior(elements.fakeSelect, elements.optionsWrapper)
-    setupOptionSelection(elements.optionsWrapper, elements.currentValue, elements.input, elements.optionsList)
+    setupOptionSelection(elements.fakeSelect, elements.optionsWrapper, elements.currentValue, elements.input, elements.optionsList)
     setupKeyboardNavigation(elements.fakeSelect, elements.optionsWrapper, elements.currentValue, elements.input, elements.optionsList)
     return { customSelect, ...elements }
 })

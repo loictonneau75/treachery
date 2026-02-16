@@ -84,7 +84,15 @@ class DbTools{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function getRarityName(PDO $pdo){
+        $stmt = $pdo->query("SELECT `name` From `rarities`");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public static function getRoleName(PDO $pdo){
+        $stmt = $pdo->query("SELECT `name` From `roles`");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 

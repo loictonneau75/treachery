@@ -231,20 +231,6 @@ nav #dropdown a:hover {
   text-decoration-color: rgb(200, 200, 200);
 }
 
-select img {
-  height: 20px;
-}
-select, select::picker(select) {
-  appearance: base-select;
-}
-select::picker(select) {
-  background-color: rgba(200, 200, 200, 0.15);
-  border-radius: 8;
-  background: rgba(200, 200, 200, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
 
 .custom-select > div:first-child > div{
     cursor: pointer;
