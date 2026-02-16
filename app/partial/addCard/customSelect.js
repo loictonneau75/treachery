@@ -76,9 +76,9 @@ function setupKeyboardNavigation(fakeSelect, optionsWrapper, currentValue, input
 
 
 function getSelectElements(customSelect) {
-    const fakeSelect = customSelect.querySelector(":scope > div:first-child > div")
+    const fakeSelect = customSelect.querySelector(":scope > div")
     const currentValue = fakeSelect.querySelector(":scope div")
-    const optionsWrapper = customSelect.querySelector(":scope > div:nth-child(2)")
+    const optionsWrapper = customSelect.querySelector(":scope > div:nth-of-type(2)")
     const optionsList = optionsWrapper.querySelectorAll(":scope > div")
     const input = customSelect.querySelector(":scope input")
     return { fakeSelect, currentValue, optionsWrapper, optionsList, input }

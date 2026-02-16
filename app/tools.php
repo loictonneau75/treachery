@@ -10,12 +10,10 @@ class AppTools{
     public static function renderCustomSelect(PDO $pdo, string $label, string $inputName, string $dbFunction): void{
 ?>
         <div class="custom-select">
+            <label><?=htmlspecialchars($label)?> :</label>
             <div>
-                <label><?=htmlspecialchars($label)?> :</label>
-                <div>
-                    <div></div>
-                    <span>▼</span>
-                </div>
+                <div></div>
+                <span>▼</span>
             </div>
             <div>
                 <div data-value="">

@@ -7,7 +7,7 @@
 
 .custom-select{
 
-    > div:first-child > div{
+    > div{
         cursor: pointer;
         span{
             transition: transform 0.2s ease;
@@ -15,11 +15,11 @@
         }
     }
 
-    > div:first-child > div.active span{
+    > div.active span{
         transform: rotate(-180deg);
     }
 
-    > div:nth-child(2){
+    > div:nth-of-type(2){
         display: none;
 
         > div{
