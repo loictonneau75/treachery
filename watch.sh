@@ -1,7 +1,8 @@
-chmod +x ./scss/dart-sass/dart-sass-macos/sass
-chmod +x ./scss/dart-sass/dart-sass-macos/src/dart
+chmod +x ./scss/dart-sass/MacOS/dart-sass/sass
+chmod +x ./scss/dart-sass/MacOS/dart-sass/src/dart
 
-./scss/dart-sass-macos/sass scss/style.scss css/style.css --watch
+
+./scss/dart-sass/MacOS/dart-sass/sass ./scss/style.scss ./css/style.css --watch
 
 #utilisation
 #!  chmode +x /Users/loictonneau/Desktop/tealounge/watch.sh
