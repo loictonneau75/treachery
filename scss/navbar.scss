@@ -3,7 +3,7 @@
 nav{
     @include var.blur();
     position: fixed;
-    z-index:2;
+    z-index:1000;
     padding:16px;
     left:0;
     right:0;

@@ -177,7 +177,7 @@ nav {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   position: fixed;
-  z-index: 2;
+  z-index: 1000;
   padding: 16px;
   left: 0;
   right: 0;
@@ -231,21 +231,64 @@ nav #dropdown a:hover {
   text-decoration-color: rgb(200, 200, 200);
 }
 
+.custom-select {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  width: fit-content;
+}
 .custom-select > div {
+  anchor-name: --fake-select;
+  display: flex;
+  gap: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
   cursor: pointer;
 }
-.custom-select > div span {
-  transition: transform 0.2s ease;
-  display: inline-block;
+.custom-select > div:first-of-type {
+  padding: 0 8px;
+}
+.custom-select > div:first-of-type span {
+  transition: all 0.2s ease;
+}
+.custom-select > div:hover {
+  border-color: #999;
+}
+.custom-select > div * {
+  color: #000;
 }
 .custom-select > div.active span {
   transform: rotate(-180deg);
 }
 .custom-select > div:nth-of-type(2) {
   display: none;
+  position: absolute;
+  position-anchor: --fake-select;
+  top: anchor(bottom);
+  left: anchor(left);
+  z-index: 2;
 }
 .custom-select > div:nth-of-type(2) > div {
+  display: flex;
+  width: 100%;
+  padding: 4px 8px;
+  gap: 8px;
   cursor: pointer;
+}
+.custom-select > div:nth-of-type(2) > div:hover {
+  background-color: #00f;
+}
+.custom-select > div:nth-of-type(2) > div:hover * {
+  color: #fff;
+}
+.custom-select > div:nth-of-type(2) > div .caret {
+  width: 10px;
+  text-align: center;
+}
+.custom-select > div:nth-of-type(2) > div img {
+  height: 20px;
+  width: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */
