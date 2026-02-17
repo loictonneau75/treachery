@@ -1,8 +1,10 @@
 
 @use "base";
 @use "background";
-@use "auth";
-@use "navbar";
+@use "../auth/auth";
+@use "../app/navbar/navbar";
+
+
 @use "variables" as var;
 
 .custom-select{
