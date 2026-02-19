@@ -1,7 +1,7 @@
 <?php
 use App\Session\SessionTools;
 
-require_once dirname(__DIR__, 3) . "/session/tools.php";
+require_once dirname(__DIR__, 2) . "/session/tools.php";
 ?>
 
 <form action="<?=BASE_URL?>app/partial/joinRoom/joinRoom.php" id="joinRoomForm">
