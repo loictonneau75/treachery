@@ -9,10 +9,14 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 
 <form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
-    <?php
-    CustomSelect::renderCustomSelect($pdo, "Rôle", "role", "getRolesData");
-    CustomSelect::renderCustomSelect($pdo, "Rareté", "rarity", "getRarityData")
-    ?>
+    <div>
+        <label class="label">Rôle :</label>
+        <?=CustomSelect::renderCustomSelect($pdo, "role", "getRolesData")?>
+    </div>
+    <div>
+        <label class="label">Rareté :</label>
+        <?=CustomSelect::renderCustomSelect($pdo, "rarity", "getRarityData")?>
+    </div>
     <div>
         <label for="card-img">Image de la carte :</label>
         <input type="file" id="card-img" name="img">

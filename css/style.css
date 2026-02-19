@@ -233,62 +233,58 @@ nav #dropdown a:hover {
 
 .custom-select {
   position: relative;
-  display: flex;
-  gap: 16px;
-  width: fit-content;
+  display: inline-block;
+}
+.custom-select * {
+  color: #000;
 }
 .custom-select > div {
-  anchor-name: --fake-select;
   display: flex;
   gap: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
   cursor: pointer;
-}
-.custom-select > div:first-of-type {
   padding: 0 8px;
-}
-.custom-select > div:first-of-type span {
-  transition: all 0.2s ease;
 }
 .custom-select > div:hover {
   border-color: #999;
 }
-.custom-select > div * {
-  color: #000;
+.custom-select > div span:nth-of-type(2) {
+  transition: all 0.2s ease;
 }
-.custom-select > div.active span {
-  transform: rotate(-180deg);
+.custom-select > div.active span:nth-of-type(2) {
+  transform: rotate(180deg);
 }
-.custom-select > div:nth-of-type(2) {
+.custom-select ul {
   display: none;
   position: absolute;
-  position-anchor: --fake-select;
-  top: anchor(bottom);
-  left: anchor(left);
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
   z-index: 2;
 }
-.custom-select > div:nth-of-type(2) > div {
+.custom-select li {
   display: flex;
   width: 100%;
   padding: 4px 8px;
   gap: 8px;
   cursor: pointer;
 }
-.custom-select > div:nth-of-type(2) > div:hover {
+.custom-select li:hover {
   background-color: #00f;
 }
-.custom-select > div:nth-of-type(2) > div:hover * {
+.custom-select li:hover * {
   color: #fff;
 }
-.custom-select > div:nth-of-type(2) > div .caret {
+.custom-select li .caret {
   width: 10px;
   text-align: center;
 }
-.custom-select > div:nth-of-type(2) > div img {
-  height: 20px;
+.custom-select li img {
   width: 20px;
+  height: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

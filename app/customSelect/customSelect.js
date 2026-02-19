@@ -35,9 +35,9 @@ function setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, o
 
 function getSelectElements(customSelect) {
     const fakeSelect = customSelect.querySelector(":scope > div")
-    const currentValue = fakeSelect.querySelector("div")
-    const optionsWrapper = customSelect.querySelector(":scope > div:nth-of-type(2)")
-    const optionsList = optionsWrapper.querySelectorAll(":scope > div")
+    const currentValue = fakeSelect.querySelector("span:nth-of-type(1)")
+    const optionsWrapper = customSelect.querySelector("ul")
+    const optionsList = optionsWrapper.querySelectorAll("li")
     const input = customSelect.querySelector("input")
     return { fakeSelect, currentValue, optionsWrapper, optionsList, input }
 }

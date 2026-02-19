@@ -9,28 +9,27 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 class CustomSelect{
 
-    public static function renderCustomSelect(PDO $pdo, string $label, string $inputName, string $dbFunction): void{
+    public static function renderCustomSelect(PDO $pdo, string $inputName, string $dbFunction): void{
 ?>
         <div class="custom-select">
-            <label><?=htmlspecialchars($label)?> :</label>
-            <div>
-                <div></div>
+            <div class="fake-select">
+                <span></span>
                 <span>▼</span>
             </div>
-            <div>
-                <div data-value="">
+            <ul>
+                <li data-value="">
                     <div class="caret"></div>
                     <span>-- Choisir --</span>
-                </div>
+                </li>
 
                 <?php foreach (DbTools::$dbFunction($pdo) as $data): ?>
-                    <div data-value="<?=(int)$data["id"]?>">
+                    <li data-value="<?=(int)$data["id"]?>">
                         <div class="caret"></div>
                         <img src="assets/img/<?=$inputName?>/<?=htmlspecialchars($data['url'], ENT_QUOTES)?>" alt="<?=htmlspecialchars($data['name'], ENT_QUOTES)?>">
                         <span><?= htmlspecialchars($data["name"]) ?></span>
-                    </div>
+                    </li>
                 <?php endforeach; ?>
-            </div>
+                </ul>
             <input type="hidden" id="card-<?=$inputName?>" name="<?=$inputName?>">
         </div>
 <?php
