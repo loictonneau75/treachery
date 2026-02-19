@@ -5,6 +5,8 @@ namespace App\CustomSelect;
 use PDO;
 use App\DB\DbTools;
 
+require_once dirname(__DIR__,2) . "/db/tools.php";
+
 class CustomSelect{
 
     public static function renderCustomSelect(PDO $pdo, string $label, string $inputName, string $dbFunction): void{

@@ -4,7 +4,6 @@ use App\CustomSelect\CustomSelect;
 
 require_once dirname(__DIR__,2) . "/session/tools.php";
 require_once dirname(__DIR__,2) . "/db/connexion.php";
-require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 ?>
 

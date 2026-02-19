@@ -1,71 +1,9 @@
-
 @use "base";
 @use "background";
 @use "../auth/auth";
 @use "../app/navbar/navbar";
-
+@use "../app/customSelect/customSelect";
 
 @use "variables" as var;
 
-.custom-select{
-    position: relative;
-    display: flex;
-    gap: 16px;
-    width: fit-content;
 
-    > div{
-        anchor-name: --fake-select;
-        display: flex;
-        gap:8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #fff;
-        cursor: pointer;
-
-        &:first-of-type{
-            padding: 0 8px;
-
-            span{transition: all .2s ease}
-        }
-
-        &:hover{border-color: #999}
-
-        *{color: #000}
-
-
-        &.active span{transform: rotate(-180deg)}
-
-        &:nth-of-type(2){
-            display: none;
-            position: absolute;
-            position-anchor: --fake-select;
-            top: anchor(bottom);
-            left: anchor(left);
-            z-index: 2;
-
-            > div{
-                display:flex;
-                width: 100%;
-                padding: 4px 8px;
-                gap: 8px;
-                cursor: pointer;
-
-                &:hover{
-                    background-color: #00f;
-
-                    *{color: #fff;}
-                }
-
-                .caret{
-                    width: 10px;
-                    text-align: center;
-                }
-
-                img{
-                    height: 20px;
-                    width: 20px
-                }
-            }
-        }
-    }
-}
