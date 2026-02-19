@@ -4,11 +4,11 @@ import {resetSelect} from "../customSelect/customSelect.js"
 async function handleFormSubmitEvent(e, form){
     e.preventDefault();
     let errors = [];
-    const role = form.querySelector("#card-role");
-    const rarity = form.querySelector("#card-rarity");
-    const img = form.querySelector("#card-img");
-    if (role.value.trim() === "") errors.push(["Veuillez choisir un role", [role]]);
-    if (rarity.value.trim() === "") errors.push(["Veuillez choisir une rareté", [rarity]]);
+    const role = form.querySelector("#cardRole");
+    const rarity = form.querySelector("#cardRarity");
+    const img = form.querySelector("#cardImg");
+    if (role.value.trim() === "") errors.push(["Veuillez choisir un role", ["#cardRoleInput"]]);
+    if (rarity.value.trim() === "") errors.push(["Veuillez choisir une rareté", ["#cardRarityInput"]]);
     if (img.files.length === 0) errors.push(["Veuillez choisir une image", [img]]);
     if (errors.length >0) setErrors(errors, form);
     else await handlePostFormSubmit(errors, form);

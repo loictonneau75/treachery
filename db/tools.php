@@ -53,13 +53,10 @@ class DbTools{
         $stmt = $pdo->prepare("SELECT id, password FROM users WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$user) {
+        if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }
-        if (password_verify($password, $user['password'])) {
-            return (int)$user['id'];
-        }
-        return false;
+        return (int)$user['id'];
     }
 
     public static function getPseudoById(PDO $pdo, int $id): string{
@@ -75,23 +72,30 @@ class DbTools{
     }
 
     public static function getRolesData(PDO $pdo){
-        $stmt = $pdo->query("SELECT * From `roles`");
+        $stmt = $pdo->query("SELECT * From roles");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getRarityData(PDO $pdo){
-        $stmt = $pdo->query("SELECT * From `rarities`");
+        $stmt = $pdo->query("SELECT * From rarities");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getRarityName(PDO $pdo){
-        $stmt = $pdo->query("SELECT `name` From `rarities`");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function cardRoleExist(PDO $pdo, int $id): bool{
+        $stmt = $pdo -> prepare("SELECT 1 FROM roles WHERE id = ? LIMIT 1");
+        $stmt -> execute([$id]);
+        return (bool)$stmt->fetch();
     }
 
-    public static function getRoleName(PDO $pdo){
-        $stmt = $pdo->query("SELECT `name` From `roles`");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function cardRarityExist(PDO $pdo, int $id): bool{
+        $stmt = $pdo -> prepare("SELECT 1 FROM rarities WHERE id = ? LIMIT 1");
+        $stmt -> execute([$id]);
+        return (bool)$stmt->fetch();
+    }
+
+    public static function createCard(PDO $pdo, string $imgPath, int $rarityId, int $roleId, int $userId): void{
+        $stmt = $pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, user_id) VALUES (?, ?, ?, ?)");
+        $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
 }
 

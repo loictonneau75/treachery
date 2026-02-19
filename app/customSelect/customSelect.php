@@ -11,7 +11,7 @@ class CustomSelect{
 
     public static function renderCustomSelect(PDO $pdo, string $inputName, string $dbFunction): void{
 ?>
-        <div class="custom-select">
+        <div class="custom-select" id = "card<?=ucfirst($inputName)?>Input">
             <div class="fake-select">
                 <span></span>
                 <span>▼</span>
@@ -30,7 +30,7 @@ class CustomSelect{
                     </li>
                 <?php endforeach; ?>
                 </ul>
-            <input type="hidden" id="card-<?=$inputName?>" name="<?=$inputName?>">
+            <input type="hidden" id="card<?=ucfirst($inputName)?>" name="card<?=ucfirst($inputName)?>">
         </div>
 <?php
     }

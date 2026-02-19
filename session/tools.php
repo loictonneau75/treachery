@@ -6,7 +6,7 @@ use PDO;
 
 class SessionTools {
 
-    public static function sessionStart(){
+    public static function sessionStart(): void {
         session_name('TREACHERY_SESSION');
         session_start();
     }
@@ -47,15 +47,16 @@ class SessionTools {
         setcookie('remember_me', '', time() - 3600, '/', $_SERVER['HTTP_HOST']);
     }
 
-    public static function getData($key){
+
+    public static function getData($key): mixed{
         return $_SESSION[$key] ?? null;
     }
 
-    public static function addData($key, $value){
+    public static function addData($key, $value): void{
         $_SESSION[$key] = $value;
     }
 
-    public static function deleteSession(){
+    public static function deleteSession(): void{
         $_SESSION = [];
         session_destroy();
     }

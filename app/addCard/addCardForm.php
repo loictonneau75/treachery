@@ -7,19 +7,19 @@ require_once dirname(__DIR__,2) . "/db/connexion.php";
 require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 ?>
 
-<form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm">
+<form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm" enctype="multipart/form-data">
     <h2>Ajouter un carte</h2>
     <div>
-        <label class="label">Rôle :</label>
+        <label>Rôle :</label>
         <?=CustomSelect::renderCustomSelect($pdo, "role", "getRolesData")?>
     </div>
     <div>
-        <label class="label">Rareté :</label>
+        <label>Rareté :</label>
         <?=CustomSelect::renderCustomSelect($pdo, "rarity", "getRarityData")?>
     </div>
     <div>
-        <label for="card-img">Image de la carte :</label>
-        <input type="file" id="card-img" name="img">
+        <label for="cardImg">Image de la carte :</label>
+        <input type="file" id="cardImg" name="cardImg">
     </div>
     <div>
         <button type="submit">Enregister</button>

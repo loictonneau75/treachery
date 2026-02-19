@@ -19,22 +19,6 @@ CREATE TABLE `rarities` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `cards` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `path` varchar(255) NOT NULL,
-    `rarity_id` int(11) NULL,
-    `role_id` int(11) NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `idx_cards_rarity_id` (`rarity_id`),
-    KEY `idx_cards_type_id` (`role_id`),
-    CONSTRAINT `fk_cards_rarity`
-        FOREIGN KEY (`rarity_id`) REFERENCES `rarities` (`id`)
-        ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT `fk_cards_role`
-        FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
-        ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `pseudo` varchar(50) NOT NULL UNIQUE,
@@ -42,6 +26,27 @@ CREATE TABLE `users` (
     `password` varchar(255) NOT NULL,
     `is_admin` tinyint(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `cards` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `path` varchar(255) NOT NULL,
+    `rarity_id` int(11) NULL,
+    `role_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_cards_rarity_id` (`rarity_id`),
+    KEY `idx_cards_type_id` (`role_id`),
+    KEY `idx_user_id` (`user_id`),
+    CONSTRAINT `fk_cards_rarity`
+        FOREIGN KEY (`rarity_id`) REFERENCES `rarities` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `fk_cards_role`
+        FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT `fk_user`
+        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE remember_tokens (
