@@ -20,7 +20,7 @@ require_once dirname(__DIR__) . "/session/tools.php";
     else{
         echo "<script src='app/navbar/navbar.js' defer></script>";
         echo "<script type='module' src='app/customSelect/customSelect.js'></script>";
-        echo "<script type='module' src='app/partial/addCard/addCardForm.js'></script>";
+        echo "<script type='module' src='app/addCard/addCardForm.js'></script>";
         echo "<script type='module' src='app/createRoom/createRoomForm.js'></script>";
         echo "<script type='module' src='app/joinRoom/joinRoomForm.js'></script>";
     }

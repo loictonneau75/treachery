@@ -2,13 +2,13 @@
 use App\Session\SessionTools;
 use App\CustomSelect\CustomSelect;
 
-require_once dirname(__DIR__,3) . "/session/tools.php";
-require_once dirname(__DIR__,3) . "/db/connexion.php";
-require_once dirname(__DIR__,3) . "/db/tools.php";
-require_once dirname(__DIR__,2) . "/customSelect.php";
+require_once dirname(__DIR__,2) . "/session/tools.php";
+require_once dirname(__DIR__,2) . "/db/connexion.php";
+require_once dirname(__DIR__,2) . "/db/tools.php";
+require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 ?>
 
-<form action="<?=BASE_URL?>app/partial/addCard/addCard.php" id="addCardForm">
+<form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
     <?php
     CustomSelect::renderCustomSelect($pdo, "Rôle", "role", "getRolesData");

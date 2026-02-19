@@ -1,5 +1,5 @@
-import { clearAllErrors, setErrors, handlePostFormSubmit } from "../../../tools.js";
-import {resetSelect} from "../../customSelect/customSelect.js"
+import { clearAllErrors, setErrors, handlePostFormSubmit } from "../../tools.js";
+import {resetSelect} from "../customSelect/customSelect.js"
 
 async function handleFormSubmitEvent(e, form){
     e.preventDefault();
