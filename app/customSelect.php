@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tools;
+namespace App\CustomSelect;
 
 use PDO;
 use App\DB\DbTools;
 
-class AppTools{
+class CustomSelect{
 
     public static function renderCustomSelect(PDO $pdo, string $label, string $inputName, string $dbFunction): void{
 ?>

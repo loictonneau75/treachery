@@ -1,18 +1,18 @@
 <?php
 use App\Session\SessionTools;
-use App\Tools\AppTools;
+use App\CustomSelect\CustomSelect;
 
 require_once dirname(__DIR__,3) . "/session/tools.php";
 require_once dirname(__DIR__,3) . "/db/connexion.php";
 require_once dirname(__DIR__,3) . "/db/tools.php";
-require_once dirname(__DIR__,2) . "/tools.php";
+require_once dirname(__DIR__,2) . "/customSelect.php";
 ?>
 
 <form action="<?=BASE_URL?>app/partial/addCard/addCard.php" id="addCardForm">
     <h2>Ajouter un carte</h2>
     <?php
-    AppTools::renderCustomSelect($pdo, "Rôle", "role", "getRolesData");
-    AppTools::renderCustomSelect($pdo, "Rareté", "rarity", "getRarityData")
+    CustomSelect::renderCustomSelect($pdo, "Rôle", "role", "getRolesData");
+    CustomSelect::renderCustomSelect($pdo, "Rareté", "rarity", "getRarityData")
     ?>
     <div>
         <label for="card-img">Image de la carte :</label>
