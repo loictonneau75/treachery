@@ -71,16 +71,10 @@ class DbTools{
         $stmt->execute([$userId]);
     }
 
-    public static function getRolesData(PDO $pdo){
-        $stmt = $pdo->query("SELECT * From roles");
+    public static function getAllFrom(PDO $pdo, string $table): array{
+        $stmt = $pdo->query("SELECT * FROM $table");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public static function getRarityData(PDO $pdo){
-        $stmt = $pdo->query("SELECT * From rarities");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
 
     public static function recordExists(PDO $pdo, string $table, int $id): bool{
         $stmt = $pdo->prepare("SELECT 1 FROM $table WHERE id = ? LIMIT 1");

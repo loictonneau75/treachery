@@ -3,13 +3,10 @@
 namespace App\CustomSelect;
 
 use PDO;
-use App\DB\DbTools;
-
-require_once dirname(__DIR__,2) . "/db/tools.php";
 
 class CustomSelect{
 
-    public static function renderCustomSelect(PDO $pdo, string $inputName, string $dbFunction): void{
+    public static function renderCustomSelect(PDO $pdo, string $inputName, array $dataList): void{
 ?>
         <div class="custom-select" id = "card<?=ucfirst($inputName)?>Input">
             <div class="fake-select">
@@ -22,7 +19,7 @@ class CustomSelect{
                     <span>-- Choisir --</span>
                 </li>
 
-                <?php foreach (DbTools::$dbFunction($pdo) as $data): ?>
+                <?php foreach ($dataList as $data): ?>
                     <li data-value="<?=(int)$data["id"]?>">
                         <div class="caret"></div>
                         <img src="assets/img/<?=$inputName?>/<?=htmlspecialchars($data['url'], ENT_QUOTES)?>" alt="<?=htmlspecialchars($data['name'], ENT_QUOTES)?>">

@@ -1,9 +1,11 @@
 <?php
 use App\Session\SessionTools;
 use App\CustomSelect\CustomSelect;
+use App\DB\DbTools;
 
 require_once dirname(__DIR__,2) . "/session/tools.php";
 require_once dirname(__DIR__,2) . "/db/connexion.php";
+require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 ?>
 
@@ -11,11 +13,11 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
     <h2>Ajouter un carte</h2>
     <div>
         <label>Rôle :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "role", "getRolesData")?>
+        <?=CustomSelect::renderCustomSelect($pdo, "role", DbTools::getAllFrom($pdo, 'roles'))?>
     </div>
     <div>
         <label>Rareté :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "rarity", "getRarityData")?>
+        <?=CustomSelect::renderCustomSelect($pdo, "rarity", DbTools::getAllFrom($pdo, 'rarities'))?>
     </div>
     <div>
         <label for="cardImg">Image de la carte :</label>
