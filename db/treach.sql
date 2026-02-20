@@ -33,11 +33,11 @@ CREATE TABLE `cards` (
     `path` varchar(255) NOT NULL,
     `rarity_id` int(11) NULL,
     `role_id` int(11) NOT NULL,
-    `user_id` int(11) NOT NULL,
+    `added_by` int(11) NOT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_cards_rarity_id` (`rarity_id`),
     KEY `idx_cards_type_id` (`role_id`),
-    KEY `idx_user_id` (`user_id`),
+    KEY `idx_added_by` (`added_by`),
     CONSTRAINT `fk_cards_rarity`
         FOREIGN KEY (`rarity_id`) REFERENCES `rarities` (`id`)
         ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -45,17 +45,17 @@ CREATE TABLE `cards` (
         FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
         ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `fk_user`
-        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+        FOREIGN KEY (`added_by`) REFERENCES `users` (`id`)
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE remember_tokens (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `user_id` INT NOT NULL,
+    `added_by` INT NOT NULL,
     `token_hash` CHAR(64) NOT NULL,
     `expires_at` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (added_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 INSERT INTO `roles` (`id`, `name`, `url`) VALUES
