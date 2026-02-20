@@ -19,7 +19,7 @@ if (SessionTools::getData("id") === null) {
 }
 DbTools::deleteUserById($pdo, (int) SessionTools::getData("id"));
 if (isset($_COOKIE['remember_me'])) {
-    DbTools::deleteRememberTokenForHash($pdo, hash('sha256', $_COOKIE['remember_me']));
+    DbTools::deleteRememberTokens($pdo, ['token_hash' => hash('sha256', $_COOKIE['remember_me'])]);
     SessionTools::clearRememberCookie();
 }
 SessionTools::deleteSession();

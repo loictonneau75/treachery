@@ -24,7 +24,7 @@ class SessionTools {
         $tokenHash = hash('sha256', $_COOKIE['remember_me']);
         $row = DbTools::findRememberToken($pdo, $tokenHash);
         if (!$row || strtotime($row['expires_at']) < time()) {
-            DbTools::deleteRememberTokenForHash($pdo, $tokenHash);
+            DbTools::deleteRememberTokens($pdo, ['token_hash' => $tokenHash]);
             self::clearRememberCookie();
             return;
         }

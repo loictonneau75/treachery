@@ -18,8 +18,8 @@ class DbTools{
     }
 
     public static function createRememberToken(PDO $pdo, int $userId): array {
-        self::deleteExpiredRememberTokens($pdo);
-        self::deleteRememberTokensForUser($pdo, $userId);
+        self::deleteRememberTokens($pdo, ['expires_at' => 'expired']);
+        self::deleteRememberTokens($pdo, ['user_id' => $userId]);
         $token     = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token);
         $expiresAt = new DateTime('+30 days');
@@ -34,20 +34,24 @@ class DbTools{
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public static function deleteRememberTokenForHash(PDO $pdo, string $tokenHash): void {
-        $stmt = $pdo->prepare('DELETE FROM remember_tokens WHERE token_hash = ?');
-        $stmt->execute([$tokenHash]);
+    public static function deleteRememberTokens(PDO $pdo, array $conditions = []): void{
+        $sql = "DELETE FROM remember_tokens";
+        $params = [];
+        $clauses = [];
+        $allowedColumns = ['token_hash', 'user_id', 'expires_at'];
+        foreach ($conditions as $column => $value) {
+            if (!in_array($column, $allowedColumns)) {throw new InvalidArgumentException("Colonne non autorisée");}
+            if ($column === 'expires_at' && $value === 'expired') {$clauses[] = "expires_at < NOW()";} 
+            else {
+                $clauses[] = "$column = ?";
+                $params[] = $value;
+            }
+        }
+        if (!empty($clauses)) {$sql .= " WHERE " . implode(" AND ", $clauses);}
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
     }
 
-    public static function deleteRememberTokensForUser(PDO $pdo, int $userId): void {
-        $stmt = $pdo->prepare('DELETE FROM remember_tokens WHERE user_id = ?');
-        $stmt->execute([$userId]);
-    }
-
-    public static function deleteExpiredRememberTokens(PDO $pdo): void {
-        $stmt = $pdo->prepare('DELETE FROM remember_tokens WHERE expires_at < NOW()');
-        $stmt->execute();
-    }
 
     public static function verifyUser(PDO $pdo, string $email, string $password): false|int {
         $stmt = $pdo->prepare("SELECT id, password FROM users WHERE email = ?");

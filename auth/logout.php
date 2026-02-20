@@ -10,7 +10,7 @@ require_once dirname(__DIR__) . "/config.php";
 SessionTools::sessionStart();
 
 if (isset($_COOKIE['remember_me'])) {
-    DbTools::deleteRememberTokenForHash($pdo, hash('sha256', $_COOKIE['remember_me']));
+    DbTools::deleteRememberTokens($pdo, ['token_hash' => hash('sha256', $_COOKIE['remember_me'])]);
     SessionTools::clearRememberCookie();
 }
 
