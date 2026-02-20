@@ -9,8 +9,8 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__,2) . "/security/tools.php";
 require_once dirname(__DIR__,2) . "/session/tools.php";
 
-function validateCardRole(PDO $pdo, int $role): void{
-    if($role === "" || DbTools::cardRoleExist($pdo, $role) === false){
+function validateCardRole(PDO $pdo, int $id): void{
+    if($id === "" || DbTools::recordExists($pdo,"roles", $id) === false){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rôle invalide", ["cardRoleInput"]]]
@@ -19,8 +19,8 @@ function validateCardRole(PDO $pdo, int $role): void{
     }
 }
 
-function validateCardRarity(PDO $pdo, int $rarity): void{
-    if($rarity === "" || DbTools::cardRarityExist($pdo, $rarity) === false){
+function validateCardRarity(PDO $pdo, int $id): void{
+    if($id === "" || DbTools::recordExists($pdo, "rarities", $id) === false){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rareté invalide", ["cardRarityInput"]]]

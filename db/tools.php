@@ -81,17 +81,13 @@ class DbTools{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function cardRoleExist(PDO $pdo, int $id): bool{
-        $stmt = $pdo -> prepare("SELECT 1 FROM roles WHERE id = ? LIMIT 1");
-        $stmt -> execute([$id]);
-        return (bool)$stmt->fetch();
-    }
 
-    public static function cardRarityExist(PDO $pdo, int $id): bool{
-        $stmt = $pdo -> prepare("SELECT 1 FROM rarities WHERE id = ? LIMIT 1");
-        $stmt -> execute([$id]);
-        return (bool)$stmt->fetch();
-    }
+    public static function recordExists(PDO $pdo, string $table, int $id): bool{
+    $stmt = $pdo->prepare("SELECT 1 FROM $table WHERE id = ? LIMIT 1");
+    $stmt->execute([$id]);
+    return (bool) $stmt->fetchColumn();
+}
+
 
     public static function createCard(PDO $pdo, string $imgPath, int $rarityId, int $roleId, int $userId): void{
         $stmt = $pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, user_id) VALUES (?, ?, ?, ?)");
