@@ -83,10 +83,10 @@ class DbTools{
 
 
     public static function recordExists(PDO $pdo, string $table, int $id): bool{
-    $stmt = $pdo->prepare("SELECT 1 FROM $table WHERE id = ? LIMIT 1");
-    $stmt->execute([$id]);
-    return (bool) $stmt->fetchColumn();
-}
+        $stmt = $pdo->prepare("SELECT 1 FROM $table WHERE id = ? LIMIT 1");
+        $stmt->execute([$id]);
+        return (bool) $stmt->fetchColumn();
+    }
 
 
     public static function createCard(PDO $pdo, string $imgPath, int $rarityId, int $roleId, int $userId): void{
