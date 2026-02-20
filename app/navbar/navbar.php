@@ -11,7 +11,7 @@ require_once dirname(__DIR__,2) . "/session/tools.php";
     <div>
         <img src="assets/img/logo_horizontal.png" alt="img/logo_horizontal.png">
         <div>
-            <h1><?=htmlspecialchars(DbTools::getPseudoById($pdo, SessionTools::getData("id")), ENT_QUOTES, 'UTF-8');?></h1>
+            <h1><?=htmlspecialchars(DbTools::getFieldById($pdo, "users", "pseudo", SessionTools::getData("id")), ENT_QUOTES, 'UTF-8');?></h1>
             <button class="burger"><span></span><span></span><span></span></button>
         </div>
     </div>

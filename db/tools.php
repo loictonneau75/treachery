@@ -63,16 +63,16 @@ class DbTools{
         return (int)$user['id'];
     }
 
-    public static function getPseudoById(PDO $pdo, int $id): string{
-        $stmt =$pdo->prepare("SELECT pseudo FROM users WHERE id = ?");
-        $stmt->execute([$id]);
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['pseudo'];
-    }
-
     public static function deleteUserById(PDO $pdo, int $userId): void{
         $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
         $stmt->execute([$userId]);
+    }
+
+    public static function getFieldById(PDO $pdo, string $table, string $field, int $id): ?string {
+        $stmt = $pdo->prepare("SELECT $field FROM $table WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row[$field];
     }
 
     public static function getAllFrom(PDO $pdo, string $table): array{
@@ -94,6 +94,23 @@ class DbTools{
         $stmt = $pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, user_id) VALUES (?, ?, ?, ?)");
         $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
+
+    public static function getCardsBy(PDO $pdo, array $conditions = []): array{
+        $sql = "SELECT * FROM cards";
+        $params = [];
+        if (!empty($conditions)) {
+            $clauses = [];
+            foreach ($conditions as $column => $value) {
+                $clauses[] = "$column = ?";
+                $params[] = $value;
+            }
+            $sql .= " WHERE " . implode(" AND ", $clauses);
+        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 
 
