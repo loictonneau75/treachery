@@ -81,3 +81,8 @@ $warning: rgb(251 44 54);
         }
     }
 }
+
+@mixin small-img{
+    width: 20px;
+    height: 20px;
+}

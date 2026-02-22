@@ -7,6 +7,20 @@
 @use "variables" as var;
 
 
-img.test{
-    height: 100px;
+#showCard{
+    .group-img{
+        @include var.small-img;
+    }
+    .card-img{
+        height: 250px;
+        border-radius: 10px;
+    }
+    > img{
+        position: fixed;
+        pointer-events: none;
+        display: none;
+        z-index: 1000;
+        height: 400px;
+        border-radius: 15px;
+    }
 }

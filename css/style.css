@@ -287,8 +287,21 @@ nav #dropdown a:hover {
   height: 20px;
 }
 
-img.test {
-  height: 100px;
+#showCard .group-img {
+  width: 20px;
+  height: 20px;
+}
+#showCard .card-img {
+  height: 250px;
+  border-radius: 10px;
+}
+#showCard > img {
+  position: fixed;
+  pointer-events: none;
+  display: none;
+  z-index: 1000;
+  height: 400px;
+  border-radius: 15px;
 }
 
 /*# sourceMappingURL=style.css.map */

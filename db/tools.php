@@ -95,7 +95,7 @@ class DbTools{
         $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
 
-    public static function getCardsBy(PDO $pdo, array $conditions = []): array{
+    public static function getCardsBy(PDO $pdo, array $conditions = [], string $orderBy = ""): array{
         $sql = "SELECT * FROM cards";
         $params = [];
         if (!empty($conditions)) {
@@ -106,6 +106,8 @@ class DbTools{
             }
             $sql .= " WHERE " . implode(" AND ", $clauses);
         }
+        if ($orderBy !== "") $sql .= " ORDER BY $orderBy ASC";
+        error_log($sql);
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

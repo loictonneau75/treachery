@@ -1,3 +1,5 @@
+@use "../../scss/variables" as var;
+
 .custom-select{
     position: relative;
     display: inline-block;
@@ -48,8 +50,7 @@
         }
 
         img{
-            width: 20px;
-            height: 20px;
+            @include var.small-img;
         }
     }
 }
