@@ -1,14 +1,14 @@
 const container = document.querySelector("#showCard");
 const preview = document.querySelector("#showCard > img");
 
-container.addEventListener("mouseover", (e) => {
+container.addEventListener("pointerover", (e) => {
     if (e.target.classList.contains("card-img")) {
         preview.src = e.target.src;
         preview.style.display = "block";
     }
 });
 
-container.addEventListener("mousemove", (e) => {
+container.addEventListener("pointermove", (e) => {
     if (!e.target.classList.contains("card-img")) return;
 
     const offset = 20;
@@ -35,7 +35,7 @@ container.addEventListener("mousemove", (e) => {
 });
 
 
-container.addEventListener("mouseout", (e) => {
+container.addEventListener("pointerout", (e) => {
     if (e.target.classList.contains("card-img")) {
         preview.style.display = "none";
     }
