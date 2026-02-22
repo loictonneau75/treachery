@@ -23,6 +23,7 @@ require_once dirname(__DIR__) . "/session/tools.php";
         echo "<script type='module' src='app/addCard/addCardForm.js'></script>";
         echo "<script type='module' src='app/createRoom/createRoomForm.js'></script>";
         echo "<script type='module' src='app/joinRoom/joinRoomForm.js'></script>";
+        echo "<script type='module' src='app/showCard/showCard.js'></script>";
     }
 
     ?>
