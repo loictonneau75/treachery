@@ -8,17 +8,31 @@ require_once dirname(__DIR__,2) . "/security/tools.php";
 require_once dirname(__DIR__,2) . "/db/connexion.php";
 require_once dirname(__DIR__,2) . "/db/tools.php";
 
-header('Content-Type: application/json');
-SessionTools::sessionStart();
-$data = json_decode(file_get_contents("php://input"), true);
-CsrfTools::validateToken($data["csrf_token"]);
-$table = $data['groupBy'] === "role" ? "roles" : "rarities";
-$order= $data['groupBy'] === "rarity" ? "role_id" : "rarity_id";
-$groups = DbTools::getAllFrom($pdo, $table);
-$groupedData = [];
-foreach ($groups as $group) {
-    $cards = DbTools::getCardsBy($pdo, [$data['groupBy'] . "_id" => $group['id']], $order);
-    $groupedData[$group['id']] = ["info"  => $group, "cards" => $cards];
+function getJsonInput(): array {
+    $input = file_get_contents("php://input");
+    return json_decode($input, true);
 }
 
+function resolveGroupingConfig(string $groupBy): array{
+    $table = $groupBy === "role" ? "roles" : "rarities";
+    $order = $groupBy === "rarity" ? "role_id" : "rarity_id";
+    return [$table, $order];
+}
+
+function buildGroupedData(PDO $pdo, array $groups, string $groupBy, string $order): array{
+    $groupedData = [];
+    foreach ($groups as $group) {
+        $cards = DbTools::getCardsBy($pdo,[$groupBy . "_id" => $group['id']],$order);
+        $groupedData[$group['id']] = ["info"  => $group,"cards" => $cards];
+    }
+    return $groupedData;
+}
+
+
+header('Content-Type: application/json');
+SessionTools::sessionStart();
+$data = getJsonInput();
+CsrfTools::validateToken($data["csrf_token"]);
+[$table, $order] = resolveGroupingConfig($data['groupBy']);
+$groupedData = buildGroupedData($pdo, DbTools::getAllFrom($pdo, $table), $data['groupBy'], $order);
 echo json_encode(["groups" => $groupedData]);
