@@ -1,12 +1,3 @@
-initPreview();
-
-function initPreview() {
-    if (window.innerWidth < 992) return;
-    const container = document.querySelector("#showCard");
-    const preview = document.querySelector("#showCard > img");
-    addPreviewEvents(container, preview);
-}
-
 function addPreviewEvents(container, preview) {
     container.addEventListener("mouseover", (e) => handleMouseOver(e, preview));
     container.addEventListener("mousemove", (e) => handleMouseMove(e, preview));
@@ -42,3 +33,8 @@ function positionPreview(e, preview) {
     preview.style.left = left + "px";
     preview.style.top = top + "px";
 }
+
+if (window.innerWidth < 992) return;
+const container = document.querySelector("#showCard");
+const preview = document.querySelector("#showCard > img");
+addPreviewEvents(container, preview);
