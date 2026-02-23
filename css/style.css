@@ -14,16 +14,24 @@ button {
 }
 
 body {
+  margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: url("../assets/img/background.jpg");
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  z-index: -2;
 }
-body::before {
-  background: rgba(0, 0, 0, 0.75);
+
+body::after {
   content: "";
-  inset: 0;
   position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
   z-index: -1;
 }
 

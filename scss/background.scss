@@ -1,14 +1,21 @@
-body{
+body {
+    margin: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
     background-image: url('../assets/img/background.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    z-index: -2;
+}
 
-    &::before{
-        background: rgba(0,0,0,0.75);
-        content: "";
-        inset: 0;
-        position: fixed;
-        z-index: -1;
-    }
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: -1;
 }
