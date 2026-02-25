@@ -67,7 +67,9 @@ function createCardImage(path) {
 
 const showCard = document.querySelector("#showCard");
 const radios = showCard.querySelectorAll("input[name='groupBy']");
-const container = showCard.querySelector(":scope > div:last-of-type");
+const container = document.createElement("div");
+container.classList.add("groups-container");
+showCard.appendChild(container);
 const csrfToken = showCard.querySelector("input[name='csrfToken']");
 const checkedRadio = document.querySelector('input[name="groupBy"]:checked');
 if (checkedRadio) sendValue(checkedRadio, csrfToken, container);

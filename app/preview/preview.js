@@ -34,7 +34,10 @@ function positionPreview(e, preview) {
     preview.style.top = top + "px";
 }
 
-if (window.innerWidth < 992) return;
-const container = document.querySelector("#showCard");
-const preview = document.querySelector("#showCard > img");
-addPreviewEvents(container, preview);
+if (window.innerWidth >= 992) {
+    const container = document.querySelector("#showCard");
+    const preview = document.createElement("img");
+    container.appendChild(preview);
+    addPreviewEvents(container, preview);
+}
+

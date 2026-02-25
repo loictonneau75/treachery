@@ -14,9 +14,6 @@ require_once dirname(__DIR__,2) . "/session/tools.php";
     </div>
 
     <input type="hidden" name="csrfToken" value="<?=SessionTools::getData("csrf_token")?>">
-
-    <div></div>
-    <img>
 </div>
 
 
