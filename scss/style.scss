@@ -8,12 +8,16 @@
 
 
 #showCard{
-    .group-img{
-        @include var.small-img;
-    }
-    .card-img{
-        height: 250px;
-        border-radius: 10px;
+    > div:last-of-type{
+        > div {
+            > img{
+                @include var.small-img;
+            }
+            > div img {
+                height: 250px;
+                border-radius: 10px;
+            }
+        } 
     }
     > img{
         position: fixed;
@@ -23,4 +27,13 @@
         height: 400px;
         border-radius: 15px;
     }
+}
+
+#preview{
+    position: fixed;
+    pointer-events: none;
+    display: none;
+    z-index: 1000;
+    height: 400px;
+    border-radius: 15px;
 }

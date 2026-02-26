@@ -5,18 +5,18 @@ function addPreviewEvents(container, preview) {
 }
 
 function handleMouseOver(e, preview) {
-    if (!e.target.classList.contains("card-img")) return;
+    if (!e.target.closest(".preview-target")) return;
     preview.src = e.target.src;
     preview.style.display = "block";
 }
 
 function handleMouseMove(e, preview) {
-    if (!e.target.classList.contains("card-img")) return;
+    if (!e.target.closest(".preview-target")) return;
     positionPreview(e, preview);
 }
 
 function handleMouseOut(e, preview) {
-    if (!e.target.classList.contains("card-img")) return;
+    if (!e.target.closest(".preview-target")) return;
     preview.style.display = "none";
 }
 
@@ -37,6 +37,7 @@ function positionPreview(e, preview) {
 if (window.innerWidth >= 992) {
     const container = document.querySelector("#showCard");
     const preview = document.createElement("img");
+    preview.id = "preview";
     container.appendChild(preview);
     addPreviewEvents(container, preview);
 }

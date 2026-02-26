@@ -45,7 +45,6 @@ function createTitle(text) {
 function createGroupImage(url, groupType) {
     const img = document.createElement("img");
     img.src = `assets/img/${groupType}/${url}`;
-    img.classList.add("group-img");
     return img;
 }
 
@@ -61,14 +60,13 @@ function createCardsWrapper(cards) {
 function createCardImage(path) {
     const img = document.createElement("img");
     img.src = `assets/img/cards/${path}`;
-    img.classList.add("card-img");
+    img.classList.add("preview-target");
     return img;
 }
 
 const showCard = document.querySelector("#showCard");
 const radios = showCard.querySelectorAll("input[name='groupBy']");
 const container = document.createElement("div");
-container.classList.add("groups-container");
 showCard.appendChild(container);
 const csrfToken = showCard.querySelector("input[name='csrfToken']");
 const checkedRadio = document.querySelector('input[name="groupBy"]:checked');
