@@ -91,7 +91,7 @@ class DbTools{
     }
 
     public static function createCard(PDO $pdo, string $imgPath, int $rarityId, int $roleId, int $userId): void{
-        $stmt = $pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, user_id) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, added_by) VALUES (?, ?, ?, ?)");
         $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
 
