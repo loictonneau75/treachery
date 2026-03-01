@@ -35,4 +35,5 @@ $data = getJsonInput();
 CsrfTools::validateToken($data["csrf_token"]);
 [$table, $order] = resolveGroupingConfig($data['groupBy']);
 $groupedData = buildGroupedData($pdo, DbTools::getAllFrom($pdo, $table), $data['groupBy'], $order);
-echo json_encode(["groups" => $groupedData]);
+$id = SessionTools::getData("id");
+echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => (bool) DbTools::getFieldById($pdo, "users", "is_admin", $id)]);
