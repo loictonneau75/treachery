@@ -107,12 +107,10 @@ class DbTools{
             $sql .= " WHERE " . implode(" AND ", $clauses);
         }
         if ($orderBy !== "") $sql .= " ORDER BY $orderBy ASC";
-        error_log($sql);
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }
 
 
