@@ -1,3 +1,5 @@
+import{deleteCardBtn} from "../deleteCard/deleteCard.js"
+
 function createCardImage(card) {
     const img = document.createElement("img");
     img.src = `assets/img/cards/${card.path}`;
@@ -21,52 +23,47 @@ async function postData(radio, csrf) {
     const response = await fetch(radio.dataset.action, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({groupBy: radio.value,csrf_token: csrf.value})
+        body: JSON.stringify({groupBy: radio.value, csrf_token: csrf.value})
     });
     if (!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
     return await response.json();
 }
 
-function createCardsWrapper(cards, data) {
+function createCardsWrapper(cards, data, csrf) {
     const wrapper = document.createElement("div");
     cards.forEach(card => {
         const cardContainer = document.createElement("div");
         const cardImg = createCardImage(card);
         cardContainer.appendChild(cardImg);
-        if (card.added_by == data.id || data.admin) {
-            const deleteBtn = document.createElement("button");
-            deleteBtn.innerText = "X"
-            //btn.addEventListener("click", () => deleteCard(card.id));
-            cardContainer.appendChild(deleteBtn);
-        }
+        deleteCardBtn(card, data, cardContainer, csrf)
         wrapper.appendChild(cardContainer);
     });
     return wrapper;
 }
 
-function createGroupElement(group, groupType, data) {
+function createGroupElement(group, groupType, data, csrf) {
     const div = document.createElement("div");
     const title = createTitle(group.info.name);
     const groupImg = createGroupImage(group.info.url, groupType);
-    const cardsWrapper = createCardsWrapper(group.cards, data);
+    const cardsWrapper = createCardsWrapper(group.cards, data, csrf);
     div.appendChild(groupImg);
     div.appendChild(title);
     div.appendChild(cardsWrapper);
     return div;
 }
 
-function renderGroups(data, groupType, container) {
+function renderGroups(data, groupType, container, csrf) {
     Object.values(data.groups).forEach(group => {
-        const groupElement = createGroupElement(group, groupType, data);
+        const groupElement = createGroupElement(group, groupType, data, csrf);
         container.appendChild(groupElement);
     });
 }
 
-async function sendValue(radio, csrf, container) {
+export async function fetchAndRenderGroups(radio, csrf, container) {
     try {
         const data = await postData(radio, csrf);
         container.innerHTML = "";
-        renderGroups(data, radio.value, container);
+        renderGroups(data, radio.value, container, csrf);
     } catch (error) {
         console.error("Erreur :", error);
     }
@@ -78,9 +75,9 @@ const container = document.createElement("div");
 const csrfToken = showCard.querySelector("input[name='csrfToken']");
 const checkedRadio = document.querySelector('input[name="groupBy"]:checked');
 showCard.appendChild(container);
-if (checkedRadio) sendValue(checkedRadio, csrfToken, container);
+if (checkedRadio) fetchAndRenderGroups(checkedRadio, csrfToken, container);
 radios.forEach(radio => {
     radio.addEventListener("change", async () => {
-        await sendValue(radio, csrfToken, container);
+        await fetchAndRenderGroups(radio, csrfToken, container);
     });
 });
