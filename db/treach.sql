@@ -51,7 +51,7 @@ CREATE TABLE `cards` (
 
 CREATE TABLE remember_tokens (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `added_by` INT NOT NULL,
+    `user-id` INT NOT NULL,
     `token_hash` CHAR(64) NOT NULL,
     `expires_at` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
