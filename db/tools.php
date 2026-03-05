@@ -75,6 +75,14 @@ class DbTools{
         return $row[$field];
     }
 
+    public static function getById(PDO $pdo, string $table, int $id): ?array {
+        $stmt = $pdo->prepare("SELECT * FROM $table WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ;
+    }
+
+
     public static function getAllFrom(PDO $pdo, string $table): array{
         $allowedTables = ['roles', 'rarities'];
         if (!in_array($table, $allowedTables)) {throw new InvalidArgumentException("Table non autorisée");}

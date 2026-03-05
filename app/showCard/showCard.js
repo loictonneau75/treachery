@@ -35,7 +35,7 @@ function createCardsWrapper(cards, data, csrf) {
         const cardContainer = document.createElement("div");
         const cardImg = createCardImage(card);
         cardContainer.appendChild(cardImg);
-        deleteCardBtn(card, data, cardContainer, csrf)
+        deleteCardBtn(card, data, cardContainer, csrf, () => fetchAndRenderGroups(document.querySelector('input[name="groupBy"]:checked'), csrfToken, container));
         wrapper.appendChild(cardContainer);
     });
     return wrapper;
