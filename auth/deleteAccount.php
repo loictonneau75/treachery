@@ -17,7 +17,7 @@ if (SessionTools::getData("id") === null) {
     http_response_code(403);
     exit("Utilisateur non authentifié");
 }
-DbTools::deleteUserById($pdo, (int) SessionTools::getData("id"));
+DbTools::deleteById($pdo, "users", (int) SessionTools::getData("id"));
 if (isset($_COOKIE['remember_me'])) {
     DbTools::deleteRememberTokens($pdo, ['token_hash' => hash('sha256', $_COOKIE['remember_me'])]);
     SessionTools::clearRememberCookie();

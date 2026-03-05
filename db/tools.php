@@ -63,9 +63,9 @@ class DbTools{
         return (int)$user['id'];
     }
 
-    public static function deleteUserById(PDO $pdo, int $userId): void{
-        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
+    public static function deleteById(PDO $pdo, string $table, int $id): void {
+        $stmt = $pdo->prepare("DELETE FROM $table WHERE id = ?");
+        $stmt->execute([$id]);
     }
 
     public static function getFieldById(PDO $pdo, string $table, string $field, int $id): ?string {
