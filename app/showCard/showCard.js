@@ -4,6 +4,9 @@ function createCardImage(card) {
     const img = document.createElement("img");
     img.src = `assets/img/cards/${card.path}`;
     img.classList.add("preview-target");
+    img.addEventListener("click", () => {
+        img.classList.toggle("active");
+    });
     return img;
 }
 
