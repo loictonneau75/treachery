@@ -20,7 +20,7 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
         <?=CustomSelect::renderCustomSelect($pdo, "rarity", DbTools::getAllFrom($pdo, 'rarities'))?>
     </div>
     <div>
-        <label for="cardImg">Image de la carte :</label>
+        <label for="cardImg">Image :</label>
         <input type="file" id="cardImg" name="cardImg">
     </div>
     <div>
