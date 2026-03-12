@@ -6,8 +6,8 @@ require_once dirname(__DIR__, 2) . "/session/tools.php";
 
 <form action="<?=BASE_URL?>app/partial/joinRoom/joinRoom.php" id="joinRoomForm">
     <h2>Rejoindre un salon</h2>
-    <div>
-        <input type="text" id="code">
+    <div class="input-wrapper">
+        <input type="text" id="code" placeholder="">
         <label for="code">Code</label>
     </div>
     <input type="hidden" name="csrf_token" value="<?=SessionTools::getData("csrf_token")?>">
