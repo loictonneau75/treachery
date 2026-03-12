@@ -21,7 +21,7 @@
                 div{
                     position: relative;
                     img {
-                        height: 250px;
+                        height: clamp(220px, 20vw, 340px);
                         border-radius: 10px;
                         filter: grayscale(50%) brightness(60%); 
                         cursor: pointer;
