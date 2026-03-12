@@ -11,4 +11,33 @@ button{
     cursor:pointer
 }
 
+.input-wrapper{
+    @include var.label-out-when-focus();
+    input{
+        background-color: var.$shade-light;
+        border: 2px solid var.$shade-light;
+        border-radius: 10px;
+        outline: none;
+        width: 100%;
+        padding: 16px;
+        @include var.autofill-fix();
+
+        &.error{
+            border-color: var.$warning;
+        }
+
+        &:focus{
+            border-color: var.$shade-strong;
+        }
+    }
+}
+
+p.error{
+    color: var.$warning;
+    font-size: 0.9rem;
+    margin-top: -15px;
+    margin-left: 10px;
+    white-space: pre;
+}
+
 [hidden] {display: none !important;}

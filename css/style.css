@@ -9,6 +9,52 @@ button {
   cursor: pointer;
 }
 
+.input-wrapper {
+  position: relative;
+}
+.input-wrapper label {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 0.95rem;
+}
+.input-wrapper input:is(:focus, :not(:placeholder-shown)) + label {
+  transform: translateY(-68%) scale(0.85);
+}
+.input-wrapper input {
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  border-radius: 10px;
+  outline: none;
+  width: 100%;
+  padding: 16px;
+}
+.input-wrapper input:-webkit-autofill, .input-wrapper input:-webkit-autofill:hover, .input-wrapper input:-webkit-autofill:focus, .input-wrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.input-wrapper input.error {
+  border-color: rgb(251, 44, 54);
+}
+.input-wrapper input:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+
+p.error {
+  color: rgb(251, 44, 54);
+  font-size: 0.9rem;
+  margin-top: -15px;
+  margin-left: 10px;
+  white-space: pre;
+}
+
 [hidden] {
   display: none !important;
 }
@@ -91,50 +137,6 @@ body::after {
   width: 100%;
   padding: 32px;
   gap: 16px;
-}
-.auth form .input-wrapper {
-  position: relative;
-}
-.auth form .input-wrapper label {
-  position: absolute;
-  left: 16px;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  transition: all 0.2s ease;
-  pointer-events: none;
-  font-size: 0.95rem;
-}
-.auth form .input-wrapper input:is(:focus, :not(:placeholder-shown)) + label {
-  transform: translateY(-68%) scale(0.85);
-}
-.auth form .input-wrapper input {
-  background-color: rgba(200, 200, 200, 0.08);
-  border: 2px solid rgba(200, 200, 200, 0.08);
-  border-radius: 10px;
-  outline: none;
-  width: 100%;
-  padding: 16px;
-}
-.auth form .input-wrapper input:-webkit-autofill, .auth form .input-wrapper input:-webkit-autofill:hover, .auth form .input-wrapper input:-webkit-autofill:focus, .auth form .input-wrapper input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
-  -webkit-text-fill-color: rgb(200, 200, 200);
-  caret-color: rgb(200, 200, 200);
-  transition: background-color 5000s ease-in-out 0s;
-}
-.auth form .input-wrapper input.error {
-  border-color: rgb(251, 44, 54);
-}
-.auth form .input-wrapper input:focus {
-  border-color: rgba(200, 200, 200, 0.5);
-}
-.auth form p.error {
-  color: rgb(251, 44, 54);
-  font-size: 0.9rem;
-  margin-top: -15px;
-  margin-left: 10px;
-  white-space: pre;
 }
 .auth form input[type=checkbox] {
   display: none;
@@ -326,7 +328,7 @@ nav #dropdown a:hover {
   position: relative;
 }
 #showCard > div:last-of-type > div > div div img {
-  height: 250px;
+  height: clamp(220px, 20vw, 340px);
   border-radius: 10px;
   filter: grayscale(50%) brightness(60%);
   cursor: pointer;
