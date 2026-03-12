@@ -1,13 +1,15 @@
 <?php
 use App\Session\SessionTools;
+use App\CustomInputNumber\CustomInputNumber;
 
 require_once dirname(__DIR__, 2) . "/session/tools.php";
+require_once dirname(__DIR__) . "/customInputNumber/customInputNumber.php";
 ?>
 
 <form action="<?=BASE_URL?>app/partial/createRoom/createRoom.php" id="createRoomForm">
     <h2>Creer un salon</h2>
     <div>
-        <input type="number" id="nbPlayer" placeholder="" min=5>
+        <?=CustomInputNumber::renderCustomInputNumber()?>
         <label for="nbPlayer">nombre de joueur</label>
     </div>
     <input type="hidden" name="csrf_token" value="<?=SessionTools::getData("csrf_token")?>">

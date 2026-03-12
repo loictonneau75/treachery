@@ -295,6 +295,24 @@ nav #dropdown a:hover {
   height: 20px;
 }
 
+.custom-input-number {
+  display: flex;
+  flex-direction: column;
+  width: 140px;
+}
+.custom-input-number button {
+  background-color: white;
+}
+.custom-input-number input[type=number] {
+  border: none;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.custom-input-number input[type=number]::-webkit-outer-spin-button, .custom-input-number input[type=number]::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
 #showCard > div:last-of-type > div > img {
   width: 20px;
   height: 20px;

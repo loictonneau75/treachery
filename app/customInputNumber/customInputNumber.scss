@@ -1,0 +1,17 @@
+.custom-input-number{
+    display:flex;
+    flex-direction: column;
+    width : 140px;
+    button{
+        background-color: white;
+    }
+    input[type="number"] {
+        border: none;
+        appearance: textfield;
+        -moz-appearance: textfield;
+        &::-webkit-outer-spin-button, &::-webkit-inner-spin-button{
+            appearance: none;
+            -webkit-appearance: none;
+        }
+    }
+}
