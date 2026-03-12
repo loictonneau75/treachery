@@ -11,26 +11,22 @@ button{
     cursor:pointer
 }
 
-.input-wrapper{
-    @include var.label-out-when-focus();
-    input{
-        background-color: var.$shade-light;
-        border: 2px solid var.$shade-light;
-        border-radius: 10px;
-        outline: none;
-        width: 100%;
-        padding: 16px;
-        @include var.autofill-fix();
-
-        &.error{
-            border-color: var.$warning;
-        }
-
-        &:focus{
-            border-color: var.$shade-strong;
-        }
+.input-wrapper,
+.input-number-wrapper {
+    input {
+        @include var.base-input-style;
     }
 }
+
+.input-wrapper {
+    @include var.label-out-when-focus;
+}
+
+.input-number-wrapper {
+    @include var.label-out-when-focus("number");
+}
+
+
 
 p.error{
     color: var.$warning;

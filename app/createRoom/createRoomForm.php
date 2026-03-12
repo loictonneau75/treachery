@@ -8,7 +8,7 @@ require_once dirname(__DIR__) . "/customInputNumber/customInputNumber.php";
 
 <form action="<?=BASE_URL?>app/partial/createRoom/createRoom.php" id="createRoomForm">
     <h2>Creer un salon</h2>
-    <div>
+    <div class="input-number-wrapper">
         <?=CustomInputNumber::renderCustomInputNumber()?>
         <label for="nbPlayer">nombre de joueur</label>
     </div>

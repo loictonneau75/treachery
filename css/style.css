@@ -9,6 +9,34 @@ button {
   cursor: pointer;
 }
 
+.input-wrapper input,
+.input-number-wrapper input {
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  border-radius: 10px;
+  outline: none;
+  width: 100%;
+  padding: 16px;
+}
+.input-wrapper input:-webkit-autofill, .input-wrapper input:-webkit-autofill:hover, .input-wrapper input:-webkit-autofill:focus, .input-wrapper input:-webkit-autofill:active,
+.input-number-wrapper input:-webkit-autofill,
+.input-number-wrapper input:-webkit-autofill:hover,
+.input-number-wrapper input:-webkit-autofill:focus,
+.input-number-wrapper input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.input-wrapper input.error,
+.input-number-wrapper input.error {
+  border-color: rgb(251, 44, 54);
+}
+.input-wrapper input:focus,
+.input-number-wrapper input:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+
 .input-wrapper {
   position: relative;
 }
@@ -26,25 +54,23 @@ button {
 .input-wrapper input:is(:focus, :not(:placeholder-shown)) + label {
   transform: translateY(-68%) scale(0.85);
 }
-.input-wrapper input {
-  background-color: rgba(200, 200, 200, 0.08);
-  border: 2px solid rgba(200, 200, 200, 0.08);
-  border-radius: 10px;
-  outline: none;
-  width: 100%;
-  padding: 16px;
+
+.input-number-wrapper {
+  position: relative;
 }
-.input-wrapper input:-webkit-autofill, .input-wrapper input:-webkit-autofill:hover, .input-wrapper input:-webkit-autofill:focus, .input-wrapper input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
-  -webkit-text-fill-color: rgb(200, 200, 200);
-  caret-color: rgb(200, 200, 200);
-  transition: background-color 5000s ease-in-out 0s;
+.input-number-wrapper label {
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-size: 0.95rem;
 }
-.input-wrapper input.error {
-  border-color: rgb(251, 44, 54);
-}
-.input-wrapper input:focus {
-  border-color: rgba(200, 200, 200, 0.5);
+.input-number-wrapper:has(input:focus) label, .input-number-wrapper:has(input:valid) label {
+  transform: translateY(-68%) scale(0.85);
 }
 
 p.error {
