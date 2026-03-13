@@ -26,9 +26,9 @@ function positionPreview(e, preview) {
     const previewHeight = preview.offsetHeight;
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    let left = e.pageX + offset;
+    let left = e.clientX + offset;
     let top = e.clientY + offset;
-    if (left + previewWidth > viewportWidth) left = e.pageX - previewWidth - offset;
+    if (left + previewWidth > viewportWidth) left = e.clientX - previewWidth - offset;
     if (top + previewHeight > viewportHeight) top = e.clientY - previewHeight - offset;
     preview.style.left = left + "px";
     preview.style.top = top + "px";
@@ -38,7 +38,7 @@ if (window.innerWidth >= 992) {
     const container = document.querySelector("#showCard");
     const preview = document.createElement("img");
     preview.id = "preview";
-    container.appendChild(preview);
+    document.body.appendChild(preview);
     addPreviewEvents(container, preview);
 }
 
