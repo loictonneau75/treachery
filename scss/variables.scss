@@ -31,7 +31,6 @@ $warning: rgb(251 44 54);
 @mixin base-input-style {
     background-color: $shade-light;
     border: 2px solid $shade-light;
-    border-radius: 10px;
     outline: none;
     width: 100%;
     padding: 16px;

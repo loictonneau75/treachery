@@ -3,15 +3,16 @@
 .custom-select{
     position: relative;
     display: inline-block;
-
-    *{color:#000}
+    width:100%;
+    background-color: var.$shade-light;
 
     > div{
         display: flex;
+        justify-content: space-between;
         gap:8px;
-        border: 1px solid #ccc;
+        border: 2px solid var.$shade-light;
         border-radius: 4px;
-        background-color: #fff;
+        background-color: var.$shade-light;
         cursor: pointer;
         padding: 0 8px;
 
@@ -25,15 +26,17 @@
     ul{
         display: none;
         position: absolute;
+        width: 100%;
         padding: 0;
-        border: 1px solid #ccc;
+        border: 2px solid var.$shade-light;
         border-radius: 4px;
-        background-color: #fff;
+        @include var.blur();
         z-index: 2;
     }
 
     li{
         display: flex;
+        white-space: nowrap;
         width: 100%;
         padding: 4px 8px;
         gap: 8px;

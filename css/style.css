@@ -13,7 +13,6 @@ button {
 .input-number-wrapper input {
   background-color: rgba(200, 200, 200, 0.08);
   border: 2px solid rgba(200, 200, 200, 0.08);
-  border-radius: 10px;
   outline: none;
   width: 100%;
   padding: 16px;
@@ -54,6 +53,9 @@ button {
 .input-wrapper input:is(:focus, :not(:placeholder-shown)) + label {
   transform: translateY(-68%) scale(0.85);
 }
+.input-wrapper input {
+  border-radius: 10px;
+}
 
 .input-number-wrapper {
   position: relative;
@@ -71,6 +73,12 @@ button {
 }
 .input-number-wrapper:has(input:focus) label, .input-number-wrapper:has(input:valid) label {
   transform: translateY(-68%) scale(0.85);
+}
+.input-number-wrapper button:first-of-type {
+  border-radius: 16px 16px 0px 0px;
+}
+.input-number-wrapper button:last-of-type {
+  border-radius: 0px 0px 16px 16px;
 }
 
 p.error {
@@ -270,16 +278,16 @@ nav #dropdown a:hover {
 .custom-select {
   position: relative;
   display: inline-block;
-}
-.custom-select * {
-  color: #000;
+  width: 100%;
+  background-color: rgba(200, 200, 200, 0.08);
 }
 .custom-select > div {
   display: flex;
+  justify-content: space-between;
   gap: 8px;
-  border: 1px solid #ccc;
+  border: 2px solid rgba(200, 200, 200, 0.08);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: rgba(200, 200, 200, 0.08);
   cursor: pointer;
   padding: 0 8px;
 }
@@ -295,14 +303,18 @@ nav #dropdown a:hover {
 .custom-select ul {
   display: none;
   position: absolute;
+  width: 100%;
   padding: 0;
-  border: 1px solid #ccc;
+  border: 2px solid rgba(200, 200, 200, 0.08);
   border-radius: 4px;
-  background-color: #fff;
+  background: rgba(200, 200, 200, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 2;
 }
 .custom-select li {
   display: flex;
+  white-space: nowrap;
   width: 100%;
   padding: 4px 8px;
   gap: 8px;
@@ -326,7 +338,6 @@ nav #dropdown a:hover {
 .custom-input-number {
   display: flex;
   flex-direction: column;
-  width: 140px;
 }
 .custom-input-number button {
   background-color: white;
@@ -339,6 +350,43 @@ nav #dropdown a:hover {
 .custom-input-number input[type=number]::-webkit-outer-spin-button, .custom-input-number input[type=number]::-webkit-inner-spin-button {
   appearance: none;
   -webkit-appearance: none;
+}
+
+.app > *:not(nav):not(#preview) {
+  margin: 16px;
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(200, 200, 200, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.app > *:not(nav):not(#preview):not(#showCard) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.app > *:not(nav):not(#preview):not(#showCard) > div {
+  width: 100%;
+}
+.app > *:not(nav):not(#preview):not(#showCard) button {
+  outline: none;
+  width: 100%;
+  height: 24px;
+  background-color: rgba(200, 200, 200, 0.15);
+}
+.app > *:not(nav):not(#preview):not(#showCard) button:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app > *:not(nav):not(#preview):not(#showCard) button:focus {
+  background-color: rgba(200, 200, 200, 0.7);
+}
+.app .select-wrapper {
+  display: flex;
+  gap: 16px;
+}
+.app .select-wrapper label {
+  white-space: nowrap;
 }
 
 #showCard > div:last-of-type > div > img {

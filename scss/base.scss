@@ -20,13 +20,20 @@ button{
 
 .input-wrapper {
     @include var.label-out-when-focus;
+    input{
+        border-radius: 10px;
+    }
 }
 
 .input-number-wrapper {
     @include var.label-out-when-focus("number");
+    button:first-of-type{
+        border-radius: 16px 16px 0px 0px;
+    }
+    button:last-of-type{
+        border-radius: 0px 0px 16px 16px;
+    }
 }
-
-
 
 p.error{
     color: var.$warning;

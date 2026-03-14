@@ -11,11 +11,11 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 
 <form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm" enctype="multipart/form-data">
     <h2>Ajouter un carte</h2>
-    <div>
+    <div class="select-wrapper">
         <label>Rôle :</label>
         <?=CustomSelect::renderCustomSelect($pdo, "role", DbTools::getAllFrom($pdo, 'roles'))?>
     </div>
-    <div>
+    <div class="select-wrapper">
         <label>Rareté :</label>
         <?=CustomSelect::renderCustomSelect($pdo, "rarity", DbTools::getAllFrom($pdo, 'rarities'))?>
     </div>
