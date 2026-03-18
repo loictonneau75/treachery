@@ -275,13 +275,13 @@ nav #dropdown a:hover {
   text-decoration-color: rgb(200, 200, 200);
 }
 
-.custom-select {
+div.custom-select {
   position: relative;
   display: inline-block;
   width: 100%;
   background-color: rgba(200, 200, 200, 0.08);
 }
-.custom-select > div {
+div.custom-select > div {
   display: flex;
   justify-content: space-between;
   gap: 8px;
@@ -291,28 +291,32 @@ nav #dropdown a:hover {
   cursor: pointer;
   padding: 0 8px;
 }
-.custom-select > div:hover {
-  border-color: #999;
+div.custom-select > div:hover {
+  border-color: rgb(200, 200, 200);
 }
-.custom-select > div span:nth-of-type(2) {
+div.custom-select > div span:nth-of-type(2) {
   transition: all 0.2s ease;
 }
-.custom-select > div.active span:nth-of-type(2) {
+div.custom-select > div.active span:nth-of-type(2) {
   transform: rotate(180deg);
 }
-.custom-select ul {
+
+ul.custom-select {
   display: none;
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   padding: 0;
   border: 2px solid rgba(200, 200, 200, 0.08);
   border-radius: 4px;
+  padding-inline-start: 0;
   background: rgba(200, 200, 200, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 2;
 }
-.custom-select li {
+ul.custom-select li {
   display: flex;
   white-space: nowrap;
   width: 100%;
@@ -320,17 +324,17 @@ nav #dropdown a:hover {
   gap: 8px;
   cursor: pointer;
 }
-.custom-select li:hover {
-  background-color: #00f;
+ul.custom-select li:hover {
+  background-color: rgba(200, 200, 200, 0.15);
 }
-.custom-select li:hover * {
-  color: #fff;
+ul.custom-select li:hover * {
+  color: rgb(255, 255, 255);
 }
-.custom-select li .caret {
+ul.custom-select li .caret {
   width: 10px;
   text-align: center;
 }
-.custom-select li img {
+ul.custom-select li img {
   width: 20px;
   height: 20px;
 }
@@ -352,7 +356,34 @@ nav #dropdown a:hover {
   -webkit-appearance: none;
 }
 
-.app > *:not(nav):not(#preview) {
+.app .element {
+  margin: 16px;
+  border-radius: 16px;
+  padding: 16px;
+  background: rgba(200, 200, 200, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.app .element > div {
+  width: 100%;
+}
+.app .element button {
+  outline: none;
+  width: 100%;
+  height: 24px;
+  background-color: rgba(200, 200, 200, 0.15);
+}
+.app .element button:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app .element button:focus {
+  background-color: rgba(200, 200, 200, 0.7);
+}
+.app #showCard {
   margin: 16px;
   border-radius: 16px;
   padding: 16px;
@@ -360,57 +391,34 @@ nav #dropdown a:hover {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-.app > *:not(nav):not(#preview):not(#showCard) {
+.app #showCard > div:last-of-type > div .title-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   gap: 16px;
+  margin: 32px 0px 16px 0px;
 }
-.app > *:not(nav):not(#preview):not(#showCard) > div {
-  width: 100%;
-}
-.app > *:not(nav):not(#preview):not(#showCard) button {
-  outline: none;
-  width: 100%;
-  height: 24px;
-  background-color: rgba(200, 200, 200, 0.15);
-}
-.app > *:not(nav):not(#preview):not(#showCard) button:hover {
-  background-color: rgba(200, 200, 200, 0.5);
-}
-.app > *:not(nav):not(#preview):not(#showCard) button:focus {
-  background-color: rgba(200, 200, 200, 0.7);
-}
-.app .select-wrapper {
-  display: flex;
-  gap: 16px;
-}
-.app .select-wrapper label {
-  white-space: nowrap;
-}
-
-#showCard > div:last-of-type > div > img {
+.app #showCard > div:last-of-type > div .title-wrapper img {
   width: 20px;
   height: 20px;
 }
-#showCard > div:last-of-type > div > div {
+.app #showCard > div:last-of-type > div .cards-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
 }
-#showCard > div:last-of-type > div > div div {
+.app #showCard > div:last-of-type > div .cards-wrapper .card-container {
   position: relative;
 }
-#showCard > div:last-of-type > div > div div img {
+.app #showCard > div:last-of-type > div .cards-wrapper .card-container img {
   height: clamp(220px, 20vw, 340px);
   border-radius: 10px;
   filter: grayscale(50%) brightness(60%);
   cursor: pointer;
 }
-#showCard > div:last-of-type > div > div div img.active {
+.app #showCard > div:last-of-type > div .cards-wrapper .card-container img.active {
   filter: none;
 }
-#showCard > div:last-of-type > div > div div button {
+.app #showCard > div:last-of-type > div .cards-wrapper .card-container button {
   position: absolute;
   right: 0px;
   height: 20px;
@@ -422,8 +430,14 @@ nav #dropdown a:hover {
   border-radius: 4px;
   cursor: pointer;
 }
-
-#preview {
+.app .select-wrapper {
+  display: flex;
+  gap: 16px;
+}
+.app .select-wrapper label {
+  white-space: nowrap;
+}
+.app #preview {
   position: fixed;
   pointer-events: none;
   display: none;

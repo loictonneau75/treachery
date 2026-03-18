@@ -1,6 +1,6 @@
 @use "../../scss/variables" as var;
 
-.custom-select{
+div.custom-select{
     position: relative;
     display: inline-block;
     width:100%;
@@ -16,24 +16,26 @@
         cursor: pointer;
         padding: 0 8px;
 
-        &:hover{border-color: #999}
+        &:hover{border-color: var.$base}
 
         span:nth-of-type(2){transition: all .2s ease}
 
         &.active span:nth-of-type(2){transform: rotate(180deg)}
     }
+}
 
-    ul{
-        display: none;
-        position: absolute;
-        width: 100%;
-        padding: 0;
-        border: 2px solid var.$shade-light;
-        border-radius: 4px;
-        @include var.blur();
-        z-index: 2;
-    }
-
+ul.custom-select{
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    padding: 0;
+    border: 2px solid var.$shade-light;
+    border-radius: 4px;
+    padding-inline-start: 0;
+    @include var.blur();
+    z-index: 2;
     li{
         display: flex;
         white-space: nowrap;
@@ -43,8 +45,8 @@
         cursor: pointer;
 
         &:hover{
-            background-color: #00f;
-            *{color:#fff}
+            background-color: var.$shade-medium;
+            *{color:var.$white}
         }
 
         .caret{

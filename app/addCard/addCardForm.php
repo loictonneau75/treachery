@@ -9,15 +9,15 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__) . "/customSelect/customSelect.php";
 ?>
 
-<form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm" enctype="multipart/form-data">
+<form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm" enctype="multipart/form-data" class = "element">
     <h2>Ajouter un carte</h2>
     <div class="select-wrapper">
         <label>Rôle :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "role", DbTools::getAllFrom($pdo, 'roles'))?>
+        <?=CustomSelect::renderCustomSelect($pdo, "role")?>
     </div>
     <div class="select-wrapper">
         <label>Rareté :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "rarity", DbTools::getAllFrom($pdo, 'rarities'))?>
+        <?=CustomSelect::renderCustomSelect($pdo, "rarity")?>
     </div>
     <div>
         <label for="cardImg">Image :</label>
@@ -30,3 +30,7 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
     <input type="hidden" name="csrf_token" value="<?=SessionTools::getData("csrf_token")?>">
     <input type="text" name="hp_email" style="display:none" autocomplete="off">
 </form>
+<?php
+CustomSelect::renderCustomSelectUl("role", DbTools::getAllFrom($pdo, "roles"));
+CustomSelect::renderCustomSelectUl("rarity", DbTools::getAllFrom($pdo, "rarities"))
+?>

@@ -6,10 +6,17 @@ function initializeDefaultSelection(defaultOption, currentValue, input){
 
 function setupToggleBehavior(fakeSelect, optionsWrapper){
     fakeSelect.addEventListener("click", () => {
-        optionsWrapper.style.display = optionsWrapper.style.display === 'block' ? 'none' : 'block';
+        const isOpen = optionsWrapper.style.display === 'block'
+        document.querySelectorAll(".custom-dropdown").forEach(ul => {ul.style.display = "none"})
+        if (!isOpen) {
+            optionsWrapper.style.display = "block"
+            positionDropdown(fakeSelect, optionsWrapper)
+        }
+        else {optionsWrapper.style.display = "none"}
         fakeSelect.classList.toggle("active")
     })
 }
+
 
 function changeCaretPosition(optionsList, option){
     optionsList.forEach(opt => opt.querySelector(".caret").innerText = "")
@@ -21,7 +28,6 @@ function changeSelectedOption(optionsList, option, currentValue, input, optionsW
     currentValue.innerText = option.querySelector("span").innerText
     input.value = option.dataset.value
     input.dispatchEvent(new Event("input", { bubbles: true }));
-    optionsWrapper.style.display = "none"
 }
 
 function setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, optionsList){
@@ -36,10 +42,29 @@ function setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, o
 function getSelectElements(customSelect) {
     const fakeSelect = customSelect.querySelector(":scope > div")
     const currentValue = fakeSelect.querySelector("span:nth-of-type(1)")
-    const optionsWrapper = customSelect.querySelector("ul")
-    const optionsList = optionsWrapper.querySelectorAll("li")
     const input = customSelect.querySelector("input")
+
+    const optionsWrapper = document.querySelector("#" + customSelect.dataset.dropdown)
+    const optionsList = optionsWrapper.querySelectorAll("li")
+
     return { fakeSelect, currentValue, optionsWrapper, optionsList, input }
+}
+
+function positionDropdown(fakeSelect, optionsWrapper) {
+    const rect = fakeSelect.getBoundingClientRect()
+    optionsWrapper.style.position = "fixed"
+    optionsWrapper.style.left = rect.left + "px"
+    optionsWrapper.style.top = rect.bottom + "px"
+    optionsWrapper.style.width = rect.width + "px"
+}
+
+function setupOptionClick(optionsList, optionsWrapper, fakeSelect) {
+    optionsList.forEach(option => {
+        option.addEventListener("click", () => {
+            optionsWrapper.style.display = "none"
+            fakeSelect.classList.remove("active")
+        })
+    })
 }
 
 export function resetSelect(optionsWrapper, optionsList, currentValue, input){
@@ -47,19 +72,37 @@ export function resetSelect(optionsWrapper, optionsList, currentValue, input){
     changeCaretPosition(optionsList, optionsWrapper.firstElementChild)
 }
 
-const customSelects = Array.from(document.querySelectorAll(".custom-select")).map(customSelect => {
+const customSelects = Array.from(document.querySelectorAll("div.custom-select")).map(customSelect => {
     const elements = getSelectElements(customSelect)
     initializeDefaultSelection(elements.optionsWrapper.firstElementChild, elements.currentValue, elements.input)
     setupToggleBehavior(elements.fakeSelect, elements.optionsWrapper)
     setupOptionSelection(elements.fakeSelect, elements.optionsWrapper, elements.currentValue, elements.input, elements.optionsList)
+    setupOptionClick(elements.optionsList, elements.optionsWrapper, elements.fakeSelect)
     return { customSelect, ...elements }
 })
 
 document.addEventListener("click", (e) => {
     customSelects.forEach(({ customSelect, fakeSelect, optionsWrapper }) => {
-        if (!customSelect.contains(e.target)) {
+        if (!customSelect.contains(e.target) && !optionsWrapper.contains(e.target)) {
             optionsWrapper.style.display = "none"
             fakeSelect.classList.remove("active")
         }
     })
 })
+
+window.addEventListener("scroll", () => {
+    customSelects.forEach(({ fakeSelect, optionsWrapper }) => {
+        if (optionsWrapper.style.display === "block") {
+            positionDropdown(fakeSelect, optionsWrapper)
+        }
+    })
+})
+
+window.addEventListener("resize", () => {
+    customSelects.forEach(({ fakeSelect, optionsWrapper }) => {
+        if (optionsWrapper.style.display === "block") {
+            positionDropdown(fakeSelect, optionsWrapper)
+        }
+    })
+})
+

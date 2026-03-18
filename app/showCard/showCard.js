@@ -34,8 +34,10 @@ async function postData(radio, csrf) {
 
 function createCardsWrapper(cards, data, csrf) {
     const wrapper = document.createElement("div");
+    wrapper.classList.add("cards-wrapper")
     cards.forEach(card => {
         const cardContainer = document.createElement("div");
+        cardContainer.classList.add("card-container")
         const cardImg = createCardImage(card);
         cardContainer.appendChild(cardImg);
         deleteCardBtn(card, data, cardContainer, csrf, () => fetchAndRenderGroups(document.querySelector('input[name="groupBy"]:checked'), csrfToken, container));
@@ -46,11 +48,14 @@ function createCardsWrapper(cards, data, csrf) {
 
 function createGroupElement(group, groupType, data, csrf) {
     const div = document.createElement("div");
+    const titleWrapper = document.createElement("div")
+    titleWrapper.classList.add("title-wrapper")
     const title = createTitle(group.info.name);
     const groupImg = createGroupImage(group.info.url, groupType);
     const cardsWrapper = createCardsWrapper(group.cards, data, csrf);
-    div.appendChild(groupImg);
-    div.appendChild(title);
+    titleWrapper.appendChild(groupImg);
+    titleWrapper.appendChild(title);
+    div.appendChild(titleWrapper)
     div.appendChild(cardsWrapper);
     return div;
 }
