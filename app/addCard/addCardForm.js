@@ -17,7 +17,7 @@ async function handleFormSubmitEvent(e, form){
 function resetAddCardForm(form) {
     form.reset();
     addCardForm.querySelectorAll('.custom-select').forEach(select => {
-        const optionsWrapper = select.querySelector("ul")
+        const optionsWrapper = document.querySelector("#" + select.dataset.dropdown)
         const optionsList = optionsWrapper.querySelectorAll("li")
         const currentValue = select.querySelector(":scope > div span:nth-of-type(1)")
         const input = select.querySelector("input")
