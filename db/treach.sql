@@ -2,38 +2,38 @@ DROP DATABASE IF EXISTS treachery;
 CREATE DATABASE IF NOT EXISTS treachery;
 USE treachery;
 
-DROP TABLE IF EXISTS `cards`, `remember_tokens`;
-DROP TABLE IF EXISTS`rarities`, `roles`, `users`;
+DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`;
+DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
 
 CREATE TABLE `roles` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(50) NOT NULL,
-    `url` varchar(255) NOT NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `rarities` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `name` varchar(50) NOT NULL,
-    `url` varchar(255) NOT NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `users` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `pseudo` varchar(50) NOT NULL UNIQUE,
-    `email` varchar(100) NOT NULL UNIQUE,
-    `password` varchar(255) NOT NULL,
-    `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `pseudo` VARCHAR(50) NOT NULL UNIQUE,
+    `email` VARCHAR(100) NOT NULL UNIQUE,
+    `password` VARCHAR(255) NOT NULL,
+    `is_admin` TINYINT(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `cards` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `path` varchar(255) NOT NULL,
-    `rarity_id` int(11) NULL,
-    `role_id` int(11) NOT NULL,
-    `added_by` int(11) NOT NULL,
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `path` VARCHAR(255) NOT NULL,
+    `rarity_id` INT NOT NULL,
+    `role_id` INT NOT NULL,
+    `added_by` INT,
     PRIMARY KEY (`id`),
     KEY `idx_cards_rarity_id` (`rarity_id`),
     KEY `idx_cards_type_id` (`role_id`),
@@ -46,17 +46,44 @@ CREATE TABLE `cards` (
         ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT `fk_user`
         FOREIGN KEY (`added_by`) REFERENCES `users` (`id`)
-        ON DELETE RESTRICT ON UPDATE CASCADE
+        ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE remember_tokens (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `id` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
     `token_hash` CHAR(64) NOT NULL,
     `expires_at` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (added_by) REFERENCES users(id) ON DELETE CASCADE
-);
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id` (`user_id`),
+    CONSTRAINT `fk_remember_tokens_user`
+        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) 
+        ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE rooms (
+    `id` INT AUTO_INCREMENT,
+    `code` CHAR(10) NOT NULL,
+    `max_player` TINYINT NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE room_player (
+    `id` INT AUTO_INCREMENT,
+    `room_id` INT NOT NULL,
+    `user_id` INT NOT NULL,
+    `last_active` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY`idx_room_id` (`room_id`),
+    KEY `idx_user_id` (`user_id`),
+    CONSTRAINT `fk_room_player_room`
+        FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_room_player_user`
+        FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `roles` (`id`, `name`, `url`) VALUES
 (1, 'Seigneur', 'icon-ldr.png'),
