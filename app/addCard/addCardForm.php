@@ -13,11 +13,11 @@ require_once dirname(__DIR__) . "/customSelect/customSelect.php";
     <h2>Ajouter un carte</h2>
     <div class="select-wrapper">
         <label>Rôle :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "role")?>
+        <?=CustomSelect::renderCustomSelect("role")?>
     </div>
     <div class="select-wrapper">
         <label>Rareté :</label>
-        <?=CustomSelect::renderCustomSelect($pdo, "rarity")?>
+        <?=CustomSelect::renderCustomSelect("rarity")?>
     </div>
     <div>
         <label for="cardImg">Image :</label>

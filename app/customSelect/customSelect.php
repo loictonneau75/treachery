@@ -6,7 +6,7 @@ use PDO;
 
 class CustomSelect{
 
-    public static function renderCustomSelect(PDO $pdo, string $inputName): void{
+    public static function renderCustomSelect(string $inputName): void{
 ?>
         <div class="custom-select" id = "card<?=ucfirst($inputName)?>Input" data-dropdown="<?=ucfirst($inputName)?>Dropdown">
             <div class="fake-select">
