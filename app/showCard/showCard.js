@@ -22,11 +22,11 @@ function createTitle(text) {
     return title;
 }
 
-async function postData(radio, csrf) {
-    const response = await fetch(radio.dataset.action, {
+async function postData(button, csrf) {
+    const response = await fetch(button.dataset.action, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({groupBy: radio.value, csrf_token: csrf.value})
+        body: JSON.stringify({groupBy: button.dataset.value, csrf_token: csrf.value})
     });
     if (!response.ok) throw new Error(`Erreur HTTP : ${response.status}`);
     return await response.json();
@@ -67,25 +67,34 @@ function renderGroups(data, groupType, container, csrf) {
     });
 }
 
-export async function fetchAndRenderGroups(radio, csrf, container) {
+export async function fetchAndRenderGroups(button, csrf, container) {
     try {
-        const data = await postData(radio, csrf);
+        const data = await postData(button, csrf);
         container.innerHTML = "";
-        renderGroups(data, radio.value, container, csrf);
+        renderGroups(data, button.dataset.value, container, csrf);
     } catch (error) {
         console.error("Erreur :", error);
     }
 }
 
+function toogleButtons(isRole) {
+    buttons[0].classList.toggle("active", isRole);
+    buttons[1].classList.toggle("active", !isRole);
+}
+
 const showCard = document.querySelector("#showCard");
-const radios = showCard.querySelectorAll("input[name='groupBy']");
+const buttons = showCard.querySelectorAll("#btnSortWrapper button");
 const container = document.createElement("div");
 const csrfToken = showCard.querySelector("input[name='csrfToken']");
-const checkedRadio = document.querySelector('input[name="groupBy"]:checked');
+const selectedButton = showCard.querySelector("#btnSortWrapper button.active");
 showCard.appendChild(container);
-if (checkedRadio) fetchAndRenderGroups(checkedRadio, csrfToken, container);
-radios.forEach(radio => {
-    radio.addEventListener("change", async () => {
-        await fetchAndRenderGroups(radio, csrfToken, container);
-    });
+if (selectedButton) fetchAndRenderGroups(selectedButton, csrfToken, container);
+buttons[0].addEventListener("click", async () => {
+    await fetchAndRenderGroups(buttons[0], csrfToken, container)
+    toogleButtons(true);
 });
+buttons[1].addEventListener("click", async () => {
+    await fetchAndRenderGroups(buttons[1], csrfToken, container)
+    toogleButtons(false);
+});
+

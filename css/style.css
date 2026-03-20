@@ -519,10 +519,39 @@ div:has(> .custom-input-file) > label {
 }
 .app #showCard {
   border-radius: 16px;
-  padding: 16px;
   background: rgba(200, 200, 200, 0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+.app #showCard #btnSortWrapper {
+  display: flex;
+  width: 100%;
+}
+.app #showCard #btnSortWrapper button {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background-color: transparent;
+  padding: 16px;
+  border-radius: 0;
+}
+.app #showCard #btnSortWrapper button#btnSortByRole {
+  border-top-left-radius: 16px;
+}
+.app #showCard #btnSortWrapper button#btnSortByRarity {
+  border-top-right-radius: 16px;
+}
+.app #showCard #btnSortWrapper button.active {
+  background-color: rgba(200, 200, 200, 0.7);
+}
+.app #showCard #btnSortWrapper button:not(.active):hover {
+  background-color: rgba(200, 200, 200, 0.15);
+}
+.app #showCard #btnSortWrapper button:not(.active):focus {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.app #showCard > div:last-of-type {
+  margin: 0 16px;
 }
 .app #showCard > div:last-of-type > div .title-wrapper {
   display: flex;

@@ -5,12 +5,9 @@ require_once dirname(__DIR__,2) . "/session/tools.php";
 ?>
 
 <div id="showCard">
-    <div>
-        <input type="radio" name="groupBy" value="role" data-action ="<?=BASE_URL?>app/showCard/cardAjax.php" checked>
-        <label for="role">Rôle</label>
-
-        <input type="radio" name="groupBy" value="rarity" data-action ="<?=BASE_URL?>app/showCard/cardAjax.php">
-        <label for="rarity">Rareté</label>
+    <div id="btnSortWrapper">
+        <button class="active" type="button" id="btnSortByRole" data-value="role" data-action ="<?=BASE_URL?>app/showCard/cardAjax.php">Rôle</button>
+        <button type="button" id="btnSortByRarity" data-value="rarity" data-action ="<?=BASE_URL?>app/showCard/cardAjax.php">Rareté</button>
     </div>
 
     <input type="hidden" name="csrfToken" value="<?=SessionTools::getData("csrf_token")?>">

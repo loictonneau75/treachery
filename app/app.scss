@@ -71,9 +71,37 @@
     }
     #showCard{
         border-radius: 16px;
-        padding: 16px;
         @include var.blur();
+        #btnSortWrapper{
+            display: flex;
+            width: 100%;
+            button{
+                border:none;
+                cursor: pointer;
+                width: 100%;
+                background-color: transparent;
+                padding: 16px;
+                border-radius: 0;
+                &#btnSortByRole{
+                    border-top-left-radius: 16px;
+                }
+                &#btnSortByRarity{
+                    border-top-right-radius: 16px;
+                }
+
+                &.active{
+                    background-color: var.$shade-stronger;
+                }
+                &:not(.active):hover{
+                    background-color: var.$shade-medium
+                }
+                &:not(.active):focus{
+                    background-color: var.$shade-strong
+                }
+            }
+        }
         > div:last-of-type{
+            margin: 0 16px;
             > div {
                 .title-wrapper{
                     display: flex;
@@ -124,6 +152,7 @@
                 }
             } 
         }
+
     }
 
     .select-wrapper{
