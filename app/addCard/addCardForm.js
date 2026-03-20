@@ -7,9 +7,9 @@ async function handleFormSubmitEvent(e, form){
     const role = form.querySelector("#cardRole");
     const rarity = form.querySelector("#cardRarity");
     const img = form.querySelector("#cardImg");
-    if (role.value.trim() === "") errors.push(["Veuillez choisir un role", [form.querySelector("#cardRoleInput")]]);
-    if (rarity.value.trim() === "") errors.push(["Veuillez choisir une rareté", [form.querySelector("#cardRarityInput")]]);
-    if (img.files.length === 0) errors.push(["Veuillez choisir une image", [img]]);
+    if (role.value.trim() === "") errors.push(["Veuillez choisir un role", [form.querySelector("#cardRoleInput > div")]]);
+    if (rarity.value.trim() === "") errors.push(["Veuillez choisir une rareté", [form.querySelector("#cardRarityInput > div")]]);
+    if (img.files.length === 0) errors.push(["Veuillez choisir une image", [form.querySelector("#cardImgInput > label")]]);
     if (errors.length >0) setErrors(errors, form);
     else await handlePostFormSubmit(errors, form);
 }
@@ -23,6 +23,7 @@ function resetAddCardForm(form) {
         const input = select.querySelector("input")
         resetSelect(optionsWrapper, optionsList, currentValue, input)
     })
+    addCardForm.querySelector(".custom-input-file span").innerText = "Aucun fichier";
 }
 
 

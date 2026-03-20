@@ -32,11 +32,11 @@ $tablet-breakpoint: 768px;
     }
 }
 
-@mixin base-input-style {
+@mixin base-input-style($width: 100%) {
     background-color: $shade-light;
     border: 2px solid $shade-light;
     outline: none;
-    width: 100%;
+    width: $width;
     padding: 16px;
     @include autofill-fix();
 

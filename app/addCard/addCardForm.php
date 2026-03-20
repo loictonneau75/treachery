@@ -1,27 +1,29 @@
 <?php
 use App\Session\SessionTools;
 use App\CustomSelect\CustomSelect;
+use App\CustomInputFile\CustomInputFile;
 use App\DB\DbTools;
 
 require_once dirname(__DIR__,2) . "/session/tools.php";
 require_once dirname(__DIR__,2) . "/db/connexion.php";
 require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__) . "/customSelect/customSelect.php";
+require_once dirname(__DIR__) . "/customInputFile/customInputFile.php";
 ?>
 
 <form action="<?=BASE_URL?>app/addCard/addCard.php" id="addCardForm" enctype="multipart/form-data" class = "element">
     <h2>Ajouter un carte</h2>
     <div class="select-wrapper">
-        <label>Rôle :</label>
+        <label>Rôle</label>
         <?=CustomSelect::renderCustomSelect("role")?>
     </div>
     <div class="select-wrapper">
-        <label>Rareté :</label>
+        <label>Rareté</label>
         <?=CustomSelect::renderCustomSelect("rarity")?>
     </div>
-    <div>
-        <label for="cardImg">Image :</label>
-        <input type="file" id="cardImg" name="cardImg">
+    <div class="input-file-wrapper">
+        <label>Image</label>
+        <?=CustomInputFile::renderCustomInputFile("img")?>
     </div>
     <div>
         <button type="submit">Enregister</button>

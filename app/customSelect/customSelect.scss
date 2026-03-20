@@ -4,17 +4,14 @@ div.custom-select{
     position: relative;
     display: inline-block;
     width:100%;
-    background-color: var.$shade-light;
 
     > div{
         display: flex;
         justify-content: space-between;
         gap:8px;
-        border: 2px solid var.$shade-light;
-        border-radius: 4px;
-        background-color: var.$shade-light;
+        border-radius: 16px;
         cursor: pointer;
-        padding: 0 8px;
+        @include var.base-input-style;
 
         &:hover{border-color: var.$base}
 

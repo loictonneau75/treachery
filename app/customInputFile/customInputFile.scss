@@ -1,0 +1,41 @@
+@use "../../scss/variables" as var;
+
+.custom-input-file {
+    display: flex; 
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    label {
+        @include var.base-input-style(auto);
+        border-radius: 16px;
+        cursor: pointer;
+        &:hover {
+        background-color: var.$shade-strong;
+        }
+        flex-shrink: 0;
+    }
+
+    input {
+        display: none;
+    }
+
+    span {
+        width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex-shrink: 1;
+    }
+}
+
+/* Conteneur parent */
+div:has(>.custom-input-file) {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+div:has(>.custom-input-file) > label {
+    flex-shrink: 0;
+}

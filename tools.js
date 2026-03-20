@@ -3,6 +3,12 @@ export function clearAllErrors(form){
     form.querySelectorAll("input.error").forEach(input => input.classList.remove("error"));
 }
 
+function getDirectChildOfForm(element) {
+    let parent = element;
+    while (parent && parent.parentElement !== element.closest("form")) {parent = parent.parentElement}
+    return parent;
+}
+
 export function setErrors(errorList, form){
     clearAllErrors(form);
     for(const [msg, inputs] of errorList){
@@ -12,7 +18,7 @@ export function setErrors(errorList, form){
         err.dataset.for = input.id;
         err.classList.add("error");
         err.textContent = msg;
-        input.parentElement.insertAdjacentElement("afterend", err);
+        getDirectChildOfForm(input).insertAdjacentElement("afterend", err);
     };
 }
 

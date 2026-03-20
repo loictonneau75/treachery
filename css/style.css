@@ -54,7 +54,7 @@ button {
   transform: translateY(-68%) scale(0.85);
 }
 .input-wrapper input {
-  border-radius: 10px;
+  border-radius: 16px;
 }
 
 .input-number-wrapper {
@@ -129,7 +129,7 @@ body::after {
   gap: 16px;
 }
 .auth img {
-  height: 100px;
+  height: 200px;
 }
 .auth h1 {
   font-size: clamp(24px, 5vw, 60px);
@@ -284,17 +284,30 @@ div.custom-select {
   position: relative;
   display: inline-block;
   width: 100%;
-  background-color: rgba(200, 200, 200, 0.08);
 }
 div.custom-select > div {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  border: 2px solid rgba(200, 200, 200, 0.08);
-  border-radius: 4px;
-  background-color: rgba(200, 200, 200, 0.08);
+  border-radius: 16px;
   cursor: pointer;
-  padding: 0 8px;
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: 100%;
+  padding: 16px;
+}
+div.custom-select > div:-webkit-autofill, div.custom-select > div:-webkit-autofill:hover, div.custom-select > div:-webkit-autofill:focus, div.custom-select > div:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+div.custom-select > div.error {
+  border-color: rgb(167, 31, 37);
+}
+div.custom-select > div:focus {
+  border-color: rgba(200, 200, 200, 0.5);
 }
 div.custom-select > div:hover {
   border-color: rgb(200, 200, 200);
@@ -361,6 +374,69 @@ ul.custom-select li img {
   -webkit-appearance: none;
 }
 
+.custom-input-file {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+.custom-input-file label {
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: auto;
+  padding: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.custom-input-file label:-webkit-autofill, .custom-input-file label:-webkit-autofill:hover, .custom-input-file label:-webkit-autofill:focus, .custom-input-file label:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.custom-input-file label.error {
+  border-color: rgb(167, 31, 37);
+}
+.custom-input-file label:focus {
+  border-color: rgba(200, 200, 200, 0.5);
+}
+.custom-input-file label:hover {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.custom-input-file input {
+  display: none;
+}
+.custom-input-file span {
+  width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+/* Conteneur parent */
+div:has(> .custom-input-file) {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+div:has(> .custom-input-file) > label {
+  flex-shrink: 0;
+}
+
+#preview {
+  position: fixed;
+  pointer-events: none;
+  display: none;
+  z-index: 1000;
+  height: 400px;
+  border-radius: 15px;
+}
+
 .app {
   display: grid;
   gap: 16px;
@@ -389,7 +465,7 @@ ul.custom-select li img {
 }
 @media (min-width: 768px) {
   .app #showCard {
-    grid-column: 1/3; /* pleine largeur */
+    grid-column: 1/3;
   }
 }
 .app .element {
@@ -418,6 +494,9 @@ ul.custom-select li img {
 }
 .app .element button:focus {
   background-color: rgba(200, 200, 200, 0.7);
+}
+.app #addCardForm label:not(.fake-button) {
+  width: 50px;
 }
 .app #addCardForm div:has(> button) {
   display: flex;
@@ -489,14 +568,6 @@ ul.custom-select li img {
 }
 .app .select-wrapper label {
   white-space: nowrap;
-}
-.app #preview {
-  position: fixed;
-  pointer-events: none;
-  display: none;
-  z-index: 1000;
-  height: 400px;
-  border-radius: 15px;
 }
 .app button {
   border-radius: 16px;

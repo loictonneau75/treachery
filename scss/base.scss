@@ -21,7 +21,7 @@ button{
 .input-wrapper {
     @include var.label-out-when-focus;
     input{
-        border-radius: 10px;
+        border-radius: 16px;
     }
 }
 
