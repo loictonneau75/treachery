@@ -12,6 +12,11 @@ require_once dirname(__DIR__) . "/customInputNumber/customInputNumber.php";
         <?=CustomInputNumber::renderCustomInputNumber()?>
         <label for="nbPlayer">nombre de joueur</label>
     </div>
+    <div class="custom-checkbox">
+        <input type="checkbox" id="selectAllCard" name="selectAllCard">
+        <label for="selectAllCard" class="toggle"></label>
+        <label for="selectAllCard">Sélectionner toutes les cartes</label>
+    </div>
     <input type="hidden" name="csrf_token" value="<?=SessionTools::getData("csrf_token")?>">
     <input type="text" name="hp_email" style="display:none" autocomplete="off">
     <button>Créer</button>

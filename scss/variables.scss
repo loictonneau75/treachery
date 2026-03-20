@@ -76,38 +76,39 @@ $tablet-breakpoint: 768px;
     }
 }
 
-@mixin better-checkbox($bg-color: $shade-medium, $button-color:$base, $checked-color:$shade-strong){
-    display: none;
-    + .remember-toggle{
-        position:relative;
-        display: inline-block;
-        background-color: $bg-color;
-        width:30px;
-        height:20px;
-        top:4px;
-        border-radius: 16px;
-        cursor:pointer;
-        transition: all .2s ease;
+@mixin better-checkbox(){
+    input{
+        display: none;
+        + .toggle{
+            position:relative;
+            display: inline-block;
+            background-color: $shade-medium;
+            width:30px;
+            height:20px;
+            top:4px;
+            border-radius: 16px;
+            cursor:pointer;
+            transition: all .2s ease;
+            &::before{
+                position: absolute;
+                content:"";
+                background-color: $base;
+                width:15px;
+                height:15px;
+                border-radius: 50px;
+                margin:2px;
+                transition: all .2s ease
+            }
+        }
 
-        &::before{
-            position: absolute;
-            content:"";
-            background-color: $button-color;
-            width:15px;
-            height:15px;
-            border-radius: 50px;
-            margin:2px;
-            transition: all .2s ease
+        &:checked + .toggle{
+            background-color: $shade-strong;
+            &::before{
+                transform: translateX(11px);
+            }
         }
     }
-
-    &:checked + .remember-toggle{
-        background-color: $checked-color;
-
-        &::before{
-            transform: translateX(11px);
-        }
-    }
+    
 }
 
 @mixin small-img{

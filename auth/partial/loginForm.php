@@ -14,9 +14,9 @@ require_once dirname(__DIR__,2) . "/session/tools.php";
         <input type="password" id="passwordLogin" name="passwordLogin" placeholder="" autocomplete="new-password">
         <label for="passwordLogin">Entrez votre mot de passe</label>
     </div>
-    <div>
+    <div class="custom-checkbox">
         <input type="checkbox" id="rememberLogin" name="rememberLogin">
-        <label for="rememberLogin" class="remember-toggle"></label>
+        <label for="rememberLogin" class="toggle"></label>
         <label for="rememberLogin">Se souvenir de moi</label>
     </div>
     <input type="hidden" name="csrf_token" value="<?=SessionTools::getData("csrf_token")?>">

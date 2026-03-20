@@ -81,6 +81,37 @@ button {
   border-radius: 0px 0px 16px 16px;
 }
 
+.custom-checkbox input {
+  display: none;
+}
+.custom-checkbox input + .toggle {
+  position: relative;
+  display: inline-block;
+  background-color: rgba(200, 200, 200, 0.15);
+  width: 30px;
+  height: 20px;
+  top: 4px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.custom-checkbox input + .toggle::before {
+  position: absolute;
+  content: "";
+  background-color: rgb(200, 200, 200);
+  width: 15px;
+  height: 15px;
+  border-radius: 50px;
+  margin: 2px;
+  transition: all 0.2s ease;
+}
+.custom-checkbox input:checked + .toggle {
+  background-color: rgba(200, 200, 200, 0.5);
+}
+.custom-checkbox input:checked + .toggle::before {
+  transform: translateX(11px);
+}
+
 p.error {
   color: rgb(167, 31, 37);
   font-size: 0.9rem;
@@ -174,36 +205,6 @@ body::after {
   width: 100%;
   padding: 32px;
   gap: 16px;
-}
-.auth form input[type=checkbox] {
-  display: none;
-}
-.auth form input[type=checkbox] + .remember-toggle {
-  position: relative;
-  display: inline-block;
-  background-color: rgba(200, 200, 200, 0.15);
-  width: 30px;
-  height: 20px;
-  top: 4px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.auth form input[type=checkbox] + .remember-toggle::before {
-  position: absolute;
-  content: "";
-  background-color: rgb(200, 200, 200);
-  width: 15px;
-  height: 15px;
-  border-radius: 50px;
-  margin: 2px;
-  transition: all 0.2s ease;
-}
-.auth form input[type=checkbox]:checked + .remember-toggle {
-  background-color: rgba(200, 200, 200, 0.5);
-}
-.auth form input[type=checkbox]:checked + .remember-toggle::before {
-  transform: translateX(11px);
 }
 .auth form button {
   outline: none;

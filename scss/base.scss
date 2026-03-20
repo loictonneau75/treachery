@@ -34,6 +34,9 @@ button{
         border-radius: 0px 0px 16px 16px;
     }
 }
+.custom-checkbox{
+    @include var.better-checkbox()
+}
 
 p.error{
     color: var.$warning;

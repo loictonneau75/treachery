@@ -56,11 +56,6 @@
         width:100%;
         padding:32px;
         gap:16px;
-
-        input[type="checkbox"]{
-            @include var.better-checkbox()
-        }
-
         button{
             outline: none;
             width: 100%;
