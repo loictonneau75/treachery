@@ -5,7 +5,7 @@ function createCardImage(card) {
     img.src = `assets/img/cards/${card.path}`;
     img.classList.add("preview-target");
     img.addEventListener("click", () => {
-        img.classList.toggle("active");
+        img.classList.toggle("selected");
     });
     return img;
 }
