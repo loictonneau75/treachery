@@ -1,6 +1,6 @@
 export function clearAllErrors(form){
     form.querySelectorAll("p.error").forEach(err => err.remove());
-    form.querySelectorAll("input.error").forEach(input => input.classList.remove("error"));
+    form.querySelectorAll(".error").forEach(input => input.classList.remove("error"));
 }
 
 function getDirectChildOfForm(element) {
