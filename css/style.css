@@ -589,7 +589,7 @@ div:has(> .custom-input-file) > label {
   filter: grayscale(50%) brightness(60%);
   cursor: pointer;
 }
-.app #showCard > div:last-of-type > div .cards-wrapper .card-container img.active {
+.app #showCard > div:last-of-type > div .cards-wrapper .card-container img.selected {
   filter: none;
 }
 .app #showCard > div:last-of-type > div .cards-wrapper .card-container button {
