@@ -4,6 +4,7 @@ function createCardImage(card) {
     const img = document.createElement("img");
     img.src = `assets/img/cards/${card.path}`;
     img.classList.add("preview-target");
+    img.dataset.cardId = card.id;
     img.addEventListener("click", () => {
         img.classList.toggle("selected");
     });
