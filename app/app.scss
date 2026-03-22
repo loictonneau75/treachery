@@ -116,7 +116,16 @@
                 }
             } 
         }
-
+    }
+    #createRoomForm{
+        min-width: 0;
+        label.toggle.error{
+            border: 2px solid var.$warning;
+            &::before{margin:0}
+        }
+        p.error{
+            align-self: flex-start;
+        }
     }
     .select-wrapper{
         display: flex;

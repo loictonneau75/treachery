@@ -1,26 +1,26 @@
 import { clearAllErrors, setErrors, handlePostFormSubmit } from "../../tools.js";
 
 
-const form = document.querySelector("#createRoomForm")
-const toggle = form.querySelector("#selectAllCard")
-
-
 async function handleFormSubmitEvent(e, form) {
     e.preventDefault()
     let errors = [];
     const nbplayersInput = form.querySelector("#nbPlayers")
-    nbplayersInput.addEventListener("invalid", (e) => {e.preventDefault()})
-    if (nbplayersInput.value.trim() === "") errors.push(["Veuillez entrer un nombre de joueurs", [form.querySelector("#nbPlayers")]])
-    else if (parseInt(nbplayersInput.value) < parseInt(nbplayersInput.min) || parseInt(nbplayersInput.value) > parseInt(nbplayersInput.max)) errors.push([`Le nombre de joueurs doit être compris entre ${nbplayersInput.min} et ${nbplayersInput.max}`, [form.querySelector("#nbPlayers")]])
-    if (document.querySelectorAll(".selected").length === 0) errors.push(["Veuillez sélectionner au moins une carte", [form.querySelector("#selectAllCard")]])
+    const Value = parseInt(nbplayersInput.value.trim())
+    const min = parseInt(nbplayersInput.min)
+    const max = parseInt(nbplayersInput.max)
+    const cardSelected = document.querySelectorAll(".selected")
+    if (Number.isNaN(Value)) errors.push(["Veuillez entrer un nombre de joueurs !", [nbplayersInput]])
+    else if (Value < min || Value > max) errors.push([`Le nombre de joueurs doit être un entier compris entre ${min} et ${max} !`, [nbplayersInput]])
+    if (cardSelected.length === 0) errors.push(["Veuillez sélectionner au moins une carte !\nPour sélectioner uniquement seulement certaine carte vous pouvez cliquer dessus !", [form.querySelector(".custom-checkbox label.toggle")]])
     if (errors.length > 0) setErrors(errors, form);
     //else await handlePostFormSubmit(errors, form);
 }
 
-toggle.addEventListener("change", () => {
-    document.querySelectorAll(".card-container img").forEach(card => {
-        card.classList.toggle("selected", toggle.checked)
-    })
-})
+const form = document.querySelector("#createRoomForm")
+const toggle = form.querySelector("#selectAllCard")
 
+
+toggle.addEventListener("change", () => {document.querySelectorAll(".card-container img").forEach(card => {card.classList.toggle("selected", toggle.checked)})})
 form.addEventListener("submit", (e) => {handleFormSubmitEvent(e, form)})
+form.addEventListener("input", () => clearAllErrors(form));
+form.querySelectorAll(".custom-input-number button").forEach(button => {button.addEventListener("click", () => {clearAllErrors(form)})})

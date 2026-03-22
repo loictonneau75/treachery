@@ -117,7 +117,7 @@ p.error {
   font-size: 0.9rem;
   margin-top: -15px;
   margin-left: 10px;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 [hidden] {
@@ -363,9 +363,25 @@ ul.custom-select li img {
   flex-direction: column;
 }
 .custom-input-number input[type=number] {
-  border: none;
+  background-color: rgba(200, 200, 200, 0.08);
+  border: 2px solid rgba(200, 200, 200, 0.08);
+  outline: none;
+  width: 100%;
+  padding: 16px;
   appearance: textfield;
   -moz-appearance: textfield;
+}
+.custom-input-number input[type=number]:-webkit-autofill, .custom-input-number input[type=number]:-webkit-autofill:hover, .custom-input-number input[type=number]:-webkit-autofill:focus, .custom-input-number input[type=number]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgba(200, 200, 200, 0.08) inset;
+  -webkit-text-fill-color: rgb(200, 200, 200);
+  caret-color: rgb(200, 200, 200);
+  transition: background-color 5000s ease-in-out 0s;
+}
+.custom-input-number input[type=number].error {
+  border-color: rgb(167, 31, 37);
+}
+.custom-input-number input[type=number]:focus {
+  border-color: rgba(200, 200, 200, 0.5);
 }
 .custom-input-number input[type=number]::-webkit-outer-spin-button, .custom-input-number input[type=number]::-webkit-inner-spin-button {
   appearance: none;
@@ -600,6 +616,18 @@ div:has(> .custom-input-file) > label {
   justify-content: center;
   border-radius: 4px;
   cursor: pointer;
+}
+.app #createRoomForm {
+  min-width: 0;
+}
+.app #createRoomForm label.toggle.error {
+  border: 2px solid rgb(167, 31, 37);
+}
+.app #createRoomForm label.toggle.error::before {
+  margin: 0;
+}
+.app #createRoomForm p.error {
+  align-self: flex-start;
 }
 .app .select-wrapper {
   display: flex;
