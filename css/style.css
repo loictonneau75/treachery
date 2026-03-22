@@ -362,9 +362,6 @@ ul.custom-select li img {
   display: flex;
   flex-direction: column;
 }
-.custom-input-number button {
-  background-color: white;
-}
 .custom-input-number input[type=number] {
   border: none;
   appearance: textfield;

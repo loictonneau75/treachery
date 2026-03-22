@@ -1,9 +1,6 @@
 .custom-input-number{
     display:flex;
     flex-direction: column;
-    button{
-        background-color: white;
-    }
     input[type="number"] {
         border: none;
         appearance: textfield;
