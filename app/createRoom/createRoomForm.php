@@ -10,7 +10,7 @@ require_once dirname(__DIR__) . "/customInputNumber/customInputNumber.php";
     <h2>Creer un salon</h2>
     <div class="input-number-wrapper">
         <?=CustomInputNumber::renderCustomInputNumber()?>
-        <label for="nbPlayer">nombre de joueur</label>
+        <label for="nbPlayers">nombre de joueur</label>
     </div>
     <div class="custom-checkbox">
         <input type="checkbox" id="selectAllCard" name="selectAllCard">
