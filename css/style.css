@@ -71,7 +71,7 @@ button {
   pointer-events: none;
   font-size: 0.95rem;
 }
-.input-number-wrapper:has(input:focus) label, .input-number-wrapper:has(input:valid) label {
+.input-number-wrapper:has(input:is(:focus, :not(:placeholder-shown))) label {
   transform: translateY(-68%) scale(0.85);
 }
 .input-number-wrapper button:first-of-type {

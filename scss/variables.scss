@@ -69,10 +69,10 @@ $tablet-breakpoint: 768px;
         }
     }
     @else if $type == "number"{
-        &:has(input:focus) label,
-        &:has(input:valid) label {
-            transform: translateY(-68%) scale(0.85);
+        &:has(input:is(:focus, :not(:placeholder-shown))) label {
+            transform: translateY(-68%) scale(.85);
         }
+
     }
 }
 
