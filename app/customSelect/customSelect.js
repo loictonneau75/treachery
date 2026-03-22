@@ -39,16 +39,7 @@ function setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, o
     })
 }
 
-function getSelectElements(customSelect) {
-    const fakeSelect = customSelect.querySelector(":scope > div")
-    const currentValue = fakeSelect.querySelector("span:nth-of-type(1)")
-    const input = customSelect.querySelector("input")
 
-    const optionsWrapper = document.querySelector("#" + customSelect.dataset.dropdown)
-    const optionsList = optionsWrapper.querySelectorAll("li")
-
-    return { fakeSelect, currentValue, optionsWrapper, optionsList, input }
-}
 
 function positionDropdown(fakeSelect, optionsWrapper) {
     const rect = fakeSelect.getBoundingClientRect()
@@ -73,12 +64,16 @@ export function resetSelect(optionsWrapper, optionsList, currentValue, input){
 }
 
 const customSelects = Array.from(document.querySelectorAll("div.custom-select")).map(customSelect => {
-    const elements = getSelectElements(customSelect)
-    initializeDefaultSelection(elements.optionsWrapper.firstElementChild, elements.currentValue, elements.input)
-    setupToggleBehavior(elements.fakeSelect, elements.optionsWrapper)
-    setupOptionSelection(elements.fakeSelect, elements.optionsWrapper, elements.currentValue, elements.input, elements.optionsList)
-    setupOptionClick(elements.optionsList, elements.optionsWrapper, elements.fakeSelect)
-    return { customSelect, ...elements }
+    const fakeSelect = customSelect.querySelector(":scope > div")
+    const currentValue = fakeSelect.querySelector("span:nth-of-type(1)")
+    const input = customSelect.querySelector("input")
+    const optionsWrapper = document.querySelector("#" + customSelect.dataset.dropdown)
+    const optionsList = optionsWrapper.querySelectorAll("li")
+    initializeDefaultSelection(optionsWrapper.firstElementChild, currentValue, input)
+    setupToggleBehavior(fakeSelect, optionsWrapper)
+    setupOptionSelection(fakeSelect, optionsWrapper, currentValue, input, optionsList)
+    setupOptionClick(optionsList, optionsWrapper, fakeSelect)
+    return {customSelect, fakeSelect, optionsWrapper}
 })
 
 document.addEventListener("click", (e) => {

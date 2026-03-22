@@ -22,23 +22,18 @@ function handleMouseOut(e, preview) {
 
 function positionPreview(e, preview) {
     const offset = 20;
-    const previewWidth = preview.offsetWidth;
-    const previewHeight = preview.offsetHeight;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
     let left = e.clientX + offset;
     let top = e.clientY + offset;
-    if (left + previewWidth > viewportWidth) left = e.clientX - previewWidth - offset;
-    if (top + previewHeight > viewportHeight) top = e.clientY - previewHeight - offset;
+    if (left + preview.offsetWidth > window.innerWidth) left = e.clientX - preview.offsetWidth - offset;
+    if (top + preview.offsetHeight > window.innerHeight) top = e.clientY - preview.offsetHeight - offset;
     preview.style.left = left + "px";
     preview.style.top = top + "px";
 }
 
 if (window.innerWidth >= 992) {
-    const container = document.querySelector("#showCard");
     const preview = document.createElement("img");
     preview.id = "preview";
     document.body.appendChild(preview);
-    addPreviewEvents(container, preview);
+    addPreviewEvents(document.querySelector("#showCard"), preview);
 }
 

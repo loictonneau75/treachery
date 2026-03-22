@@ -56,10 +56,10 @@ async function handleFormSubmitEvent(e, form) {
     else await handlePostFormSubmit(errors, form);
 }
 
-
-const formLogin = document.querySelector("#formLogin");
-const formRegister = document.querySelector("#formRegister");
-for(const form of [formLogin, formRegister]){
+for(const form of [
+    document.querySelector("#formLogin"),
+    document.querySelector("#formRegister")
+]){
     form.addEventListener("submit",  (e) => handleFormSubmitEvent(e, form))
     form.addEventListener("input", () => clearAllErrors(form));
 }

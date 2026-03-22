@@ -4,30 +4,28 @@ import {resetSelect} from "../customSelect/customSelect.js"
 async function handleFormSubmitEvent(e, form){
     e.preventDefault();
     let errors = [];
-    const role = form.querySelector("#cardRole");
-    const rarity = form.querySelector("#cardRarity");
-    const img = form.querySelector("#cardImg");
-    if (role.value.trim() === "") errors.push(["Veuillez choisir un role", [form.querySelector("#cardRoleInput > div")]]);
-    if (rarity.value.trim() === "") errors.push(["Veuillez choisir une rareté", [form.querySelector("#cardRarityInput > div")]]);
-    if (img.files.length === 0) errors.push(["Veuillez choisir une image", [form.querySelector("#cardImgInput > label")]]);
+    if (form.querySelector("#cardRole").value.trim() === "") errors.push(["Veuillez choisir un role", [form.querySelector("#cardRoleInput > div")]]);
+    if (form.querySelector("#cardRarity").value.trim() === "") errors.push(["Veuillez choisir une rareté", [form.querySelector("#cardRarityInput > div")]]);
+    if (form.querySelector("#cardImg").files.length === 0) errors.push(["Veuillez choisir une image", [form.querySelector("#cardImgInput > label")]]);
     if (errors.length >0) setErrors(errors, form);
     else await handlePostFormSubmit(errors, form);
 }
 
 function resetAddCardForm(form) {
     form.reset();
-    addCardForm.querySelectorAll('.custom-select').forEach(select => {
-        const optionsWrapper = document.querySelector("#" + select.dataset.dropdown)
-        const optionsList = optionsWrapper.querySelectorAll("li")
-        const currentValue = select.querySelector(":scope > div span:nth-of-type(1)")
-        const input = select.querySelector("input")
-        resetSelect(optionsWrapper, optionsList, currentValue, input)
+    form.querySelectorAll('.custom-select').forEach(select => {
+        resetSelect(
+            document.querySelector("#" + select.dataset.dropdown),
+            optionsWrapper.querySelectorAll("li"),
+            select.querySelector(":scope > div span:nth-of-type(1)"),
+            select.querySelector("input")
+        )
     })
-    addCardForm.querySelector(".custom-input-file span").innerText = "Aucun fichier";
+    form.querySelector(".custom-input-file span").innerText = "Aucun fichier";
 }
 
 
-const addCardForm = document.querySelector("#addCardForm");
-addCardForm.addEventListener("submit", (e) => handleFormSubmitEvent(e, addCardForm))
-addCardForm.addEventListener("input", () => clearAllErrors(addCardForm));
-addCardForm.querySelector('button[type="button"]').addEventListener('click', () => resetAddCardForm(addCardForm));
+const form = document.querySelector("#addCardForm");
+form.addEventListener("submit", (e) => handleFormSubmitEvent(e, form))
+form.addEventListener("input", () => clearAllErrors(form));
+form.querySelector('button[type="button"]').addEventListener('click', () => resetAddCardForm(form));
