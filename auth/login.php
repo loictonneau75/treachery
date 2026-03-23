@@ -29,7 +29,6 @@ function validPassword(string $password): void{
 }
 SessionTools::sessionStart();
 FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
-$errors = [];
 $email = trim((string)$_POST["mailLogin"]);
 $password = trim((string)$_POST["passwordLogin"]);
 $remember = isset($_POST["rememberLogin"]);
