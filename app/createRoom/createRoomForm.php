@@ -6,7 +6,7 @@ require_once dirname(__DIR__, 2) . "/session/tools.php";
 require_once dirname(__DIR__) . "/customInputNumber/customInputNumber.php";
 ?>
 
-<form action="<?=BASE_URL?>app/partial/createRoom/createRoom.php" id="createRoomForm" class="element" novalidate>
+<form action="<?=BASE_URL?>app/createRoom/createRoom.php" id="createRoomForm" class="element" novalidate>
     <h2>Creer un salon</h2>
     <div class="input-number-wrapper">
         <?=CustomInputNumber::renderCustomInputNumber(4,8)?>

@@ -4,7 +4,7 @@ use App\Session\SessionTools;
 require_once dirname(__DIR__, 2) . "/session/tools.php";
 ?>
 
-<form action="<?=BASE_URL?>app/partial/joinRoom/joinRoom.php" id="joinRoomForm" class="element">
+<form action="<?=BASE_URL?>app/joinRoom/joinRoom.php" id="joinRoomForm" class="element">
     <h2>Rejoindre un salon</h2>
     <div class="input-wrapper">
         <input type="text" id="code" placeholder="">
