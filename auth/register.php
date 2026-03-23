@@ -45,7 +45,6 @@ function validPassword(string $password, string $confirm): void{
 SessionTools::sessionStart();
 
 FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
-$errors = [];
 $email = trim((string)$_POST["mailRegister"]);
 $pseudo = trim((string)$_POST["pseudoRegister"]);
 $password = trim((string)$_POST["passwordRegister"]);
