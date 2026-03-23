@@ -9,8 +9,20 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 require_once dirname(__DIR__,2) . "/security/tools.php";
 require_once dirname(__DIR__,2) . "/session/tools.php";
 
+function getPostInt(string $key): int {
+    $value = filter_input(INPUT_POST, $key, FILTER_VALIDATE_INT);
+    if ($value === false || $value === null) {
+        echo json_encode([
+            'valid'  => false,
+            'errors' => [["Valeur invalide pour $key", [$key]]]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    return $value;
+}
+
 function validateCardRole(PDO $pdo, int $id): void{
-    if($id === "" || DbTools::recordExists($pdo,"roles", $id) === false){
+    if (!DbTools::recordExists($pdo, "roles", $id)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rôle invalide", ["cardRoleInput"]]]
@@ -20,7 +32,7 @@ function validateCardRole(PDO $pdo, int $id): void{
 }
 
 function validateCardRarity(PDO $pdo, int $id): void{
-    if($id === "" || DbTools::recordExists($pdo, "rarities", $id) === false){
+    if(!DbTools::recordExists($pdo, "rarities", $id)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rareté invalide", ["cardRarityInput"]]]
@@ -52,8 +64,8 @@ function checkSession(): int{
 
 SessionTools::sessionStart();
 FormSecurity::protectForm("addCard", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
-$role = (int)$_POST["cardRole"];
-$rarity = (int)$_POST["cardRarity"];
+$role = getPostInt("cardRole");
+$rarity = getPostInt("cardRarity");
 $img = $_FILES["cardImg"];
 
 validateCardRole($pdo, $role);
