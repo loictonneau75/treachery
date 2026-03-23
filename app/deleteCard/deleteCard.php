@@ -10,7 +10,6 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 header('Content-Type: application/json');
 SessionTools::sessionStart();
-error_log((bool)(int)DbTools::getFieldById($pdo, "users", "is_admin", SessionTools::getData("id")));
 $data = json_decode(file_get_contents("php://input"), true);
 CsrfTools::validateToken($data["csrf_token"]);
 $card = DbTools::getById($pdo, 'cards', $data['card']['id']);
