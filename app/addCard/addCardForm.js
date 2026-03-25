@@ -8,7 +8,9 @@ async function handleFormSubmitEvent(e, form){
     if (form.querySelector("#cardRarity").value.trim() === "") errors.push(["Veuillez choisir une rareté !", [form.querySelector("#cardRarityInput > div")]]);
     if (form.querySelector("#cardImg").files.length === 0) errors.push(["Veuillez choisir une image !", [form.querySelector("#cardImgInput > label")]]);
     if (errors.length >0) setErrors(errors, form);
-    else await handlePostFormSubmit(errors, form);
+    else if (await handlePostFormSubmit(errors, form)) {
+        window.location.href = "./index.php";
+    }
 }
 
 function resetAddCardForm(form) {

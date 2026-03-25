@@ -53,7 +53,9 @@ async function handleFormSubmitEvent(e, form) {
     validEmail(errors, form);
     validPassword(errors, form);
     if (errors.length >0) setErrors(errors, form)
-    else await handlePostFormSubmit(errors, form);
+    else if (await handlePostFormSubmit(errors, form)) {
+        window.location.href = "./index.php";
+    }
 }
 
 for(const form of [
