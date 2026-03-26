@@ -75,6 +75,14 @@ class DbTools{
         return $row[$field];
     }
 
+    public static function getCardRoles(PDO $pdo, array $cardsSelected): array {
+        $cardsSelected = array_map('intval', $cardsSelected);
+        $placeholders = implode(',', array_fill(0, count($cardsSelected), '?'));
+        $stmt = $pdo->prepare("SELECT role_id FROM cards WHERE id IN ($placeholders)");
+        $stmt->execute($cardsSelected);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
     public static function getById(PDO $pdo, string $table, int $id): ?array {
         $stmt = $pdo->prepare("SELECT * FROM $table WHERE id = ?");
         $stmt->execute([$id]);

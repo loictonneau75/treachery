@@ -1,19 +1,40 @@
 import { clearAllErrors, setErrors, handlePostFormSubmit } from "../../tools.js";
 
+function setSelectedCardsInput(form, selectedCards) {
+    const selectedCardInput = document.createElement("input")
+    selectedCardInput.type = "hidden"
+    selectedCardInput.name = "cardIds"
+    selectedCardInput.value = JSON.stringify([...selectedCards].map(card => parseInt(card.dataset.cardId)));
+    form.appendChild(selectedCardInput)
+}
+
+function setMinMaxInput(form, values) {
+    const minMaxInput = document.createElement("input")
+    minMaxInput.type = "hidden"
+    minMaxInput.name = "minMax"
+    minMaxInput.value = JSON.stringify(values);
+    form.appendChild(minMaxInput)
+}
 
 async function handleFormSubmitEvent(e, form) {
     e.preventDefault()
     let errors = [];
     const nbplayersInput = form.querySelector("#nbPlayers")
-    const Value = parseInt(nbplayersInput.value.trim())
+    const selectedCards = document.querySelectorAll(".selected")
+    const value = parseInt(nbplayersInput.value.trim())
     const min = parseInt(nbplayersInput.min)
     const max = parseInt(nbplayersInput.max)
-    const cardSelected = document.querySelectorAll(".selected")
-    if (Number.isNaN(Value)) errors.push(["Veuillez entrer un nombre de joueurs !", [nbplayersInput]])
-    else if (Value < min || Value > max) errors.push([`Le nombre de joueurs doit être un entier compris entre ${min} et ${max} !`, [nbplayersInput]])
-    if (cardSelected.length === 0) errors.push(["Veuillez sélectionner au moins une carte !\nPour sélectioner uniquement seulement certaine carte vous pouvez cliquer dessus !", [form.querySelector(".custom-checkbox label.toggle")]])
-    if (errors.length > 0) setErrors(errors, form);
-    //else await handlePostFormSubmit(errors, form);
+    if (Number.isNaN(value)) errors.push(["Veuillez entrer un nombre de joueurs !", [nbplayersInput]])
+    else if (value < min || value > max) errors.push([`Le nombre de joueurs doit être un entier compris entre ${min} et ${max} !`, [nbplayersInput]])
+    if (selectedCards.length < value) errors.push(["Veuillez sélectionner au moins autant de carte que de joueur !\nPour sélectioner uniquement seulement certaine carte vous pouvez cliquer dessus !", [form.querySelector("#fakeCheckboxSelectAllCard")]])
+    if (errors.length > 0) setErrors(errors, form)
+    else {
+        setSelectedCardsInput(form, selectedCards)
+        setMinMaxInput(form, [min, max])
+        if (await handlePostFormSubmit(errors, form)) {
+            window.location.href = "./index.php";
+        }
+    }
 }
 
 const form = document.querySelector("#createRoomForm")
