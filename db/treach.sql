@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS treachery;
 CREATE DATABASE IF NOT EXISTS treachery;
 USE treachery;
 
-DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`;
+DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`, `room_card`;
 DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
 
 CREATE TABLE `roles` (
@@ -82,6 +82,21 @@ CREATE TABLE room_player (
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `fk_room_player_user`
         FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `room_card` (
+    `id` INT AUTO_INCREMENT,
+    `room_id` INT NOT NULL,
+    `card_id` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_room_id` (`room_id`),
+    KEY `idx_card_id` (`card_id`),
+    CONSTRAINT `fk_room_card_room`
+        FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_room_card_card`
+        FOREIGN KEY (`card_id`) REFERENCES `cards` (`id`)
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

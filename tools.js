@@ -22,9 +22,14 @@ export function setErrors(errorList, form){
     };
 }
 
-export async function handlePostFormSubmit(errorList, form) {
+export async function handlePostFormSubmit(errorList, form, get = false) {
     const data = await fetch(form.action, { method: "POST", body: new FormData(form) }).then(res => res.json());
-    if(data.valid) {return true}
+    if(data.valid) {
+        if (get){
+            return { success: true, code: data.code }
+        }
+        return true
+    }
     else {
         for(const [mess, ids] of data.errors){
             const inputs = (ids || []).map(id => form.querySelector(`#${id}`)).filter(Boolean);

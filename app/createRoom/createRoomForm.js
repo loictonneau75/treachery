@@ -31,9 +31,8 @@ async function handleFormSubmitEvent(e, form) {
     else {
         setSelectedCardsInput(form, selectedCards)
         setMinMaxInput(form, [min, max])
-        if (await handlePostFormSubmit(errors, form)) {
-            window.location.href = "./index.php";
-        }
+        const result = await handlePostFormSubmit(errors, form, true);
+        if (result.success) window.location.href = `./rooms/room.php?code=${result.code}`
     }
 }
 

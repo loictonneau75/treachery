@@ -111,6 +111,38 @@ class DbTools{
         $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
 
+    public static function createRoom(PDO $pdo, string $code, int $maxPlayer):int{
+        $stmt = $pdo -> prepare("INSERT INTO rooms (code, max_player) VALUES (?, ?)");
+        $stmt -> execute([$code, $maxPlayer]);
+        return (int)$pdo -> lastInsertId();
+    }
+
+    public static function addCardToRoom(PDO $pdo, int $roomId, int $cardId): void{
+        $stmt = $pdo -> prepare("INSERT INTO room_card (room_id, card_id) VALUES (?, ?)");
+        $stmt -> execute([$roomId, $cardId]);
+    }
+
+    public static function addPlayerToRoom(PDO $pdo, int $roomId, int $userId): void{
+
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM room_player WHERE room_id = ? FOR UPDATE");
+        $stmt->execute([$roomId]);
+        $count = $stmt->fetchColumn();
+        if ($count >= self::getFieldById($pdo, "rooms", "max_player", $roomId)) {
+            $pdo->rollBack();
+            die("Salon complet");
+        }
+        $stmt = $pdo->prepare("INSERT INTO room_player (room_id, user_id) VALUES (?, ?)");
+        $stmt->execute([$roomId, $userId]);
+        $pdo->commit();
+    }
+
+    public static function roomExist(PDO $pdo, string $code): bool{
+        $stmt = $pdo -> prepare("SELECT 1 FROM rooms WHERE code = ? LIMIT 1");
+        $stmt -> execute([$code]);
+        return (bool)$stmt->fetch();
+    }
+
     public static function getCardsBy(PDO $pdo, array $conditions = [], string $orderBy = ""): array{
         $sql = "SELECT * FROM cards";
         $params = [];

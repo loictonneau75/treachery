@@ -10,7 +10,6 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 
 header("Content-Type: application/json; charset=utf-8");
-//error_log(print_r($_POST, true), 3, __DIR__ . "/debug.log");
 function validateNunberPlayers($nbPlayers, $min, $max): void{
     if ($nbPlayers < $min || $nbPlayers > $max){
         echo json_encode([
@@ -54,6 +53,13 @@ function validateAmountOfCardByRoles($pdo, $nbPlayers, $cardsSelected): void{
     }
 }
 
+function findNewRoomCode($pdo): string{
+    do {
+        $code = bin2hex(random_bytes(5));
+    } while (DbTools::roomExist($pdo, $code));
+    return $code;
+}
+
 
 SessionTools::sessionStart();
 FormSecurity::protectForm("createRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
@@ -63,3 +69,11 @@ $cardsSelected = json_decode($_POST["cardIds"], true);
 validateNunberPlayers($nbPlayers, $min, $max);
 validateAmountOfCardsSelected($cardsSelected, $nbPlayers);
 validateAmountOfCardByRoles($pdo, $nbPlayers, $cardsSelected);
+$code = findNewRoomCode($pdo);
+$roomId = DbTools::createRoom($pdo, $code, $nbPlayers);
+foreach ($cardsSelected as $cardId) {
+    DbTools::addCardToRoom($pdo, $roomId, $cardId);
+}
+DbTools::addPlayerToRoom($pdo, $roomId, SessionTools::getData("id"));
+echo json_encode(["valid" => true, "code" => $code], JSON_UNESCAPED_UNICODE);
+exit;
