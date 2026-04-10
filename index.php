@@ -12,7 +12,7 @@ SessionTools::sessionStart();
 SessionTools::autoLogin($pdo);
 CsrfTools::generateToken();
 
-$pageType = "room";
+$pageType = "index";
 $pageName = TITLE;
 
 
