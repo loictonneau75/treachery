@@ -13,26 +13,30 @@ require_once dirname(__DIR__) . "/session/tools.php";
     <link rel="icon" type="image/x-icon" href="assets/ico/favicon.ico">
     <link rel="stylesheet" href="css/style.css">
     <?php
-    if ($pageType === "index"){
-        if(SessionTools::getData("id") === null) {
-            echo "<script type='module' src='auth/partial/authForm.js'></script>";
-            echo "<script type='module' src='auth/toggle.js'></script>";
+    $scripts = [];
+    if ($pageType === "index") {
+        if (SessionTools::getData("id") === null) {
+            $scripts[] = "auth/partial/authForm.js";
+            $scripts[] = "auth/toggle.js";
+        } else {
+            $scripts[] = "app/customSelect/customSelect.js";
+            $scripts[] = "app/customInputNumber/customInputNumber.js";
+            $scripts[] = "app/customInputFile/customInputFile.js";
+            $scripts[] = "app/addCard/addCardForm.js";
+            $scripts[] = "app/createRoom/createRoomForm.js";
+            $scripts[] = "app/joinRoom/joinRoomForm.js";
+            $scripts[] = "app/showCard/showCard.js";
+            $scripts[] = "app/preview/preview.js";
         }
-        else{
-            echo "<script type='module' src='app/customSelect/customSelect.js'></script>";
-            echo "<script type='module' src='app/customInputNumber/customInputNumber.js'></script>";
-            echo "<script type='module' src='app/customInputFile/customInputFile.js'></script>";
-            echo "<script type='module' src='app/addCard/addCardForm.js'></script>";
-            echo "<script type='module' src='app/createRoom/createRoomForm.js'></script>";
-            echo "<script type='module' src='app/joinRoom/joinRoomForm.js'></script>";
-            echo "<script type='module' src='app/showCard/showCard.js'></script>";
-            echo "<script type='module' src='app/preview/preview.js'></script>";
-        }
+
+    } elseif ($pageType === "room") {
+
     }
-    elseif ($pageType === "room"){
-        
+    $scripts[] = "app/navbar/navbar.js";
+    foreach ($scripts as $script) {
+        echo "<script type='module' src='$script'></script>";
     }
-    echo "<script src='app/navbar/navbar.js' defer></script>";
+
 
     ?>
 </head>
