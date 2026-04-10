@@ -6,21 +6,21 @@ DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`, `room_card`;
 DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
 
 CREATE TABLE `roles` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `rarities` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(50) NOT NULL,
     `url` VARCHAR(255) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `users` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `pseudo` VARCHAR(50) NOT NULL UNIQUE,
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `password` VARCHAR(255) NOT NULL,
@@ -29,11 +29,11 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `cards` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `path` VARCHAR(255) NOT NULL,
-    `rarity_id` INT NOT NULL,
-    `role_id` INT NOT NULL,
-    `added_by` INT,
+    `rarity_id` INT UNSIGNED NOT NULL,
+    `role_id` INT UNSIGNED NOT NULL,
+    `added_by` INT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_cards_rarity_id` (`rarity_id`),
     KEY `idx_cards_type_id` (`role_id`),
@@ -50,8 +50,8 @@ CREATE TABLE `cards` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE remember_tokens (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `user_id` INT NOT NULL,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `user_id` INT UNSIGNED NOT NULL,
     `token_hash` CHAR(64) NOT NULL,
     `expires_at` DATETIME NOT NULL,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -63,16 +63,16 @@ CREATE TABLE remember_tokens (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE rooms (
-    `id` INT AUTO_INCREMENT,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `code` CHAR(10) NOT NULL,
     `max_player` TINYINT NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE room_player (
-    `id` INT AUTO_INCREMENT,
-    `room_id` INT NOT NULL,
-    `user_id` INT NOT NULL,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `room_id` INT UNSIGNED NOT NULL,
+    `user_id` INT UNSIGNED NOT NULL,
     `last_active` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     KEY`idx_room_id` (`room_id`),
@@ -86,9 +86,9 @@ CREATE TABLE room_player (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `room_card` (
-    `id` INT AUTO_INCREMENT,
-    `room_id` INT NOT NULL,
-    `card_id` INT NOT NULL,
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `room_id` INT UNSIGNED NOT NULL,
+    `card_id` INT UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     KEY `idx_room_id` (`room_id`),
     KEY `idx_card_id` (`card_id`),
