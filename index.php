@@ -8,12 +8,13 @@ require_once __DIR__ . "/db/tools.php";
 require_once __DIR__ . "/session/tools.php";
 require_once __DIR__ . "/security/tools.php";
 
-$pageType = "index";
-
 SessionTools::sessionStart();
-
 SessionTools::autoLogin($pdo);
 CsrfTools::generateToken();
+
+$pageType = "room";
+$pageName = TITLE;
+
 
 include __DIR__ . "/partial/header.php";
 
