@@ -8,6 +8,8 @@ require_once __DIR__ . "/db/tools.php";
 require_once __DIR__ . "/session/tools.php";
 require_once __DIR__ . "/security/tools.php";
 
+$pageType = "index";
+
 SessionTools::sessionStart();
 
 SessionTools::autoLogin($pdo);
