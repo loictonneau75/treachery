@@ -2,14 +2,15 @@
 use App\DB\DbTools;
 use App\Session\SessionTools;
 
-require_once dirname(__DIR__, 2) . "/db/connexion.php";
-require_once dirname(__DIR__, 2) . "/db/tools.php";
-require_once dirname(__DIR__,2) . "/session/tools.php";
+require_once dirname(__DIR__) . "/db/connexion.php";
+require_once dirname(__DIR__) . "/db/tools.php";
+require_once dirname(__DIR__) . "/session/tools.php";
+require_once dirname(__DIR__) . "/config.php";
 ?>
 
 <nav>
     <div>
-        <img src="assets/img/logo_horizontal.png" alt="img/logo_horizontal.png">
+        <img src="<?=BASE_URL?>assets/img/logo_horizontal.png" alt="img/logo_horizontal.png">
         <div>
             <h1><?=htmlspecialchars(DbTools::getFieldById($pdo, "users", "pseudo", SessionTools::getData("id")), ENT_QUOTES, 'UTF-8');?></h1>
             <button class="burger"><span></span><span></span><span></span></button>

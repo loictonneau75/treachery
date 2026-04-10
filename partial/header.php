@@ -33,7 +33,7 @@ require_once dirname(__DIR__) . "/config.php";
     } elseif ($pageType === "room") {
 
     }
-    $scripts[] = "app/navbar/navbar.js";
+    $scripts[] = "navbar/navbar.js";
     foreach ($scripts as $script) {
         $script = BASE_URL . $script;
         echo "<script type='module' src='$script'></script>";
