@@ -17,7 +17,7 @@ require_once dirname(__DIR__) . "/config.php";
         </div>
     </div>
     <div id="dropdown" hidden>
-        <a href = "auth/logout.php">Se deconnecter</a>
+        <a href = "<?=BASE_URL?>auth/logout.php">Se deconnecter</a>
         <a href = "#" id="deleteAccountBtn">Suprimer son compte</a>
     </div>
     <form id="deleteAccountForm" method="POST" action="<?=BASE_URL?>auth/deleteAccount.php" hidden>

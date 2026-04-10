@@ -20,6 +20,7 @@ require_once dirname(__DIR__) . "/config.php";
             $scripts[] = "auth/partial/authForm.js";
             $scripts[] = "auth/toggle.js";
         } else {
+            $scripts[] = "navbar/navbar.js";
             $scripts[] = "app/customSelect/customSelect.js";
             $scripts[] = "app/customInputNumber/customInputNumber.js";
             $scripts[] = "app/customInputFile/customInputFile.js";
@@ -31,9 +32,9 @@ require_once dirname(__DIR__) . "/config.php";
         }
 
     } elseif ($pageType === "room") {
-
+        $scripts[] = "navbar/navbar.js";
     }
-    $scripts[] = "navbar/navbar.js";
+
     foreach ($scripts as $script) {
         $script = BASE_URL . $script;
         echo "<script type='module' src='$script'></script>";
