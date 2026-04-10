@@ -36,4 +36,12 @@ require_once dirname(__DIR__) . "/session/tools.php";
 
     ?>
 </head>
-<body class="<?=SessionTools::getData("id") ? 'app' : 'auth'?>">
+<?php
+
+$bodyClass = match ($pageType) {
+    "room" => "room",
+    "index" => SessionTools::getData("id") === null ? "auth" : "app",
+};
+?>
+
+<body class="<?= $bodyClass ?>">
