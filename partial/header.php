@@ -2,6 +2,7 @@
 use App\Session\SessionTools;
 
 require_once dirname(__DIR__) . "/session/tools.php";
+require_once dirname(__DIR__) . "/config.php";
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +12,7 @@ require_once dirname(__DIR__) . "/session/tools.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?=$pageName?></title>
     <link rel="icon" type="image/x-icon" href="assets/ico/favicon.ico">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href=<?=BASE_URL . "css/style.css"?>>
     <?php
     $scripts = [];
     if ($pageType === "index") {
@@ -34,6 +35,7 @@ require_once dirname(__DIR__) . "/session/tools.php";
     }
     $scripts[] = "app/navbar/navbar.js";
     foreach ($scripts as $script) {
+        $script = BASE_URL . $script;
         echo "<script type='module' src='$script'></script>";
     }
 
