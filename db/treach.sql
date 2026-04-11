@@ -1,9 +1,9 @@
+DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`, `room_card`;
+DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
+
 DROP DATABASE IF EXISTS treachery;
 CREATE DATABASE IF NOT EXISTS treachery;
 USE treachery;
-
-DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`, `room_card`;
-DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
 
 CREATE TABLE `roles` (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -33,7 +33,7 @@ CREATE TABLE `cards` (
     `path` VARCHAR(255) NOT NULL,
     `rarity_id` INT UNSIGNED NOT NULL,
     `role_id` INT UNSIGNED NOT NULL,
-    `added_by` INT UNSIGNED NOT NULL,
+    `added_by` INT UNSIGNED,
     PRIMARY KEY (`id`),
     KEY `idx_cards_rarity_id` (`rarity_id`),
     KEY `idx_cards_type_id` (`role_id`),
