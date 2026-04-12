@@ -53,9 +53,19 @@ function validateAmountOfCardByRoles($pdo, $nbPlayers, $cardsSelected): void{
     }
 }
 
+function generateCode($length) {
+    $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+    $code = '';
+    for ($i = 0; $i < $length; $i++) {
+        $code .= $chars[random_int(0, strlen($chars) - 1)];
+    }
+    return $code;
+}
+
+
 function findNewRoomCode($pdo): string{
     do {
-        $code = bin2hex(random_bytes(5));
+        $code = generateCode(5);
     } while (DbTools::roomExist($pdo, $code));
     return $code;
 }
