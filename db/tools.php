@@ -3,6 +3,7 @@ namespace App\DB;
 
 use PDO;
 use DateTime;
+use Exception;
 
 class DbTools{
     public static function userEmailOrPseudoExist(PDO $pdo, string $email, string $pseudo): bool{
@@ -122,20 +123,28 @@ class DbTools{
         $stmt -> execute([$roomId, $cardId]);
     }
 
-    public static function addPlayerToRoom(PDO $pdo, int $roomId, int $userId): void{
 
-        $pdo->beginTransaction();
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM room_player WHERE room_id = ? FOR UPDATE");
-        $stmt->execute([$roomId]);
-        $count = $stmt->fetchColumn();
-        if ($count >= self::getFieldById($pdo, "rooms", "max_player", $roomId)) {
-            $pdo->rollBack();
-            die("Salon complet");
+    public static function addPlayerToRoom(PDO $pdo, int $roomId, int $userId): void {
+        try {
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("UPDATE rooms SET current_players = current_players + 1 WHERE id = :roomId AND current_players < max_player");
+            $stmt->execute(['roomId' => $roomId]);
+            if ($stmt->rowCount() === 0) {
+                $pdo->rollBack();
+                throw new Exception("Salon complet");
+            }
+            $stmt = $pdo->prepare("INSERT INTO room_player (room_id, user_id) VALUES (:roomId, :userId)");
+            $stmt->execute([
+                'roomId' => $roomId,
+                'userId' => $userId
+            ]);
+            $pdo->commit();
+        } catch (Exception $e) {
+            if ($pdo->inTransaction()) {$pdo->rollBack();}
+            throw $e;
         }
-        $stmt = $pdo->prepare("INSERT INTO room_player (room_id, user_id) VALUES (?, ?)");
-        $stmt->execute([$roomId, $userId]);
-        $pdo->commit();
     }
+
 
     public static function roomExist(PDO $pdo, string $code): bool{
         $stmt = $pdo -> prepare("SELECT 1 FROM rooms WHERE code = ? LIMIT 1");
@@ -159,6 +168,20 @@ class DbTools{
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function getFieldByCode(PDO $pdo, string $table, string $field, string $code): ?string {
+        $stmt = $pdo->prepare("SELECT $field FROM $table WHERE code = ?");
+        $stmt->execute([$code]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row[$field] ?? null;
+    }
+
+    public static function isUserInRoom(PDO $pdo, int $roomId, int $userId): bool {
+        $stmt = $pdo->prepare("SELECT 1 FROM room_player WHERE room_id = ? AND user_id = ? LIMIT 1");
+        $stmt->execute([$roomId, $userId]);
+        return (bool) $stmt->fetch();
+    }
+
 }
 
 
