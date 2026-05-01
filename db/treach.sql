@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS `cards`, `remember_tokens`, `room_player`, `room_card`;
-DROP TABLE IF EXISTS`rarities`, `roles`, `users`, `rooms`;
+DROP TABLE IF EXISTS `room_card`, `room_player`, `remember_tokens`, `cards`, `rooms`, `users`, `rarities`, `roles`;
 
 DROP DATABASE IF EXISTS treachery;
 CREATE DATABASE IF NOT EXISTS treachery;
@@ -66,6 +65,7 @@ CREATE TABLE rooms (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `code` CHAR(10) NOT NULL,
     `max_player` TINYINT NOT NULL,
+    `current_players` TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
