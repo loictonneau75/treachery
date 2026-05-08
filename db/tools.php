@@ -4,6 +4,7 @@ namespace App\DB;
 use PDO;
 use DateTime;
 use Exception;
+use InvalidArgumentException;
 
 class DbTools{
     public static function userEmailOrPseudoExist(PDO $pdo, string $email, string $pseudo): bool{

@@ -82,7 +82,7 @@ CREATE TABLE room_player (
         ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT `fk_room_player_user`
         FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-        ON DELETE RESTRICT ON UPDATE CASCADE
+        ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `room_card` (
