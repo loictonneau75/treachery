@@ -29,13 +29,14 @@ function validPassword(string $password): void{
 }
 SessionTools::sessionStart();
 FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
+$db = new DbTools($pdo);
 $email = trim((string)$_POST["mailLogin"]);
 $password = trim((string)$_POST["passwordLogin"]);
 $remember = isset($_POST["rememberLogin"]);
 
 validEmail($email);
 validPassword($password);
-$id = DbTools::verifyUser($pdo, $email, $password);
+$id = $db -> verifyUser($email, $password);
 if($id === false){
     echo json_encode([
         'valid'  => false,
@@ -43,7 +44,7 @@ if($id === false){
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-SessionTools::createSession($pdo,$id, $remember);
+SessionTools::createSession($db,$id, $remember);
 CsrfTools::regenerateToken();
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;

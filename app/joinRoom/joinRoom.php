@@ -15,6 +15,8 @@ header("Content-Type: application/json; charset=utf-8");
 
 SessionTools::sessionStart();
 FormSecurity::protectForm("joinRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
+$db = new DbTools($pdo);
+
 $code = trim((string)$_POST["code"]);
 if (empty($code)){
     echo json_encode([
@@ -23,7 +25,7 @@ if (empty($code)){
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-if (!DbTools::roomExist($pdo, $code)){
+if (!$db -> roomExist($code)){
     echo json_encode([
         'valid'  => false,
         'errors' => [["Le code n'existe pas", ["code"]]]
@@ -31,16 +33,16 @@ if (!DbTools::roomExist($pdo, $code)){
     exit;
 }
 
-$roomId = DbTools::getFieldByCode($pdo, "rooms", "id", $code);
+$roomId = $db -> getFieldByCode("rooms", "id", $code);
 $userId = SessionTools::getData("id");
 
-if (DbTools::isUserInRoom($pdo, $roomId, $userId)) {
+if ($db -> isUserInRoom($roomId, $userId)) {
         echo json_encode(['valid' => true, "code" => $code], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
 try {
-    DbTools::addPlayerToRoom($pdo, $roomId, $userId);
+    $db -> addPlayerToRoom($roomId, $userId);
     echo json_encode(['valid' => true, "code" => $code], JSON_UNESCAPED_UNICODE);
     exit;
 } catch (Exception $e) {

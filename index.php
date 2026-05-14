@@ -1,5 +1,6 @@
 <?php
 use App\Session\SessionTools;
+use App\DB\DbTools;
 use App\Security\CsrfTools;
 
 require_once __DIR__ . "/config.php";
@@ -8,8 +9,10 @@ require_once __DIR__ . "/db/tools.php";
 require_once __DIR__ . "/session/tools.php";
 require_once __DIR__ . "/security/tools.php";
 
+//todo voir pour passer l'instance de classe directement en paramètre dans les fonctions au lieu de faire des new à chaque fois
 SessionTools::sessionStart();
-SessionTools::autoLogin($pdo);
+$db = new DbTools($pdo);
+SessionTools::autoLogin($db);
 CsrfTools::generateToken();
 
 $pageType = "index";

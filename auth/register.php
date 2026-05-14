@@ -43,8 +43,9 @@ function validPassword(string $password, string $confirm): void{
 }
 
 SessionTools::sessionStart();
-
 FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
+$db = new DbTools($pdo);
+
 $email = trim((string)$_POST["mailRegister"]);
 $pseudo = trim((string)$_POST["pseudoRegister"]);
 $password = trim((string)$_POST["passwordRegister"]);
@@ -54,7 +55,7 @@ $remember = isset($_POST["rememberRegister"]);
 validEmail($email);
 validPseudo($pseudo);
 validPassword($password, $confirm);
-if(DbTools::userEmailOrPseudoExist($pdo, $email, $pseudo)){
+if($db -> userEmailOrPseudoExist($email, $pseudo)){
     echo json_encode([
         'valid'  => false,
         'errors' => [['Cet email ou ce pseudo sont déjà utilisés', ['mailRegister', 'pseudoRegister']]]
@@ -62,8 +63,8 @@ if(DbTools::userEmailOrPseudoExist($pdo, $email, $pseudo)){
     exit;
 }
 
-$id = DbTools::createUser($pdo, $pseudo, $email, $password);
-SessionTools::createSession($pdo,$id, $remember);
+$id = $db -> createUser($pseudo, $email, $password);
+SessionTools::createSession($db,$id, $remember);
 CsrfTools::regenerateToken();
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;

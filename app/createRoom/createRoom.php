@@ -10,6 +10,7 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 
 header("Content-Type: application/json; charset=utf-8");
+//todo typer
 function validateNunberPlayers($nbPlayers, $min, $max): void{
     if ($nbPlayers < $min || $nbPlayers > $max){
         echo json_encode([
@@ -19,7 +20,7 @@ function validateNunberPlayers($nbPlayers, $min, $max): void{
         exit;
     }
 }
-
+//todo typer
 function validateAmountOfCardsSelected($cardsSelected, $nbPlayers): void{
     if (count($cardsSelected) < $nbPlayers){
         echo json_encode([
@@ -40,19 +41,20 @@ function getRoleDistribution(int $nbPlayers): array {
         default => []
     };
 }
-
-function validateAmountOfCardByRoles($pdo, $nbPlayers, $cardsSelected): void{
+//todo typer
+function validateAmountOfCardByRoles(DbTools $db, $nbPlayers, $cardsSelected): void{
     foreach (getRoleDistribution($nbPlayers) as $roleId => $required){
-        if (array_count_values(DbTools::getCardRoles($pdo, $cardsSelected))[$roleId] < $required){
+        if (array_count_values($db -> getCardRoles($cardsSelected))[$roleId] < $required){
             echo json_encode([
                 'valid'  => false,
-                'errors' => [["Vous devez sélectionner au moins $required cartes du rôle " . DbTools::getFieldById($pdo, "roles", "name", $roleId), ["fakeCheckboxSelectAllCard"]]]
+                'errors' => [["Vous devez sélectionner au moins $required cartes du rôle " . $db -> getFieldById("roles", "name", $roleId), ["fakeCheckboxSelectAllCard"]]]
             ], JSON_UNESCAPED_UNICODE);
             exit;
         }
     }
 }
 
+//todo typer
 function generateCode($length) {
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
     $code = '';
@@ -62,28 +64,29 @@ function generateCode($length) {
     return $code;
 }
 
-
-function findNewRoomCode($pdo): string{
+function findNewRoomCode(DbTools $db): string{
     do {
         $code = generateCode(5);
-    } while (DbTools::roomExist($pdo, $code));
+    } while ($db -> roomExist($code));
     return $code;
 }
 
 
 SessionTools::sessionStart();
 FormSecurity::protectForm("createRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
+$db = new DbTools($pdo);
+
 [$min, $max] = json_decode($_POST["minMax"], true);
 $nbPlayers = $_POST["nbPlayers"];
 $cardsSelected = json_decode($_POST["cardIds"], true);
 validateNunberPlayers($nbPlayers, $min, $max);
 validateAmountOfCardsSelected($cardsSelected, $nbPlayers);
-validateAmountOfCardByRoles($pdo, $nbPlayers, $cardsSelected);
-$code = findNewRoomCode($pdo);
-$roomId = DbTools::createRoom($pdo, $code, $nbPlayers);
+validateAmountOfCardByRoles($db, $nbPlayers, $cardsSelected);
+$code = findNewRoomCode($db);
+$roomId = $db -> createRoom($code, $nbPlayers);
 foreach ($cardsSelected as $cardId) {
-    DbTools::addCardToRoom($pdo, $roomId, $cardId);
+    $db -> addCardToRoom($roomId, $cardId);
 }
-DbTools::addPlayerToRoom($pdo, $roomId, SessionTools::getData("id"));
+$db -> addPlayerToRoom($roomId, SessionTools::getData("id"));
 echo json_encode(["valid" => true, "code" => $code], JSON_UNESCAPED_UNICODE);
 exit;

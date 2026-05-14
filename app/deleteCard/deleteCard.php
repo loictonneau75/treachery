@@ -12,16 +12,20 @@ header('Content-Type: application/json');
 SessionTools::sessionStart();
 $data = json_decode(file_get_contents("php://input"), true);
 CsrfTools::validateToken($data["csrf_token"]);
-$card = DbTools::getById($pdo, 'cards', $data['card']['id']);
+$db = new DbTools($pdo);
+
+$card = $db -> getById('cards', $data['card']['id']);
 if (!$card) {
     echo json_encode(["success" => false, "message" => "Carte introuvable"]);
     exit;
 }
-if ($card['added_by'] != SessionTools::getData("id") && !(bool)(int)DbTools::getFieldById($pdo, "users", "is_admin", SessionTools::getData("id"))) {
+
+//todo voir pour enlever le (bool)(int)
+if ($card['added_by'] != SessionTools::getData("id") && !(bool)(int)$db -> getFieldById("users", "is_admin", SessionTools::getData("id"))) {
     echo json_encode(["success" => false, "message" => "Action interdite"]);
     exit;
 }
 
 unlink(dirname(__DIR__,2) . "/assets/img/cards/" . $card["path"]);
-DbTools::deleteById($pdo, 'cards', $card['id']);
+$db -> deleteById('cards', $card['id']);
 echo json_encode(["success" => true]);

@@ -33,6 +33,6 @@ require_once dirname(__DIR__) . "/customInputFile/customInputFile.php";
     <input type="text" name="hp_email" style="display:none" autocomplete="off">
 </form>
 <?php
-CustomSelect::renderCustomSelectUl("role", DbTools::getAllFrom($pdo, "roles"));
-CustomSelect::renderCustomSelectUl("rarity", DbTools::getAllFrom($pdo, "rarities"))
+CustomSelect::renderCustomSelectUl("role", $db -> getAllFrom("roles"));
+CustomSelect::renderCustomSelectUl("rarity", $db -> getAllFrom("rarities"))
 ?>

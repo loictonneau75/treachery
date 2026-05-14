@@ -2,7 +2,6 @@
 namespace App\Session;
 
 use App\DB\DbTools;
-use PDO;
 
 class SessionTools {
 
@@ -11,29 +10,29 @@ class SessionTools {
         session_start();
     }
 
-    public static function createSession(PDO $pdo, int $userId, bool $remember): void {
+    public static function createSession(DbTools $db, int $userId, bool $remember): void {
         session_regenerate_id(true);
         $_SESSION['id'] = $userId;
-        if ($remember) {self::setRememberMe($pdo, $userId);}
+        if ($remember) {self::setRememberMe($db, $userId);}
     }
 
-    public static function autoLogin(PDO $pdo): void {
+    public static function autoLogin(DbTools $db): void {
         if (isset($_SESSION['id']) || empty($_COOKIE['remember_me'])) {
             return;
         }
         $tokenHash = hash('sha256', $_COOKIE['remember_me']);
-        $row = DbTools::findRememberToken($pdo, $tokenHash);
+        $row = $db -> findRememberToken($tokenHash);
         if (!$row || strtotime($row['expires_at']) < time()) {
-            DbTools::deleteRememberTokens($pdo, ['token_hash' => $tokenHash]);
+            $db -> deleteRememberTokens(['token_hash' => $tokenHash]);
             self::clearRememberCookie();
             return;
         }
         $_SESSION['id'] = (int) $row['user_id'];
-        self::setRememberMe($pdo, (int) $row['user_id']);
+        self::setRememberMe($db, (int) $row['user_id']);
     }
 
-    private static function setRememberMe(PDO $pdo, int $userId): void {
-        $data = DbTools::createRememberToken($pdo, $userId);
+    private static function setRememberMe(DbTools $db, int $userId): void {
+        $data = $db -> createRememberToken($userId);
         setcookie('remember_me', $data['token'], [
             'expires'  => $data['expiresAt']->getTimestamp(),
             'path'     => '/',
@@ -47,7 +46,7 @@ class SessionTools {
         setcookie('remember_me', '', time() - 3600, '/', $_SERVER['HTTP_HOST']);
     }
 
-
+    //todo donner un type au paramètre $key et $value
     public static function getData($key): mixed{
         return $_SESSION[$key] ?? null;
     }

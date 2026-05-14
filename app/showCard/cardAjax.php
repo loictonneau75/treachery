@@ -13,27 +13,21 @@ function getJsonInput(): array {
     return json_decode($input, true);
 }
 
-function resolveGroupingConfig(string $groupBy): array{
-    $table = $groupBy === "role" ? "roles" : "rarities";
-    $order = $groupBy === "rarity" ? "role_id" : "rarity_id";
-    return [$table, $order];
-}
-
-function buildGroupedData(PDO $pdo, array $groups, string $groupBy, string $order): array{
+function buildGroupedData(DbTools $db, string $groupBy): array{
     $groupedData = [];
-    foreach ($groups as $group) {
-        $cards = DbTools::getCardsBy($pdo,[$groupBy . "_id" => $group['id']],$order);
+    foreach ($db -> getAllFrom($groupBy === "role" ? "roles" : "rarities") as $group) {
+        $cards = $db -> getCardsBy([$groupBy . "_id" => $group['id']], $groupBy === "rarity" ? "role_id" : "rarity_id");
         $groupedData[$group['id']] = ["info"  => $group,"cards" => $cards];
     }
     return $groupedData;
 }
 
-
 header('Content-Type: application/json');
 SessionTools::sessionStart();
 $data = getJsonInput();
 CsrfTools::validateToken($data["csrf_token"]);
-[$table, $order] = resolveGroupingConfig($data['groupBy']);
-$groupedData = buildGroupedData($pdo, DbTools::getAllFrom($pdo, $table), $data['groupBy'], $order);
+$db = new DbTools($pdo);
+
+$groupedData = buildGroupedData($db, $data['groupBy']);
 $id = SessionTools::getData("id");
-echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => (bool) DbTools::getFieldById($pdo, "users", "is_admin", $id)]);
+echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => (bool) $db -> getFieldById("users", "is_admin", $id)]);
