@@ -14,11 +14,6 @@ class SessionTools {
         session_start();
     }
 
-    public static function sessionStart(): void {
-        session_name('TREACHERY_SESSION');
-        session_start();
-    }
-
     public function createSession(int $userId, bool $remember): void {
         session_regenerate_id(true);
         $_SESSION['id'] = $userId;
