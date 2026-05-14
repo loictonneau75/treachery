@@ -9,10 +9,10 @@ require_once dirname(__DIR__,2) . "/db/connexion.php";
 require_once dirname(__DIR__,2) . "/db/tools.php";
 
 header('Content-Type: application/json');
-SessionTools::sessionStart();
 $data = json_decode(file_get_contents("php://input"), true);
 CsrfTools::validateToken($data["csrf_token"]);
 $db = new DbTools($pdo);
+$session = new SessionTools($db);
 
 $card = $db -> getById('cards', $data['card']['id']);
 if (!$card) {

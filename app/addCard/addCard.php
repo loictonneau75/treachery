@@ -62,9 +62,9 @@ function checkSession(): int{
     return (int)$id;
 }
 
-SessionTools::sessionStart();
 FormSecurity::protectForm("addCard", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
+$session = new SessionTools($db);
 
 $role = getPostInt("cardRole");
 $rarity = getPostInt("cardRarity");

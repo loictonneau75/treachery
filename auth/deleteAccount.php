@@ -10,9 +10,9 @@ require_once dirname(__DIR__) . "/session/tools.php";
 require_once dirname(__DIR__) . "/security/tools.php";
 require_once dirname(__DIR__) . "/config.php";
 
-SessionTools::sessionStart();
 FormSecurity::protectForm("delete_account", $_POST["hp_email"] ?? null, $_POST["csrf_token"] ?? null);
 $db = new DbTools($pdo);
+$session = new SessionTools($db);
 
 if (SessionTools::getData("id") === null) {
     http_response_code(403);

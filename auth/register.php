@@ -42,9 +42,9 @@ function validPassword(string $password, string $confirm): void{
     }
 }
 
-SessionTools::sessionStart();
 FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
+$session = new SessionTools($db);
 
 $email = trim((string)$_POST["mailRegister"]);
 $pseudo = trim((string)$_POST["pseudoRegister"]);
@@ -64,7 +64,7 @@ if($db -> userEmailOrPseudoExist($email, $pseudo)){
 }
 
 $id = $db -> createUser($pseudo, $email, $password);
-SessionTools::createSession($db,$id, $remember);
+$session -> createSession($id, $remember);
 CsrfTools::regenerateToken();
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;

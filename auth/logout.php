@@ -7,8 +7,8 @@ require_once dirname(__DIR__) . "/db/tools.php";
 require_once dirname(__DIR__) . "/session/tools.php";
 require_once dirname(__DIR__) . "/config.php";
 
-SessionTools::sessionStart();
 $db = new DbTools($pdo);
+$session = new SessionTools($db);
 
 if (isset($_COOKIE['remember_me'])) {
     $db -> deleteRememberTokens(['token_hash' => hash('sha256', $_COOKIE['remember_me'])]);
