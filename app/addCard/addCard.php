@@ -41,7 +41,7 @@ function validateCardRarity(PDO $pdo, int $id): void{
     }
 }
 
-function validateCardImg(array $img, $allowedExtension): string{
+function validateCardImg(array $img, array $allowedExtension): string{
     if($img === "" ){
         echo json_encode([
             'valid'  => false,
