@@ -27,5 +27,5 @@ if ($card['added_by'] != SessionTools::getData("id") && !(bool)(int)$db -> getFi
 }
 
 unlink(dirname(__DIR__,2) . "/assets/img/cards/" . $card["path"]);
-$db -> deleteById('cards', $card['id']);
+$db -> deleteCardById($card['id']);
 echo json_encode(["success" => true]);

@@ -55,10 +55,10 @@ $remember = isset($_POST["rememberRegister"]);
 validEmail($email);
 validPseudo($pseudo);
 validPassword($password, $confirm);
-if($db -> userEmailOrPseudoExist($email, $pseudo)){
+if($db -> userEmailExist($email, $pseudo)){
     echo json_encode([
         'valid'  => false,
-        'errors' => [['Cet email ou ce pseudo sont déjà utilisés', ['mailRegister', 'pseudoRegister']]]
+        'errors' => [['Identifiants invalides', ['mailRegister', 'pseudoRegister', 'passwordRegister', 'confirmRegister']]]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }

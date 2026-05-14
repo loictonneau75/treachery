@@ -18,9 +18,9 @@ if (SessionTools::getData("id") === null) {
     http_response_code(403);
     exit("Utilisateur non authentifié");
 }
-$db -> deleteById("users", (int) SessionTools::getData("id"));
+$db -> deleteUserById((int)SessionTools::getData("id"));
 if (isset($_COOKIE['remember_me'])) {
-    $db -> deleteRememberTokens(['token_hash' => hash('sha256', $_COOKIE['remember_me'])]);
+    $db -> deleteRememberTokensByTokenHash(hash('sha256', $_COOKIE['remember_me']));
     SessionTools::clearRememberCookie();
 }
 SessionTools::deleteSession();

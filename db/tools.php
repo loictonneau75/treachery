@@ -13,9 +13,71 @@ class DbTools{
         $this -> pdo = $pdo;
     }
 
-    public function userEmailOrPseudoExist(string $email, string $pseudo): bool{
-        $stmt = $this -> pdo -> prepare("SELECT 1 FROM users WHERE email = ? OR pseudo = ? LIMIT 1");
-        $stmt -> execute([$email, $pseudo]);
+    private function delete(string $table, array $conditions, string $operator = "AND"): void {
+        $allowedColumns = [
+            'remember_tokens' => ['token_hash', 'user_id', 'expires_at'], 
+            'users' => ['id'], 
+            'cards' => ['id']
+        ];
+        if (!array_key_exists($table, $allowedColumns)) throw new InvalidArgumentException("Table non autorisée");
+        $sql = "DELETE FROM $table";
+        $params = []; 
+        $clauses = []; 
+        foreach ($conditions as $column => $value) {
+            if (!in_array($column, $allowedColumns[$table])) throw new InvalidArgumentException("Colonne non autorisée");
+            if ($column === 'expires_at' && $value === 'expired') $clauses[] = "expires_at < NOW()";
+            else {
+                $clauses[] = "$column = ?"; 
+                $params[] = $value; 
+            } 
+        } 
+        if (!empty($clauses)) $sql .= " WHERE " . implode(" $operator ", $clauses);
+        $stmt = $this -> pdo -> prepare($sql); 
+        $stmt ->execute($params); 
+    }
+
+    public function deleteExpiredRememberTokens(): void{
+        $this -> delete('remember_tokens', ['expires_at' => 'expired']);
+    }
+
+    public function deleteRememberTokensByUserId(int $userId): void{
+        $this -> delete('remember_tokens', ['user_id' => $userId]);
+    }
+
+    public function deleteRememberTokensByTokenHash(string $tokenHash): void{
+        $this -> delete('remember_tokens', ['token_hash' => $tokenHash]);
+    }
+
+    public function deleteUserById(int $userId): void {
+        $this -> delete('users', ['id' => $userId]);
+    }
+
+    public function deleteCardById(int $cardId): void {
+        $this -> delete('cards', ['id' => $cardId]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function userEmailExist(string $email, string $pseudo): bool{
+        $stmt = $this -> pdo -> prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
+        $stmt -> execute([$email]);
         return (bool)$stmt->fetch();
     }
 
@@ -26,8 +88,8 @@ class DbTools{
     }
 
     public function createRememberToken(int $userId): array {
-        $this -> deleteRememberTokens(['expires_at' => 'expired']);
-        $this -> deleteRememberTokens(['user_id' => $userId]);
+        $this -> deleteExpiredRememberTokens();
+        $this -> deleteRememberTokensByUserId($userId);
         $token     = bin2hex(random_bytes(32));
         $tokenHash = hash('sha256', $token);
         $expiresAt = new DateTime('+30 days');
@@ -42,25 +104,6 @@ class DbTools{
         return $stmt -> fetch(PDO::FETCH_ASSOC) ?: null;
     }
 
-    public function deleteRememberTokens(array $conditions = []): void{
-        $sql = "DELETE FROM remember_tokens";
-        $params = [];
-        $clauses = [];
-        $allowedColumns = ['token_hash', 'user_id', 'expires_at'];
-        foreach ($conditions as $column => $value) {
-            if (!in_array($column, $allowedColumns)) {throw new InvalidArgumentException("Colonne non autorisée");}
-            if ($column === 'expires_at' && $value === 'expired') {$clauses[] = "expires_at < NOW()";} 
-            else {
-                $clauses[] = "$column = ?";
-                $params[] = $value;
-            }
-        }
-        if (!empty($clauses)) {$sql .= " WHERE " . implode(" AND ", $clauses);}
-        $stmt = $this -> pdo -> prepare($sql);
-        $stmt -> execute($params);
-    }
-
-
     public function verifyUser(string $email, string $password): false|int {
         $stmt = $this -> pdo -> prepare("SELECT id, password FROM users WHERE email = ?");
         $stmt -> execute([$email]);
@@ -69,11 +112,6 @@ class DbTools{
             return false;
         }
         return (int)$user['id'];
-    }
-
-    public function deleteById(string $table, int $id): void {
-        $stmt = $this -> pdo -> prepare("DELETE FROM $table WHERE id = ?");
-        $stmt -> execute([$id]);
     }
 
     public function getFieldById(string $table, string $field, int $id): ?string {
