@@ -15,15 +15,15 @@ require_once dirname(__DIR__) . "/customInputFile/customInputFile.php";
     <h2>Ajouter un carte</h2>
     <div class="select-wrapper">
         <label>Rôle</label>
-        <?=CustomSelect::renderCustomSelect("role")?>
+        <?php CustomSelect::renderCustomSelect("role")?>
     </div>
     <div class="select-wrapper">
         <label>Rareté</label>
-        <?=CustomSelect::renderCustomSelect("rarity")?>
+        <?php CustomSelect::renderCustomSelect("rarity")?>
     </div>
     <div class="input-file-wrapper">
         <label>Image</label>
-        <?=CustomInputFile::renderCustomInputFile("img")?>
+        <?php CustomInputFile::renderCustomInputFile("img")?>
     </div>
     <div>
         <button type="submit">Enregister</button>
