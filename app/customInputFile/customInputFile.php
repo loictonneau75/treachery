@@ -3,7 +3,7 @@
 namespace App\CustomInputFile;
 
 class CustomInputFile{
-
+//todo typer
     public static function renderCustomInputFile($inputName): void{
 ?>
         <div class="custom-input-file" id="card<?=ucfirst($inputName)?>Input">

@@ -3,7 +3,7 @@
 namespace App\CustomInputNumber;
 
 class CustomInputNumber{
-
+//todo typer
     public static function renderCustomInputNumber($min, $max): void{
 ?>
         <div class="custom-input-number">
