@@ -42,23 +42,23 @@ class DbTools{
     }
 
     public function deleteExpiredRememberTokens(): void{
-        $this -> delete($table = 'remember_tokens', $conditions = ['expires_at' => 'expired']);
+        $this -> delete(table: 'remember_tokens', conditions: ['expires_at' => 'expired']);
     }
 
     public function deleteRememberTokensByUserId(int $userId): void{
-        $this -> delete($table ='remember_tokens', $condition = ['user_id' => $userId]);
+        $this -> delete(table: 'remember_tokens', conditions: ['user_id' => $userId]);
     }
 
     public function deleteRememberTokensByTokenHash(string $tokenHash): void{
-        $this -> delete($table = 'remember_tokens', $condition = ['token_hash' => $tokenHash]);
+        $this -> delete(table: 'remember_tokens', conditions: ['token_hash' => $tokenHash]);
     }
 
     public function deleteUserById(int $userId): void {
-        $this -> delete($table = 'users', $condition = ['id' => $userId]);
+        $this -> delete(table: 'users', conditions: ['id' => $userId]);
     }
 
     public function deleteCardById(int $cardId): void {
-        $this -> delete($table = 'cards', $condition = ['id' => $cardId]);
+        $this -> delete(table: 'cards', conditions: ['id' => $cardId]);
     }
 
     private function exists(string $table, array $conditions, string $operator = "AND"): bool {
@@ -92,23 +92,23 @@ class DbTools{
     }
 
     public function existsUserEmail(string $email): bool{
-        return $this -> exists($table = 'users', $condition = ['email' => $email]);
+        return $this -> exists(table: 'users', conditions: ['email' => $email]);
     }
 
     public function existsRole(int $roleId): bool{
-        return $this -> exists($table = 'roles', $condition = ['id' => $roleId]);
+        return $this -> exists(table: 'roles', conditions: ['id' => $roleId]);
     }
 
     public function existsRarity(int $rarityId): bool{
-        return $this -> exists($table = 'rarities', $condition = ['id' => $rarityId]);
+        return $this -> exists(table: 'rarities', conditions: ['id' => $rarityId]);
     }
 
     public function existsRoom(string $code): bool{
-        return $this -> exists($table = 'rooms', $condition = ['code' => $code]);
+        return $this -> exists(table: 'rooms', conditions: ['code' => $code]);
     }
 
     public function existsUserInRoom(int $userId, int $roomId): bool{
-        return $this -> exists($table = 'room_player', $condition = ['user_id' => $userId, 'room_id' => $roomId]);
+        return $this -> exists(table: 'room_player', conditions: ['user_id' => $userId, 'room_id' => $roomId]);
     }
 
     private function insert(string $table, array $data): int {
@@ -136,8 +136,8 @@ class DbTools{
 
     public function insertUser(string $pseudo, string $email, string $password): int{
         return $this -> insert(
-            $table = 'users',
-            $data = [
+            table: 'users',
+            data: [
                 'pseudo' => $pseudo, 
                 'email' => $email, 
                 'password' => password_hash($password, PASSWORD_DEFAULT)
@@ -151,8 +151,8 @@ class DbTools{
         $token = bin2hex(random_bytes(32));
         $expiresAt = new DateTime('+30 days');
         $this -> insert(
-            $table = 'remember_tokens',
-            $data = [
+            table: 'remember_tokens',
+            data: [
                 'user_id' => $userId,
                 'token_hash' => hash('sha256', $token),
                 'expires_at' => $expiresAt -> format('Y-m-d H:i:s')
@@ -163,8 +163,8 @@ class DbTools{
 
     public function insertCard(string $imgPath, int $rarityId, int $roleId, int $userId): void{
         $this -> insert(
-            $table = 'cards',
-            $data = [
+            table: 'cards',
+            data: [
                 'path' => $imgPath,
                 'rarity_id' => $rarityId,
                 'role_id' => $roleId,
@@ -175,8 +175,8 @@ class DbTools{
 
     public function insertRoom(string $code, int $maxPlayer): int{
         return $this -> insert(
-            $table = 'rooms',
-            $data = [
+            table: 'rooms',
+            data: [
                 'code' => $code,
                 'max_player' => $maxPlayer
             ]
@@ -186,8 +186,8 @@ class DbTools{
     //todo trouver comment faire une seul requete
     public function insertCardToRoom(int $roomId, int $cardId): void{
         $this -> insert(
-            $table = 'room_card',
-            $data = [
+            table: 'room_card',
+            data: [
                 'room_id' => $roomId,
                 'card_id' => $cardId
             ]
@@ -204,8 +204,8 @@ class DbTools{
                 throw new Exception("Salon complet");
             }
             $this -> insert(
-                $table = 'room_player',
-                $data = [
+                table: 'room_player',
+                data: [
                     'room_id' => $roomId,
                     'user_id' => $userId
                 ]
@@ -217,96 +217,164 @@ class DbTools{
         }
     }
 
+    private function query(string $table, array $columns = ['*'], array $conditions = [], array $in = [], ?string $orderBy = null, ?int $limit = null, string $fetchMode = 'all'): array|null { 
+        $allowed = [
+            "rarities" => [],
+            "cards" => ['role_id', 'rarity_id', 'id'],
+            "users" => ['id', 'email', 'pseudo', 'password', 'admin'],
+            "roles" => ['id', 'name'],
+            "rooms" => ['id', 'code'],
+            "rememeber_tokens" => ['user_id', 'token_hash', 'expires_at'] 
+        ]; 
+        if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
 
+        foreach ($columns as $col) {
+            if ($col !== '*' && !in_array($col, $allowed[$table], true)) throw new InvalidArgumentException("Colonne SELECT non autorisée"); 
+        } 
 
+        $sql = "SELECT " . implode(', ', $columns) . " FROM $table"; $params = [];
 
+        if (!empty($conditions)) {
+            $clauses = []; 
+            foreach ($conditions as $column => $value) { 
+                if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée"); 
+                $clauses[] = "$column = ?"; 
+                $params[] = $value; 
+            }
+            $sql .= " WHERE " . implode(" AND ", $clauses); 
+        }
 
+        if (!empty($in)) {
+            $clauses = [];
+            foreach ($in as $col => $values) {
+                if (!in_array($col, $allowed[$table], true)) throw new InvalidArgumentException("Colonne IN non autorisée");
+                $placeholders = implode(',', array_fill(0, count($values), '?'));
+                $clauses[] = "$col IN ($placeholders)"; $params = array_merge($params, $values); 
+            }
+            $sql .= empty($conditions) ? " WHERE " : " AND ";
+            $sql .= implode(" AND ", $clauses);
+        }
 
+        if ($orderBy !== null) { 
+            if (!in_array($orderBy, $allowed[$table])) throw new InvalidArgumentException("ORDER BY non autorisé");
+            $sql .= " ORDER BY $orderBy ASC";
+        }
 
+        if ($limit !== null) $sql .= " LIMIT $limit";
 
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
 
-
-
-
-
-
-
-
-
-
+        if ($fetchMode === 'one') return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    }
 
     public function findRememberToken(string $tokenHash): ?array {
-        $stmt = $this -> pdo -> prepare('SELECT user_id, expires_at FROM remember_tokens WHERE token_hash = ? LIMIT 1');
-        $stmt -> execute([$tokenHash]);
-        return $stmt -> fetch(PDO::FETCH_ASSOC) ?: null;
+        return $this -> query(
+            table: 'remember_tokens',
+            columns: ['user_id', 'expires_at'],
+            conditions: ['token_hash' => $tokenHash],
+            limit: 1,
+            fetchMode: 'one'
+        );
     }
 
     public function verifyUser(string $email, string $password): false|int {
-        $stmt = $this -> pdo -> prepare("SELECT id, password FROM users WHERE email = ?");
-        $stmt -> execute([$email]);
-        $user = $stmt -> fetch(PDO::FETCH_ASSOC);
+        $user = $this -> query(
+            table: 'users',
+            columns: ['id', 'password'],
+            conditions: ['email' => $email],
+            fetchMode: 'one'
+        );
         if (!$user || !password_verify($password, $user['password'])) {
             return false;
         }
         return (int)$user['id'];
     }
 
-    public function getFieldById(string $table, string $field, int $id): ?string {
-        $stmt = $this -> pdo -> prepare("SELECT $field FROM $table WHERE id = ?");
-        $stmt -> execute([$id]);
-        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-        return $row[$field];
+    public function isUserAdmin(int $userId): bool {
+        $user = $this -> query(
+            table: 'users',
+            columns: ['admin'],
+            conditions: ['id' => $userId],
+            fetchMode: 'one'
+        );
+        return (bool)$user['admin'];
+    }
+
+    public function getUserPseudo(int $userId): string {
+        $user = $this -> query(
+            table: 'users',
+            columns: ['pseudo'],
+            conditions: ['id' => $userId],
+            fetchMode: 'one'
+        );
+        return htmlspecialchars($user['pseudo'], ENT_QUOTES, 'UTF-8');
+    }
+
+    public function getRoleName(int $roleId): string {
+        $role = $this -> query(
+            table: 'roles',
+            columns: ['name'],
+            conditions: ['id' => $roleId],
+            fetchMode: 'one'
+        );
+        return $role['name'];
     }
 
     public function getCardRoles(array $cardsSelected): array {
-        $cardsSelected = array_map('intval', $cardsSelected);
-        $placeholders = implode(',', array_fill(0, count($cardsSelected), '?'));
-        $stmt = $this -> pdo -> prepare("SELECT role_id FROM cards WHERE id IN ($placeholders)");
-        $stmt -> execute($cardsSelected);
-        return $stmt -> fetchAll(PDO::FETCH_COLUMN);
-    }
-
-    public function getById(string $table, int $id): ?array {
-        $stmt = $this -> pdo -> prepare("SELECT * FROM $table WHERE id = ?");
-        $stmt -> execute([$id]);
-        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-        return $row ;
+        return $this -> query(
+            table: 'cards',
+            columns: ['role_id'],
+            in: ['id' => array_map('intval', $cardsSelected)]
+        );
     }
 
 
-    public function getAllFrom(string $table): array{
-        $allowedTables = ['roles', 'rarities'];
-        if (!in_array($table, $allowedTables)) {throw new InvalidArgumentException("Table non autorisée");}
-        $stmt = $this -> pdo -> query("SELECT * FROM $table");
-        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    public function getCardById(int $id): array {
+        return $this -> query(
+            table: 'cards',
+            conditions: ['id' => $id],
+            limit: 1,
+            fetchMode: 'one'
+        );
     }
 
-
-
-
-
-    public function getCardsBy(array $conditions = [], string $orderBy = ""): array{
-        $sql = "SELECT * FROM cards";
-        $params = [];
-        if (!empty($conditions)) {
-            $clauses = [];
-            foreach ($conditions as $column => $value) {
-                $clauses[] = "$column = ?";
-                $params[] = $value;
-            }
-            $sql .= " WHERE " . implode(" AND ", $clauses);
-        }
-        if ($orderBy !== "") $sql .= " ORDER BY $orderBy ASC";
-        $stmt = $this -> pdo -> prepare($sql);
-        $stmt -> execute($params);
-        return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    public function getRoles(){
+        return $this -> query(
+            table: 'roles'
+        );
     }
 
-    public function getFieldByCode(string $table, string $field, string $code): ?string {
-        $stmt = $this -> pdo -> prepare("SELECT $field FROM $table WHERE code = ?");
-        $stmt -> execute([$code]);
-        $row = $stmt -> fetch(PDO::FETCH_ASSOC);
-        return $row[$field] ?? null;
+    public function getRarities(){
+        return $this -> query(
+            table: 'rarities'
+        );
+    }
+
+    public function getRoomByCode(string $code): ?int {
+        return $this -> query(
+            table: 'rooms',
+            conditions: ['code' => $code],
+            limit: 1,
+            fetchMode: 'one'
+        );
+    }
+
+    public function getCardByRoleId(int $roleId): array {
+        return $this -> query(
+            table: 'cards',
+            conditions: ['role_id' => $roleId],
+            orderBy: 'rarity_id'
+        );
+    }
+
+    public function getCardByRarityId(int $rarityId): array {
+        return $this -> query(
+            table: 'cards',
+            conditions: ['rarity_id' => $rarityId],
+            orderBy: 'role_id'
+        );
     }
 
 }

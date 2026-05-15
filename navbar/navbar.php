@@ -14,7 +14,7 @@ $db = new DbTools($pdo);
     <div>
         <img src="<?=BASE_URL?>assets/img/logo_horizontal.png" alt="img/logo_horizontal.png">
         <div>
-            <h1><?=htmlspecialchars($db -> getFieldById("users", "pseudo", SessionTools::getData("id")), ENT_QUOTES, 'UTF-8');?></h1>
+            <h1><?=$db -> getUserPseudo(SessionTools::getData("id"))?></h1>
             <button class="burger"><span></span><span></span><span></span></button>
         </div>
     </div>

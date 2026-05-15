@@ -15,8 +15,9 @@ function getJsonInput(): array {
 
 function buildGroupedData(DbTools $db, string $groupBy): array{
     $groupedData = [];
-    foreach ($db -> getAllFrom($groupBy === "role" ? "roles" : "rarities") as $group) {
-        $cards = $db -> getCardsBy([$groupBy . "_id" => $group['id']], $groupBy === "rarity" ? "role_id" : "rarity_id");
+    //todo voir pour simplifié
+    foreach ($groupBy === "role" ? $db -> getRoles() : $db -> getRarities() as $group) {
+        $cards = $groupBy === "role" ? $db -> getCardByRoleId($group['id']) : $db -> getCardByRarityId($group['id']);
         $groupedData[$group['id']] = ["info"  => $group,"cards" => $cards];
     }
     return $groupedData;
@@ -31,4 +32,4 @@ $session = new SessionTools($db);
 
 $groupedData = buildGroupedData($db, $data['groupBy']);
 $id = SessionTools::getData("id");
-echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => (bool) $db -> getFieldById("users", "is_admin", $id)]);
+echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => $db -> isUserAdmin($id)]);

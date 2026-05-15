@@ -14,14 +14,13 @@ CsrfTools::validateToken($data["csrf_token"]);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
 
-$card = $db -> getById('cards', $data['card']['id']);
+$card = $db -> getCardById($data['card']['id']);
 if (!$card) {
     echo json_encode(["success" => false, "message" => "Carte introuvable"]);
     exit;
 }
 
-//todo voir pour enlever le (bool)(int)
-if ($card['added_by'] != SessionTools::getData("id") && !(bool)(int)$db -> getFieldById("users", "is_admin", SessionTools::getData("id"))) {
+if ($card['added_by'] != SessionTools::getData("id") && !$db -> isUserAdmin(SessionTools::getData("id"))) {
     echo json_encode(["success" => false, "message" => "Action interdite"]);
     exit;
 }

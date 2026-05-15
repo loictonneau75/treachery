@@ -47,7 +47,7 @@ function validateAmountOfCardByRoles(DbTools $db, $nbPlayers, $cardsSelected): v
         if (array_count_values($db -> getCardRoles($cardsSelected))[$roleId] < $required){
             echo json_encode([
                 'valid'  => false,
-                'errors' => [["Vous devez sélectionner au moins $required cartes du rôle " . $db -> getFieldById("roles", "name", $roleId), ["fakeCheckboxSelectAllCard"]]]
+                'errors' => [["Vous devez sélectionner au moins $required cartes du rôle " . $db -> getRoleName($roleId), ["fakeCheckboxSelectAllCard"]]]
             ], JSON_UNESCAPED_UNICODE);
             exit;
         }
