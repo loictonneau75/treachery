@@ -67,7 +67,7 @@ function generateCode($length) {
 function findNewRoomCode(DbTools $db): string{
     do {
         $code = generateCode(5);
-    } while ($db -> roomExist($code));
+    } while ($db -> existsRoom($code));
     return $code;
 }
 

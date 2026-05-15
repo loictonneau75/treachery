@@ -80,23 +80,23 @@ class DbTools{
         return (bool) $stmt->fetchColumn(); 
     }
 
-    public function userEmailExist(string $email): bool{
+    public function existsUserEmail(string $email): bool{
         return $this -> exists($table = 'users', $condition = ['email' => $email]);
     }
 
-    public function roleExist(int $roleId): bool{
+    public function existsRole(int $roleId): bool{
         return $this -> exists($table = 'roles', $condition = ['id' => $roleId]);
     }
 
-    public function rarityExist(int $rarityId): bool{
+    public function existsRarity(int $rarityId): bool{
         return $this -> exists($table = 'rarities', $condition = ['id' => $rarityId]);
     }
 
-    public function roomExist(string $code): bool{
+    public function existsRoom(string $code): bool{
         return $this -> exists($table = 'rooms', $condition = ['code' => $code]);
     }
 
-    public function isUserInRoom(int $userId, int $roomId): bool{
+    public function existsUserInRoom(int $userId, int $roomId): bool{
         return $this -> exists($table = 'room_player', $condition = ['user_id' => $userId, 'room_id' => $roomId]);
     }
 

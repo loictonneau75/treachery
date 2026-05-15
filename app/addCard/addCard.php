@@ -22,7 +22,7 @@ function getPostInt(string $key): int {
 }
 
 function validateCardRole(DbTools $db, int $roleId): void{
-    if(!$db -> roleExist($roleId)){
+    if(!$db -> existsRole($roleId)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rôle invalide", ["cardRoleInput"]]]
@@ -32,7 +32,7 @@ function validateCardRole(DbTools $db, int $roleId): void{
 }
 
 function validateCardRarity(DbTools $db, int $rarityId): void{
-    if(!$db -> rarityExist($rarityId)){
+    if(!$db -> existsRarity($rarityId)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rareté invalide", ["cardRarityInput"]]]

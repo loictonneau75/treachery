@@ -25,7 +25,7 @@ if (empty($code)){
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-if (!$db -> roomExist($code)){
+if (!$db -> existsRoom($code)){
     echo json_encode([
         'valid'  => false,
         'errors' => [["Le code n'existe pas", ["code"]]]
@@ -36,7 +36,7 @@ if (!$db -> roomExist($code)){
 $roomId = $db -> getFieldByCode("rooms", "id", $code);
 $userId = SessionTools::getData("id");
 
-if ($db -> isUserInRoom($userId, $roomId)) {
+if ($db -> existsUserInRoom($userId, $roomId)) {
         echo json_encode(['valid' => true, "code" => $code], JSON_UNESCAPED_UNICODE);
         exit;
     }
