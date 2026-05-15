@@ -28,9 +28,9 @@ function validPassword(string $password): void{
     }
 }
 
-FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
+FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 
 $email = trim((string)$_POST["mailLogin"]);
 $password = trim((string)$_POST["passwordLogin"]);

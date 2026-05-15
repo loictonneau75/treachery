@@ -13,9 +13,9 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 header("Content-Type: application/json; charset=utf-8");
 
-FormSecurity::protectForm("joinRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
+FormSecurity::protectForm("joinRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 
 $code = trim((string)$_POST["code"]);
 if (empty($code)){

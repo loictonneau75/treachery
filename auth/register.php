@@ -42,9 +42,9 @@ function validPassword(string $password, string $confirm): void{
     }
 }
 
-FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
+FormSecurity::protectForm("login", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 
 $email = trim((string)$_POST["mailRegister"]);
 $pseudo = trim((string)$_POST["pseudoRegister"]);

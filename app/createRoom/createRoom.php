@@ -72,9 +72,9 @@ function findNewRoomCode(DbTools $db): string{
 }
 
 
-FormSecurity::protectForm("createRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
+FormSecurity::protectForm("createRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 
 [$min, $max] = json_decode($_POST["minMax"], true);
 $nbPlayers = $_POST["nbPlayers"];

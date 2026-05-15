@@ -3,7 +3,7 @@ namespace App\Session;
 
 use App\DB\DbTools;
 
-require_once dirname(__DIR__,2) . "/db/tools.php";
+require_once dirname(__DIR__) . "/db/tools.php";
 
 class SessionTools {
     private DbTools $db;

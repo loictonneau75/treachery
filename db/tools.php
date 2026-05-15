@@ -194,6 +194,8 @@ class DbTools{
         );
     }
 
+    public function insertCardsToRoom(int $roomId, array $cardsIds): void{}
+
     public function insertPlayerToRoom(int $roomId, int $userId): void {
         try {
             $this -> pdo -> beginTransaction();
