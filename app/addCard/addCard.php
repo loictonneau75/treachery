@@ -21,8 +21,8 @@ function getPostInt(string $key): int {
     return $value;
 }
 
-function validateCardRole(DbTools $db, int $id): void{
-    if (!$db -> recordExists("roles", $id)){
+function validateCardRole(DbTools $db, int $roleId): void{
+    if(!$db -> roleExist($roleId)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rôle invalide", ["cardRoleInput"]]]
@@ -31,8 +31,8 @@ function validateCardRole(DbTools $db, int $id): void{
     }
 }
 
-function validateCardRarity(DbTools $db, int $id): void{
-    if(!$db -> recordExists("rarities", $id)){
+function validateCardRarity(DbTools $db, int $rarityId): void{
+    if(!$db -> rarityExist($rarityId)){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Rareté invalide", ["cardRarityInput"]]]
@@ -66,15 +66,15 @@ FormSecurity::protectForm("addCard", $_POST['hp_email'] ?? null, $_POST['csrf_to
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
 
-$role = getPostInt("cardRole");
-$rarity = getPostInt("cardRarity");
+$roleId = getPostInt("cardRole");
+$rarityId = getPostInt("cardRarity");
 $img = $_FILES["cardImg"];
 
-validateCardRole($db, $role);
-validateCardRarity($db, $rarity);
+validateCardRole($db, $roleId);
+validateCardRarity($db, $rarityId);
 $path = validateCardImg($img, ["png", "jpg"]);
 $id = checkSession();
-$db -> createCard($path, $rarity, $role, $id);
+$db -> createCard($path, $rarityId, $roleId, $id);
 move_uploaded_file($img['tmp_name'], dirname(__DIR__,2) . "/assets/img/cards/" . $path);
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;

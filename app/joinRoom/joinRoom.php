@@ -36,7 +36,7 @@ if (!$db -> roomExist($code)){
 $roomId = $db -> getFieldByCode("rooms", "id", $code);
 $userId = SessionTools::getData("id");
 
-if ($db -> isUserInRoom($roomId, $userId)) {
+if ($db -> isUserInRoom($userId, $roomId)) {
         echo json_encode(['valid' => true, "code" => $code], JSON_UNESCAPED_UNICODE);
         exit;
     }
