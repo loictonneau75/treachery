@@ -42,7 +42,7 @@ if ($db -> existsUserInRoom($userId, $roomId)) {
     }
 
 try {
-    $db -> addPlayerToRoom($roomId, $userId);
+    $db -> insertPlayerToRoom($roomId, $userId);
     echo json_encode(['valid' => true, "code" => $code], JSON_UNESCAPED_UNICODE);
     exit;
 } catch (Exception $e) {

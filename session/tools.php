@@ -36,7 +36,7 @@ class SessionTools {
     }
 
     private function setRememberMe(int $userId): void {
-        $data = $this -> db -> createRememberToken($userId);
+        $data = $this -> db -> insertRememberToken($userId);
         setcookie('remember_me', $data['token'], [
             'expires'  => $data['expiresAt']->getTimestamp(),
             'path'     => '/',

@@ -83,10 +83,10 @@ validateNunberPlayers($nbPlayers, $min, $max);
 validateAmountOfCardsSelected($cardsSelected, $nbPlayers);
 validateAmountOfCardByRoles($db, $nbPlayers, $cardsSelected);
 $code = findNewRoomCode($db);
-$roomId = $db -> createRoom($code, $nbPlayers);
+$roomId = $db -> insertRoom($code, $nbPlayers);
 foreach ($cardsSelected as $cardId) {
-    $db -> addCardToRoom($roomId, $cardId);
+    $db -> insertCardToRoom($roomId, $cardId);
 }
-$db -> addPlayerToRoom($roomId, SessionTools::getData("id"));
+$db -> insertPlayerToRoom($roomId, SessionTools::getData("id"));
 echo json_encode(["valid" => true, "code" => $code], JSON_UNESCAPED_UNICODE);
 exit;

@@ -111,41 +111,129 @@ class DbTools{
         return $this -> exists($table = 'room_player', $condition = ['user_id' => $userId, 'room_id' => $roomId]);
     }
 
+    private function insert(string $table, array $data): int {
+        $allowed = [
+            'users' => ['email', 'pseudo', 'password'],
+            'cards' => ['path', 'rarity_id', 'role_id', 'added_by'],
+            'rooms' => ['code', 'max_player'],
+            'room_card' => ['room_id', 'card_id'],
+            'room_player' => ['room_id', 'user_id'],
+            'remember_tokens' => ['user_id', 'token_hash', 'expires_at'] 
+        ]; 
+        if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
 
+        foreach (array_keys($data) as $column) {
+            if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée"); 
+        }
 
+        $columns = array_keys($data);
+        $placeholders = array_fill(0, count($columns), '?');
+        $sql = "INSERT INTO $table (" . implode(',', $columns) . ") VALUES (" . implode(',', $placeholders) . ")";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt->execute(array_values($data));
 
+        return (int)$this -> pdo -> lastInsertId(); }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function createUser(string $pseudo, string $email, string $password): int{
-        $stmt = $this -> pdo -> prepare("INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)");
-        $stmt -> execute([$pseudo, $email, password_hash($password, PASSWORD_DEFAULT)]);
-        return (int)$this -> pdo -> lastInsertId();
+    public function insertUser(string $pseudo, string $email, string $password): int{
+        return $this -> insert(
+            $table = 'users',
+            $data = [
+                'pseudo' => $pseudo, 
+                'email' => $email, 
+                'password' => password_hash($password, PASSWORD_DEFAULT)
+            ]
+        );
     }
 
-    public function createRememberToken(int $userId): array {
+    public function insertRememberToken(int $userId): array {
         $this -> deleteExpiredRememberTokens();
         $this -> deleteRememberTokensByUserId($userId);
-        $token     = bin2hex(random_bytes(32));
-        $tokenHash = hash('sha256', $token);
+        $token = bin2hex(random_bytes(32));
         $expiresAt = new DateTime('+30 days');
-        $stmt = $this -> pdo -> prepare('INSERT INTO remember_tokens (user_id, token_hash, expires_at) VALUES (?, ?, ?)');
-        $stmt -> execute([$userId, $tokenHash, $expiresAt -> format('Y-m-d H:i:s')]);
+        $this -> insert(
+            $table = 'remember_tokens',
+            $data = [
+                'user_id' => $userId,
+                'token_hash' => hash('sha256', $token),
+                'expires_at' => $expiresAt -> format('Y-m-d H:i:s')
+            ]
+        );
         return ['token' => $token, 'expiresAt' => $expiresAt];
     }
+
+    public function insertCard(string $imgPath, int $rarityId, int $roleId, int $userId): void{
+        $this -> insert(
+            $table = 'cards',
+            $data = [
+                'path' => $imgPath,
+                'rarity_id' => $rarityId,
+                'role_id' => $roleId,
+                'added_by' => $userId
+            ]
+        );
+    }
+
+    public function insertRoom(string $code, int $maxPlayer): int{
+        return $this -> insert(
+            $table = 'rooms',
+            $data = [
+                'code' => $code,
+                'max_player' => $maxPlayer
+            ]
+        );
+    }
+
+    //todo trouver comment faire une seul requete
+    public function insertCardToRoom(int $roomId, int $cardId): void{
+        $this -> insert(
+            $table = 'room_card',
+            $data = [
+                'room_id' => $roomId,
+                'card_id' => $cardId
+            ]
+        );
+    }
+
+    public function insertPlayerToRoom(int $roomId, int $userId): void {
+        try {
+            $this -> pdo -> beginTransaction();
+            $stmt = $this -> pdo -> prepare("UPDATE rooms SET current_players = current_players + 1 WHERE id = :roomId AND current_players < max_player");
+            $stmt -> execute(['roomId' => $roomId]);
+            if ($stmt -> rowCount() === 0) {
+                $this -> pdo -> rollBack();
+                throw new Exception("Salon complet");
+            }
+            $this -> insert(
+                $table = 'room_player',
+                $data = [
+                    'room_id' => $roomId,
+                    'user_id' => $userId
+                ]
+            ); 
+            $this -> pdo -> commit();
+        } catch (Exception $e) {
+            if ($this -> pdo -> inTransaction()) $this -> pdo -> rollBack();
+            throw $e;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function findRememberToken(string $tokenHash): ?array {
         $stmt = $this -> pdo -> prepare('SELECT user_id, expires_at FROM remember_tokens WHERE token_hash = ? LIMIT 1');
@@ -193,43 +281,8 @@ class DbTools{
         return $stmt -> fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createCard(string $imgPath, int $rarityId, int $roleId, int $userId): void{
-        $stmt = $this -> pdo -> prepare("INSERT INTO cards (path, rarity_id, role_id, added_by) VALUES (?, ?, ?, ?)");
-        $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
-    }
-
-    public function createRoom(string $code, int $maxPlayer):int{
-        $stmt = $this -> pdo -> prepare("INSERT INTO rooms (code, max_player) VALUES (?, ?)");
-        $stmt -> execute([$code, $maxPlayer]);
-        return (int)$this -> pdo -> lastInsertId();
-    }
-
-    public function addCardToRoom(int $roomId, int $cardId): void{
-        $stmt = $this -> pdo -> prepare("INSERT INTO room_card (room_id, card_id) VALUES (?, ?)");
-        $stmt -> execute([$roomId, $cardId]);
-    }
 
 
-    public function addPlayerToRoom(int $roomId, int $userId): void {
-        try {
-            $this -> pdo -> beginTransaction();
-            $stmt = $this -> pdo -> prepare("UPDATE rooms SET current_players = current_players + 1 WHERE id = :roomId AND current_players < max_player");
-            $stmt -> execute(['roomId' => $roomId]);
-            if ($stmt -> rowCount() === 0) {
-                $this -> pdo -> rollBack();
-                throw new Exception("Salon complet");
-            }
-            $stmt = $this -> pdo -> prepare("INSERT INTO room_player (room_id, user_id) VALUES (:roomId, :userId)");
-            $stmt->execute([
-                'roomId' => $roomId,
-                'userId' => $userId
-            ]);
-            $this -> pdo -> commit();
-        } catch (Exception $e) {
-            if ($this -> pdo -> inTransaction()) {$this -> pdo -> rollBack();}
-            throw $e;
-        }
-    }
 
 
     public function getCardsBy(array $conditions = [], string $orderBy = ""): array{

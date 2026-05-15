@@ -63,7 +63,7 @@ if($db -> existsUserEmail($email)){
     exit;
 }
 
-$id = $db -> createUser($pseudo, $email, $password);
+$id = $db -> insertUser($pseudo, $email, $password);
 $session -> createSession($id, $remember);
 CsrfTools::regenerateToken();
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);

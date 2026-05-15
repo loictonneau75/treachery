@@ -74,7 +74,7 @@ validateCardRole($db, $roleId);
 validateCardRarity($db, $rarityId);
 $path = validateCardImg($img, ["png", "jpg"]);
 $id = checkSession();
-$db -> createCard($path, $rarityId, $roleId, $id);
+$db -> insertCard($path, $rarityId, $roleId, $id);
 move_uploaded_file($img['tmp_name'], dirname(__DIR__,2) . "/assets/img/cards/" . $path);
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;
