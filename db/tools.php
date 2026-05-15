@@ -19,10 +19,13 @@ class DbTools{
             'users' => ['id'], 
             'cards' => ['id']
         ];
+
         if (!array_key_exists($table, $allowedColumns)) throw new InvalidArgumentException("Table non autorisée");
+
         $sql = "DELETE FROM $table";
-        $params = []; 
-        $clauses = []; 
+        $params = [];
+        $clauses = [];
+
         foreach ($conditions as $column => $value) {
             if (!in_array($column, $allowedColumns[$table])) throw new InvalidArgumentException("Colonne non autorisée");
             if ($column === 'expires_at' && $value === 'expired') $clauses[] = "expires_at < NOW()";
@@ -30,8 +33,10 @@ class DbTools{
                 $clauses[] = "$column = ?"; 
                 $params[] = $value; 
             } 
-        } 
+        }
+
         if (!empty($clauses)) $sql .= " WHERE " . implode("$operator", $clauses);
+
         $stmt = $this -> pdo -> prepare($sql); 
         $stmt ->execute($params); 
     }
@@ -63,20 +68,26 @@ class DbTools{
             'roles' => ['id'],
             'rarities' => ['id'],
             'room_player' => ['room_id', 'user_id']
-        ]; 
+        ];
+
         if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
+
         $sql = "SELECT 1 FROM $table"; 
         $params = [];
         $clauses = [];
+
         foreach ($conditions as $column => $value) {
             if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée");
             $clauses[] = "$column = ?";
             $params[] = $value; 
         }
+
         if (!empty($clauses)) $sql .= " WHERE " . implode("$operator", $clauses);
+
         $sql .= " LIMIT 1";
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute($params);
+
         return (bool) $stmt->fetchColumn(); 
     }
 
