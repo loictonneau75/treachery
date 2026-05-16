@@ -10,19 +10,25 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 
 header("Content-Type: application/json; charset=utf-8");
-//todo typer
-function validateNunberPlayers($nbPlayers, $min, $max): void{
-    if ($nbPlayers < $min || $nbPlayers > $max){
+function validateNumberPlayers(int|false $nbPlayerinRoom, int $minNbPlayerAllowedInRoom, int $maxNbPlayerAllowedInRoom): void{
+    if ($nbPlayerinRoom === false) {
         echo json_encode([
             'valid'  => false,
-            'errors' => [["Le nombre de joueur doit être compris entre $min et $max", ["nbPlayers"]]]
+            'errors' => [["Nombre de joueurs invalide", ["nbPlayers"]]]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+    if ($nbPlayerinRoom < $minNbPlayerAllowedInRoom || $nbPlayerinRoom > $maxNbPlayerAllowedInRoom){
+        echo json_encode([
+            'valid'  => false,
+            'errors' => [["Le nombre de joueur doit être compris entre $minNbPlayerAllowedInRoom et $maxNbPlayerAllowedInRoom", ["nbPlayers"]]]
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
 }
-//todo typer
-function validateAmountOfCardsSelected($cardsSelected, $nbPlayers): void{
-    if (count($cardsSelected) < $nbPlayers){
+
+function validateAmountOfCardsSelected(array $cardsSelected, int $nbPlayerinRoom): void{
+    if (count($cardsSelected) < $nbPlayerinRoom){
         echo json_encode([
             'valid'  => false,
             'errors' => [["Vous devez sélectionner au moins autant de cartes que de joueurs", ["cardIds"]]]
@@ -31,8 +37,8 @@ function validateAmountOfCardsSelected($cardsSelected, $nbPlayers): void{
     }
 }
 
-function getRoleDistribution(int $nbPlayers): array {
-    return match($nbPlayers) {
+function getRoleDistribution(int $nbPlayerinRoom): array {
+    return match($nbPlayerinRoom) {
         4 => [1 => 1, 4 => 1, 3 => 2, 2 => 0],
         5 => [1 => 1, 4 => 1, 3 => 2, 2 => 1],
         6 => [1 => 1, 4 => 1, 3 => 3, 2 => 1],
@@ -41,9 +47,9 @@ function getRoleDistribution(int $nbPlayers): array {
         default => []
     };
 }
-//todo typer
-function validateAmountOfCardByRoles(DbTools $db, $nbPlayers, $cardsSelected): void{
-    foreach (getRoleDistribution($nbPlayers) as $roleId => $required){
+
+function validateAmountOfCardByRoles(DbTools $db, int $nbPlayerinRoom, array $cardsSelected): void{
+    foreach (getRoleDistribution($nbPlayerinRoom) as $roleId => $required){
         if (array_count_values($db -> getCardRoles($cardsSelected))[$roleId] < $required){
             echo json_encode([
                 'valid'  => false,
@@ -54,8 +60,7 @@ function validateAmountOfCardByRoles(DbTools $db, $nbPlayers, $cardsSelected): v
     }
 }
 
-//todo typer
-function generateCode($length) {
+function generateCode(int $length) {
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
     $code = '';
     for ($i = 0; $i < $length; $i++) {
@@ -76,14 +81,14 @@ $db = new DbTools($pdo);
 $session = new SessionTools($db);
 FormSecurity::protectForm("createRoom", $_POST['hp_email'] ?? null, $_POST['csrf_token'] ?? null);
 
-[$min, $max] = json_decode($_POST["minMax"], true);
-$nbPlayers = $_POST["nbPlayers"];
+[$minNbPlayerAllowedInRoom, $maxNbPlayerAllowedInRoom] = json_decode($_POST["minMax"], true);
+$nbPlayerinRoom = filter_var($_POST["nbPlayers"], FILTER_VALIDATE_INT);
 $cardsSelected = json_decode($_POST["cardIds"], true);
-validateNunberPlayers($nbPlayers, $min, $max);
-validateAmountOfCardsSelected($cardsSelected, $nbPlayers);
-validateAmountOfCardByRoles($db, $nbPlayers, $cardsSelected);
+validateNumberPlayers($nbPlayerinRoom, $minNbPlayerAllowedInRoom, $maxNbPlayerAllowedInRoom);
+validateAmountOfCardsSelected($cardsSelected, $nbPlayerinRoom);
+validateAmountOfCardByRoles($db, $nbPlayerinRoom, $cardsSelected);
 $code = findNewRoomCode($db);
-$roomId = $db -> insertRoom($code, $nbPlayers);
+$roomId = $db -> insertRoom($code, $nbPlayerinRoom);
 foreach ($cardsSelected as $cardId) {
     $db -> insertCardToRoom($roomId, $cardId);
 }
