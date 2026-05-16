@@ -32,7 +32,7 @@ final class CsrfTools
 
     public static function regenerateToken(): void
     {
-        SessionTools::addData(self::TOKEN_KEY,bin2hex(random_bytes(32)));
+        SessionTools::addData(self::TOKEN_KEY, bin2hex(random_bytes(32)));
     }
 }
 
