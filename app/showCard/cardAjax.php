@@ -26,9 +26,9 @@ function buildGroupedData(DbTools $db, string $groupBy): array{
 header('Content-Type: application/json');
 
 $data = getJsonInput();
-CsrfTools::validateToken($data["csrf_token"]);
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
+CsrfTools::validateToken($data["csrf_token"]);
 
 $groupedData = buildGroupedData($db, $data['groupBy']);
 $id = SessionTools::getData("id");

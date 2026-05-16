@@ -325,11 +325,12 @@ class DbTools{
     }
 
     public function getCardRoles(array $cardsSelected): array {
-        return $this -> query(
+        $role =  $this -> query(
             table: 'cards',
             columns: ['role_id'],
             in: ['id' => array_map('intval', $cardsSelected)]
         );
+        return array_column($role, 'role_id');
     }
 
 
