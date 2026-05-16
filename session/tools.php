@@ -50,12 +50,11 @@ class SessionTools {
         setcookie('remember_me', '', time() - 3600, '/', $_SERVER['HTTP_HOST']);
     }
 
-    //todo donner un type au paramètre $key et $value
-    public static function getData($key): mixed{
+    public static function getData(string $key): mixed{
         return $_SESSION[$key] ?? null;
     }
 
-    public static function addData($key, $value): void{
+    public static function addData(string $key, mixed $value): void{
         $_SESSION[$key] = $value;
     }
 
