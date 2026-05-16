@@ -1,0 +1,11 @@
+#joinRoomForm  {
+    .input-wrapper{
+        anchor-name: --ref;
+    }
+
+    p.error{
+        position: absolute;
+        top: calc(anchor(--ref bottom) + 1rem);
+        left: anchor(--ref left);
+    }
+}

@@ -1,4 +1,4 @@
-@use "../../scss/variables" as var;
+@use "../scss/variables.scss" as var;
 
 nav{
     @include var.blur();

@@ -640,4 +640,13 @@ div:has(> .custom-input-file) > label {
   border-radius: 16px;
 }
 
+#joinRoomForm .input-wrapper {
+  anchor-name: --ref;
+}
+#joinRoomForm p.error {
+  position: absolute;
+  top: calc(anchor(--ref bottom) + 1rem);
+  left: anchor(--ref left);
+}
+
 /*# sourceMappingURL=style.css.map */
