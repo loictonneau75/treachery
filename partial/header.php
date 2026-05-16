@@ -3,6 +3,12 @@ use App\Session\SessionTools;
 
 require_once dirname(__DIR__) . "/session/tools.php";
 require_once dirname(__DIR__) . "/config.php";
+
+/** @var string $pageType */
+/** @var string $pageName */
+
+$pageType ??= '';
+$pageName ??= '';
 ?>
 
 <!DOCTYPE html>
