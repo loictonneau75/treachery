@@ -112,7 +112,7 @@ INSERT INTO `rarities` (`id`, `name`, `url`) VALUES
 (3, 'Mythique', 'orange.png'),
 (4, 'Chaos', 'violet.png');
 
-INSERT INTO `users` (`id`, `pseudo`, `email`, `password`, `is_admin`) VALUES
+INSERT INTO `users` (`id`, `pseudo`, `email`, `password`, `admin`) VALUES
 (1, 'Loïc', 'loictonneau@outlook.fr', '$2y$10$Ro6j28ZqLSmJbjG6McsfxukQK6F76qprB8TBLI/eOiIs0aIuknJYC', 1);
 
 INSERT INTO `cards` (`id`, `path`, `rarity_id`, `role_id`, `added_by`) VALUES
