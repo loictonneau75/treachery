@@ -33,7 +33,7 @@ require_once dirname(__DIR__) . "/customInputFile/customInputFile.php";
     <input type="text" name="hp_email" style="display:none" autocomplete="off">
 </form>
 <?php
-//todo voir pour simplifié ( nom anglais ?)
+$db = new DbTools($pdo);
 CustomSelect::renderCustomSelectUl("role", $db -> getRoles());
 CustomSelect::renderCustomSelectUl("rarity", $db -> getRarities())
 ?>
