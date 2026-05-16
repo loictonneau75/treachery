@@ -9,15 +9,12 @@ require_once __DIR__ . "/db/tools.php";
 require_once __DIR__ . "/session/tools.php";
 require_once __DIR__ . "/security/tools.php";
 
-//todo voir pour passer l'instance de classe directement en paramètre dans les fonctions au lieu de faire des new à chaque fois
-$db = new DbTools($pdo);
-$session = new SessionTools($db);
+$session = new SessionTools(new DbTools($pdo));
 $session -> autoLogin();
 CsrfTools::generateToken();
 
 $pageType = "index";
 $pageName = TITLE;
-
 
 include __DIR__ . "/partial/header.php";
 
