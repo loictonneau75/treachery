@@ -41,11 +41,11 @@ class DbTools{
         $stmt ->execute($params); 
     }
 
-    public function deleteExpiredRememberTokens(): void{
+    private function deleteExpiredRememberTokens(): void{
         $this -> delete(table: 'remember_tokens', conditions: ['expires_at' => 'expired']);
     }
 
-    public function deleteRememberTokensByUserId(int $userId): void{
+    private function deleteRememberTokensByUserId(int $userId): void{
         $this -> delete(table: 'remember_tokens', conditions: ['user_id' => $userId]);
     }
 
