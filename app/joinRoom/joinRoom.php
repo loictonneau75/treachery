@@ -33,7 +33,7 @@ if (!$db -> existsRoom($code)){
     exit;
 }
 
-$roomId = $db -> getRoomByCode($code);
+$roomId = $db -> getRoomIdByCode($code);
 $userId = SessionTools::getData("id");
 
 if ($db -> existsUserInRoom($userId, $roomId)) {

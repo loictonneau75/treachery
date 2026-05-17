@@ -363,13 +363,13 @@ class DbTools{
         );
     }
 
-    public function getRoomByCode(string $code): ?int {
+    public function getRoomIdByCode(string $code): int {
         return $this -> query(
             table: 'rooms',
             conditions: ['code' => $code],
             limit: 1,
             fetchMode: 'one'
-        );
+        )["id"];
     }
 
     public function getCardByRoleId(int $roleId): array {
