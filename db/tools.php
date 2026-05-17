@@ -35,7 +35,7 @@ class DbTools{
             } 
         }
 
-        if (!empty($clauses)) $sql .= " WHERE " . implode("$operator", $clauses);
+        if (!empty($clauses)) $sql .= " WHERE " . implode(" $operator ", $clauses);
 
         $stmt = $this -> pdo -> prepare($sql); 
         $stmt ->execute($params); 
@@ -82,7 +82,7 @@ class DbTools{
             $params[] = $value; 
         }
 
-        if (!empty($clauses)) $sql .= " WHERE " . implode("$operator", $clauses);
+        if (!empty($clauses)) $sql .= " WHERE " . implode(" $operator ", $clauses);
 
         $sql .= " LIMIT 1";
         $stmt = $this -> pdo -> prepare($sql);
@@ -363,7 +363,7 @@ class DbTools{
         );
     }
 
-    public function getRoomIdByCode(string $code): int {
+    public function getRoomIdByCode(string $code): ?int {
         return $this -> query(
             table: 'rooms',
             conditions: ['code' => $code],
