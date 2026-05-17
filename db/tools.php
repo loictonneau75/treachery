@@ -110,7 +110,11 @@ class DbTools{
     public function existsUserInRoom(int $userId, int $roomId): bool{
         return $this -> exists(table: 'room_player', conditions: ['user_id' => $userId, 'room_id' => $roomId]);
     }
-
+    
+    /**
+    * @param string $table Nom de la table cible.
+    * @param array<array<string,mixed>> $data Liste des lignes à insérer.
+    */
     private function insert(string $table, array $data): int {
         $allowed = [
             'users' => ['email', 'pseudo', 'password'],
@@ -121,27 +125,34 @@ class DbTools{
             'remember_tokens' => ['user_id', 'token_hash', 'expires_at'] 
         ]; 
         if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
-
-        foreach (array_keys($data) as $column) {
-            if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée"); 
+        if (empty($data)) throw new InvalidArgumentException("Aucune donnée à insérer");
+        $placeholdersGroup = [];
+        $values = [];
+        foreach ($data as $rows) {
+            if (array_keys($rows) !== array_keys($data[0])) throw new InvalidArgumentException("Les lignes doivent avoir les mêmes clés");
+            foreach (array_keys($rows) as $column) {
+                if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée"); 
+            }
+            $placeholdersGroup[] = '(' . implode(',', array_fill(0, count($rows), '?')) . ')';
+            foreach ($rows as $row) {
+                $values[] = $row;
+            }
         }
-
-        $columns = array_keys($data);
-        $placeholders = array_fill(0, count($columns), '?');
-        $sql = "INSERT INTO $table (" . implode(',', $columns) . ") VALUES (" . implode(',', $placeholders) . ")";
+        $sql = "INSERT INTO $table (" . implode(',', array_keys($data[0])) . ") VALUES " . implode(',', $placeholdersGroup);
         $stmt = $this -> pdo -> prepare($sql);
-        $stmt->execute(array_values($data));
+        $stmt->execute($values);
 
-        return (int)$this -> pdo -> lastInsertId(); }
+        return (int) $this -> pdo -> lastInsertId();
+    }
 
     public function insertUser(string $pseudo, string $email, string $password): int{
         return $this -> insert(
             table: 'users',
-            data: [
+            data: [[
                 'pseudo' => $pseudo, 
                 'email' => $email, 
                 'password' => password_hash($password, PASSWORD_DEFAULT)
-            ]
+            ]]
         );
     }
 
@@ -152,11 +163,11 @@ class DbTools{
         $expiresAt = new DateTime('+30 days');
         $this -> insert(
             table: 'remember_tokens',
-            data: [
+            data: [[
                 'user_id' => $userId,
                 'token_hash' => hash('sha256', $token),
                 'expires_at' => $expiresAt -> format('Y-m-d H:i:s')
-            ]
+            ]]
         );
         return ['token' => $token, 'expiresAt' => $expiresAt];
     }
@@ -164,37 +175,34 @@ class DbTools{
     public function insertCard(string $imgPath, int $rarityId, int $roleId, int $userId): void{
         $this -> insert(
             table: 'cards',
-            data: [
+            data: [[
                 'path' => $imgPath,
                 'rarity_id' => $rarityId,
                 'role_id' => $roleId,
                 'added_by' => $userId
-            ]
+            ]]
         );
     }
 
     public function insertRoom(string $code, int $maxPlayer): int{
         return $this -> insert(
             table: 'rooms',
-            data: [
+            data: [[
                 'code' => $code,
                 'max_player' => $maxPlayer
-            ]
+            ]]
         );
     }
 
-    //todo trouver comment faire une seul requete
-    public function insertCardToRoom(int $roomId, int $cardId): void{
-        $this -> insert(
+    public function insertCardsToRoom(int $roomId, array $cardsIds): void{
+        $this-> insert(
             table: 'room_card',
-            data: [
+            data: array_map(fn($cardId) => [
                 'room_id' => $roomId,
                 'card_id' => $cardId
-            ]
+            ], $cardsIds)
         );
     }
-
-    public function insertCardsToRoom(int $roomId, array $cardsIds): void{}
 
     public function insertPlayerToRoom(int $roomId, int $userId): void {
         try {
@@ -207,10 +215,10 @@ class DbTools{
             }
             $this -> insert(
                 table: 'room_player',
-                data: [
+                data: [[
                     'room_id' => $roomId,
                     'user_id' => $userId
-                ]
+                ]]
             ); 
             $this -> pdo -> commit();
         } catch (Exception $e) {
