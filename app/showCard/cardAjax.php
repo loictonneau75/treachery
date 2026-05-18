@@ -15,10 +15,17 @@ function getJsonInput(): array {
 
 function buildGroupedData(DbTools $db, string $groupBy): array{
     $groupedData = [];
-    //todo voir pour simplifié
-    foreach ($groupBy === "role" ? $db -> getRoles() : $db -> getRarities() as $group) {
-        $cards = $groupBy === "role" ? $db -> getCardByRoleId($group['id']) : $db -> getCardByRarityId($group['id']);
-        $groupedData[$group['id']] = ["info"  => $group,"cards" => $cards];
+    $isRoleGroup = $groupBy === "role";
+    $groups = $isRoleGroup ? $db->getRoles() : $db->getRarities();
+    $userId = SessionTools::getData("id");
+    $isAdmin = $db->isUserAdmin($userId);
+    $allowed = [...$db->getAllAdminId(), $userId];
+    foreach ($groups as $group) {
+        $cards = $isRoleGroup ? $db->getCardByRoleId($group['id']) : $db->getCardByRarityId($group['id']);
+        if (!$isAdmin) {
+            $cards = array_values(array_filter($cards, fn($card) => in_array($card['added_by'], $allowed, true)));
+        }
+        $groupedData[$group['id']] = ["info"  => $group, "cards" => $cards];
     }
     return $groupedData;
 }
