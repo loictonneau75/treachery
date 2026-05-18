@@ -25,6 +25,6 @@ if ($card['added_by'] != SessionTools::getData("id") && !$db -> isUserAdmin(Sess
     exit;
 }
 
-unlink(dirname(__DIR__,2) . "/assets/img/cards/" . $card["path"]);
 $db -> deleteCardById($card['id']);
+unlink(dirname(__DIR__,2) . "/assets/img/cards/" . $card["path"]);
 echo json_encode(["success" => true]);
