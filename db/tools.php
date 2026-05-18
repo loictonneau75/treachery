@@ -227,14 +227,23 @@ class DbTools{
         }
     }
 
-    private function query(string $table, array $columns = ['*'], array $conditions = [], array $in = [], ?string $orderBy = null, ?int $limit = null, string $fetchMode = 'all'): array|null { 
+    private function query(
+        string $table, 
+        array $columns = ['*'], 
+        array $conditions = [], 
+        array $in = [],
+        array $innerJoin = [],
+        ?string $orderBy = null, 
+        ?int $limit = null, 
+        string $fetchMode = 'all'): array|null { 
         $allowed = [
             "rarities" => [],
             "cards" => ['role_id', 'rarity_id', 'id'],
-            "users" => ['id', 'email', 'pseudo', 'password', 'admin'],
+            "users" => ['id', 'email', 'pseudo', 'password', 'admin', 'room_player.user_id = users.id'],
             "roles" => ['id', 'name'],
-            "rooms" => ['id', 'code'],
-            "rememeber_tokens" => ['user_id', 'token_hash', 'expires_at'] 
+            "rooms" => ['id', 'code', "game_started"],
+            "rememeber_tokens" => ['user_id', 'token_hash', 'expires_at'] ,
+            "room_player" => ["users.pseudo", "room_player.room_id"],
         ]; 
         if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
 
@@ -242,7 +251,17 @@ class DbTools{
             if ($col !== '*' && !in_array($col, $allowed[$table], true)) throw new InvalidArgumentException("Colonne SELECT non autorisée"); 
         } 
 
-        $sql = "SELECT " . implode(', ', $columns) . " FROM $table"; $params = [];
+        $sql = "SELECT " . implode(', ', $columns) . " FROM $table"; 
+        $params = [];
+
+        if (!empty($innerJoin)) {
+            foreach ($innerJoin as $joinTable => $joinCondition) {
+                if (!array_key_exists($joinTable, $allowed)) throw new InvalidArgumentException("Table de jointure non autorisée");
+                if (!in_array($joinCondition, $allowed[$joinTable])) throw new InvalidArgumentException("Condition de jointure non autorisée");
+                if (empty($conditions)) throw new InvalidArgumentException("Les jointures nécessitent des conditions pour éviter les résultats en cascade");
+                $sql .= " INNER JOIN $joinTable ON $joinCondition";
+            }
+        }
 
         if (!empty($conditions)) {
             $clauses = []; 
@@ -386,6 +405,35 @@ class DbTools{
             conditions: ['rarity_id' => $rarityId],
             orderBy: 'role_id'
         );
+    }
+
+    public function getPlayersInRoomName(int $roomId): array {
+        $result =  $this -> query(
+            table: 'room_player',
+            columns: ['users.pseudo'],
+            innerJoin: ['users' => 'room_player.user_id = users.id'],
+            conditions: ['room_player.room_id' => $roomId]
+        );
+        return array_column($result, 'pseudo');
+    }
+
+    public function isGameStarted(int $roomId): bool {
+        $room = $this -> query(
+            table: 'rooms',
+            columns: ['game_started'],
+            conditions: ['id' => $roomId],
+            limit: 1,
+            fetchMode: 'one'
+        );
+        return (bool)$room['game_started'];
+    }
+
+    public function getAllAdminId(): array{
+        return $this -> query(
+            table: "users",
+            columns: ["id"],
+            conditions: ["admin" => 1]
+        )[0];
     }
 
 }

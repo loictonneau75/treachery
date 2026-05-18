@@ -36,9 +36,9 @@ $pageName ??= '';
             $scripts[] = "app/showCard/showCard.js";
             $scripts[] = "app/preview/preview.js";
         }
-
     } elseif ($pageType === "room") {
         $scripts[] = "navbar/navbar.js";
+        $scripts[] = "rooms/playersList/playerList.js";
     }
 
     foreach ($scripts as $script) {

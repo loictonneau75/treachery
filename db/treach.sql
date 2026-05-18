@@ -66,6 +66,7 @@ CREATE TABLE rooms (
     `code` CHAR(10) NOT NULL,
     `max_player` TINYINT NOT NULL,
     `current_players` TINYINT NOT NULL DEFAULT 0,
+    `game_started` TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
