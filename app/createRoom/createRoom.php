@@ -2,11 +2,13 @@
 use App\Security\FormSecurity;
 use App\Session\SessionTools;
 use App\DB\DbTools;
+use App\Rules\RoleRules;
 
 require_once dirname(__DIR__,2) . "/security/tools.php";
 require_once dirname(__DIR__,2) . "/session/tools.php";
 require_once dirname(__DIR__,2) . "/db/connexion.php";
 require_once dirname(__DIR__,2) . "/db/tools.php";
+require_once dirname(__DIR__,2) . "/rules/rules.php";
 
 
 header("Content-Type: application/json; charset=utf-8");
@@ -37,19 +39,8 @@ function validateAmountOfCardsSelected(array $cardsSelected, int $nbPlayerinRoom
     }
 }
 
-function getRoleDistribution(int $nbPlayerinRoom): array {
-    return match($nbPlayerinRoom) {
-        4 => [1 => 1, 2 => 0, 3 => 2, 4 => 1],
-        5 => [1 => 1, 2 => 1, 3 => 2, 4 => 1],
-        6 => [1 => 1, 2 => 1, 3 => 3, 4 => 1],
-        7 => [1 => 1, 2 => 2, 3 => 3, 4 => 1],
-        8 => [1 => 1, 2 => 2, 3 => 3, 4 => 2],
-        default => []
-    };
-}
-
 function validateAmountOfCardByRoles(DbTools $db, int $nbPlayerinRoom, array $cardsSelected): void{
-    foreach (getRoleDistribution($nbPlayerinRoom) as $roleId => $required){
+    foreach (RoleRules::getRoleDistribution($nbPlayerinRoom) as $roleId => $required){
         if (array_count_values($db -> getCardRoles($cardsSelected))[$roleId] < $required){
             echo json_encode([
                 'valid'  => false,
