@@ -1,0 +1,9 @@
+@use "../scss/variables" as var;
+
+.room{
+    #roles{
+        img{
+            @include var.small-img;
+        }
+    }
+}

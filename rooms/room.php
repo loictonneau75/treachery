@@ -16,7 +16,7 @@ $pageName = "Salon " . $roomCode ." - ". TITLE;
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
 $userId = SessionTools::getData("id");
-$roomId = $db -> getRoomIdByCode("$roomCode");
+$roomId = $db -> getRoomByCode("$roomCode")["id"];
 
 if (!$userId || !$roomCode || !$roomId || !$db -> existsUserInRoom($userId, $roomId)) {
     header("Location: " . BASE_URL);
@@ -29,11 +29,15 @@ include dirname(__DIR__) . "/navbar/navbar.php";
 
 ?>
 <h1>Salon <?=$roomCode?></h1>
-<div class="players">
+<!--todo voir pour utiliser websocket -->
+<div id="players">
     <h2>Joueur connecté</h2>
 </div>
-<div class="roles">
+<div id="roles">
     <h2>Rôles disponibles</h2>
+</div>
+<div id="card">
+    <h2>Cartes Séléctionnées</h2>
 </div>
 
 

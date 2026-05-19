@@ -241,7 +241,7 @@ class DbTools{
             "cards" => ['role_id', 'rarity_id', 'id'],
             "users" => ['id', 'email', 'pseudo', 'password', 'admin', 'room_player.user_id = users.id'],
             "roles" => ['id', 'name'],
-            "rooms" => ['id', 'code', "game_started"],
+            "rooms" => ['id', 'code', "max_player", "game_started"],
             "rememeber_tokens" => ['user_id', 'token_hash', 'expires_at'] ,
             "room_player" => ["users.pseudo", "room_player.room_id"],
         ]; 
@@ -341,14 +341,12 @@ class DbTools{
         return htmlspecialchars($user['pseudo'], ENT_QUOTES, 'UTF-8');
     }
 
-    public function getRoleName(int $roleId): string {
-        $role = $this -> query(
+    public function getRolebyId(int $roleId): array {
+        return $this -> query(
             table: 'roles',
-            columns: ['name'],
             conditions: ['id' => $roleId],
             fetchMode: 'one'
         );
-        return $role['name'];
     }
 
     public function getCardRoles(array $cardsSelected): array {
@@ -382,13 +380,13 @@ class DbTools{
         );
     }
 
-    public function getRoomIdByCode(string $code): ?int {
+    public function getRoomByCode(string $code): ?array{
         return $this -> query(
             table: 'rooms',
             conditions: ['code' => $code],
             limit: 1,
             fetchMode: 'one'
-        )["id"];
+        );
     }
 
     public function getCardByRoleId(int $roleId): array {
@@ -434,6 +432,15 @@ class DbTools{
             columns: ["id"],
             conditions: ["admin" => 1]
         )[0];
+    }
+
+    public function getMaxPlayerForRoom(int $id): int{
+        return $this -> query(
+            table: "rooms",
+            columns: ["max_player"],
+            conditions: ["id" => $id],
+            fetchMode: "one"
+        )["max_player"];
     }
 
 }

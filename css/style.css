@@ -649,4 +649,9 @@ div:has(> .custom-input-file) > label {
   left: anchor(--ref left);
 }
 
+.room #roles img {
+  width: 20px;
+  height: 20px;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -39,6 +39,7 @@ $pageName ??= '';
     } elseif ($pageType === "room") {
         $scripts[] = "navbar/navbar.js";
         $scripts[] = "rooms/playersList/playerList.js";
+        $scripts[] = "rooms/roleList/roleList.js";
     }
 
     foreach ($scripts as $script) {

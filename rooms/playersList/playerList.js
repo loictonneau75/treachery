@@ -15,9 +15,7 @@ function updateUsers() {
                 newPlayerList.appendChild(li);
             });
 
-            document.querySelector(".players").appendChild(newPlayerList);
-
-            console.log("ok");
+            document.querySelector("#players").appendChild(newPlayerList);
 
             if (data.started === true) {
                 clearInterval(interval);
