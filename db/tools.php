@@ -17,7 +17,8 @@ class DbTools{
         $allowedColumns = [
             'remember_tokens' => ['token_hash', 'user_id', 'expires_at'], 
             'users' => ['id'], 
-            'cards' => ['id']
+            'cards' => ['id'],
+            "room_player" => ["user_id"]
         ];
 
         if (!array_key_exists($table, $allowedColumns)) throw new InvalidArgumentException("Table non autorisée");
@@ -59,6 +60,12 @@ class DbTools{
 
     public function deleteCardById(int $cardId): void {
         $this -> delete(table: 'cards', conditions: ['id' => $cardId]);
+    }
+
+    public function deleteUserFromRoom(int $userId, int $roomId): void{
+        $this -> delete(table: "room_player", conditions: ["user_id" => $userId]);
+        $stmt = $this -> pdo -> prepare("UPDATE rooms SET current_players = current_players - 1 WHERE id = ? AND current_players > 0");
+        $stmt -> execute([$roomId]);
     }
 
     private function exists(string $table, array $conditions, string $operator = "AND"): bool {

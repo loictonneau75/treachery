@@ -40,6 +40,9 @@ include dirname(__DIR__) . "/navbar/navbar.php";
     <h2>Cartes Séléctionnées</h2>
 </div>
 
+<!--todo transformer cela en form ?-->
+<button type="button" id="leaveBtn">Sortir du salon</button>
+
 
 <?php
 include dirname(__DIR__) . "/partial/footer.php";

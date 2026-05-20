@@ -40,6 +40,7 @@ $pageName ??= '';
         $scripts[] = "navbar/navbar.js";
         $scripts[] = "rooms/playersList/playerList.js";
         $scripts[] = "rooms/roleList/roleList.js";
+        $scripts[] = "rooms/leaveRoom/leaveRoom.js";
     }
 
     foreach ($scripts as $script) {
