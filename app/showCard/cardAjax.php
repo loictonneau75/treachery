@@ -13,12 +13,11 @@ function getJsonInput(): array {
     return json_decode($input, true);
 }
 
-function buildGroupedData(DbTools $db, string $groupBy): array{
+function buildGroupedData(DbTools $db, string $groupBy, bool $isAdmin): array{
     $groupedData = [];
     $isRoleGroup = $groupBy === "role";
     $groups = $isRoleGroup ? $db->getRoles() : $db->getRarities();
     $userId = SessionTools::getData("id");
-    $isAdmin = $db->isUserAdmin($userId);
     $allowed = [...$db->getAllAdminId(), $userId];
     foreach ($groups as $group) {
         $cards = $isRoleGroup ? $db->getCardByRoleId($group['id']) : $db->getCardByRarityId($group['id']);
@@ -36,7 +35,7 @@ $data = getJsonInput();
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
 CsrfTools::validateToken($data["csrf_token"]);
-
-$groupedData = buildGroupedData($db, $data['groupBy']);
 $id = SessionTools::getData("id");
-echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => $db -> isUserAdmin($id)]);
+$isAdmin = $db -> isUserAdmin($id);
+$groupedData = buildGroupedData($db, $data['groupBy'], $isAdmin);
+echo json_encode(["groups" => $groupedData, "id" => $id, "admin" => $isAdmin]);

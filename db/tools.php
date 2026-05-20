@@ -229,7 +229,6 @@ class DbTools{
 
     private function query(
         string $table, 
-        array $columns = ['*'], 
         array $conditions = [], 
         array $in = [],
         array $innerJoin = [],
@@ -238,20 +237,16 @@ class DbTools{
         string $fetchMode = 'all'): array|null { 
         $allowed = [
             "rarities" => [],
-            "cards" => ['role_id', 'rarity_id', 'id'],
-            "users" => ['id', 'email', 'pseudo', 'password', 'admin', 'room_player.user_id = users.id'],
-            "roles" => ['id', 'name'],
-            "rooms" => ['id', 'code', "max_player", "game_started"],
-            "rememeber_tokens" => ['user_id', 'token_hash', 'expires_at'] ,
+            "roles" => ["id"],
+            "rooms" => ["code", "id"],
+            "rememeber_tokens" => ["token_hash"],
+            "cards" => ["id", "role_id", "rarity_id"],
             "room_player" => ["users.pseudo", "room_player.room_id"],
-        ]; 
+            "users" => ["email", "id", "room_player.user_id = users.id", "admin"]
+        ];
         if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
 
-        foreach ($columns as $col) {
-            if ($col !== '*' && !in_array($col, $allowed[$table], true)) throw new InvalidArgumentException("Colonne SELECT non autorisée"); 
-        } 
-
-        $sql = "SELECT " . implode(', ', $columns) . " FROM $table"; 
+        $sql = "SELECT * FROM $table"; 
         $params = [];
 
         if (!empty($innerJoin)) {
@@ -301,7 +296,6 @@ class DbTools{
     public function findRememberToken(string $tokenHash): ?array {
         return $this -> query(
             table: 'remember_tokens',
-            columns: ['user_id', 'expires_at'],
             conditions: ['token_hash' => $tokenHash],
             limit: 1,
             fetchMode: 'one'
@@ -311,7 +305,6 @@ class DbTools{
     public function verifyUser(string $email, string $password): false|int {
         $user = $this -> query(
             table: 'users',
-            columns: ['id', 'password'],
             conditions: ['email' => $email],
             fetchMode: 'one'
         );
@@ -324,7 +317,6 @@ class DbTools{
     public function isUserAdmin(int $userId): bool {
         $user = $this -> query(
             table: 'users',
-            columns: ['admin'],
             conditions: ['id' => $userId],
             fetchMode: 'one'
         );
@@ -334,7 +326,6 @@ class DbTools{
     public function getUserPseudo(int $userId): string {
         $user = $this -> query(
             table: 'users',
-            columns: ['pseudo'],
             conditions: ['id' => $userId],
             fetchMode: 'one'
         );
@@ -352,7 +343,6 @@ class DbTools{
     public function getCardRoles(array $cardsSelected): array {
         $role =  $this -> query(
             table: 'cards',
-            columns: ['role_id'],
             in: ['id' => array_map('intval', $cardsSelected)]
         );
         return array_column($role, 'role_id');
@@ -408,7 +398,6 @@ class DbTools{
     public function getPlayersInRoomName(int $roomId): array {
         $result =  $this -> query(
             table: 'room_player',
-            columns: ['users.pseudo'],
             innerJoin: ['users' => 'room_player.user_id = users.id'],
             conditions: ['room_player.room_id' => $roomId]
         );
@@ -418,7 +407,6 @@ class DbTools{
     public function isGameStarted(int $roomId): bool {
         $room = $this -> query(
             table: 'rooms',
-            columns: ['game_started'],
             conditions: ['id' => $roomId],
             limit: 1,
             fetchMode: 'one'
@@ -426,19 +414,18 @@ class DbTools{
         return (bool)$room['game_started'];
     }
 
-    public function getAllAdminId(): array{
-        return $this -> query(
+    public function getAllAdminId(){
+        $result = $this -> query(
             table: "users",
-            columns: ["id"],
             conditions: ["admin" => 1]
-        )[0];
+        );
+        return array_column($result, "id");
     }
 
-    public function getMaxPlayerForRoom(int $id): int{
+    public function getMaxPlayerForRoom(int $roomId): int{
         return $this -> query(
             table: "rooms",
-            columns: ["max_player"],
-            conditions: ["id" => $id],
+            conditions: ["id" => $roomId],
             fetchMode: "one"
         )["max_player"];
     }

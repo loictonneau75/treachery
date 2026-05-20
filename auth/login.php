@@ -38,15 +38,15 @@ $remember = isset($_POST["rememberLogin"]);
 
 validEmail($email);
 validPassword($password);
-$id = $db -> verifyUser($email, $password);
-if($id === false){
+$userId = $db -> verifyUser($email, $password);
+if($userId === false){
     echo json_encode([
         'valid'  => false,
         'errors' => [["email ou mot de passe invalide", ["mailLogin", "passwordLogin"]]]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
-$session -> createSession($id, $remember);
+$session -> createSession($userId, $remember);
 CsrfTools::regenerateToken();
 echo json_encode(["valid" => true], JSON_UNESCAPED_UNICODE);
 exit;
