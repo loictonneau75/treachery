@@ -25,14 +25,14 @@ class SessionTools {
             return;
         }
         $tokenHash = hash('sha256', $_COOKIE['remember_me']);
-        $row = $this -> db -> findRememberToken($tokenHash);
-        if (!$row || strtotime($row['expires_at']) < time()) {
+        $token = $this -> db -> findRememberToken($tokenHash);
+        if (!$token || strtotime($token['expires_at']) < time()) {
             $this -> db -> deleteRememberTokensByTokenHash($tokenHash);
             self::clearRememberCookie();
             return;
         }
-        $_SESSION['id'] = (int) $row['user_id'];
-        $this -> setRememberMe((int) $row['user_id']);
+        $_SESSION['id'] = (int) $token['user_id'];
+        $this -> setRememberMe((int) $token['user_id']);
     }
 
     private function setRememberMe(int $userId): void {
