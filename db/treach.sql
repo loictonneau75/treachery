@@ -101,6 +101,23 @@ CREATE TABLE `room_card` (
         ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `room_role`(
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `room_id` INT UNSIGNED NOT NULL,
+    `role_id` INT UNSIGNED NOT NULL,
+    `quantity` INT UNSIGNED 
+    PRIMARY KEY (`id`),
+    KEY `idx_room_id` (`room_id`),
+    KEY `idx_card_id` (`card_id`),
+    CONSTRAINT `fk_room_role_room`
+        FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `fk_room_role_role`
+        FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+        ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 INSERT INTO `roles` (`id`, `name`, `url`) VALUES
 (1, 'Seigneur', 'icon-ldr.png'),
 (2, 'Gardien', 'icon-gdn.png'),

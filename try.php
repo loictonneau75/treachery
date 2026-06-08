@@ -13,116 +13,87 @@ class DbTools{
         $this -> pdo = $pdo;
     }
 
-    private function delete(string $table, array $conditions, string $operator = "AND"): void {
-        $allowedColumns = [
-            'remember_tokens' => ['token_hash', 'user_id', 'expires_at'], 
-            'users' => ['id'], 
-            'cards' => ['id'],
-            "room_player" => ["user_id"]
-        ];
-
-        if (!array_key_exists($table, $allowedColumns)) throw new InvalidArgumentException("Table non autorisée");
-
-        $sql = "DELETE FROM $table";
-        $params = [];
-        $clauses = [];
-
-        foreach ($conditions as $column => $value) {
-            if (!in_array($column, $allowedColumns[$table])) throw new InvalidArgumentException("Colonne non autorisée");
-            if ($column === 'expires_at' && $value === 'expired') $clauses[] = "expires_at < NOW()";
-            else {
-                $clauses[] = "$column = ?"; 
-                $params[] = $value; 
-            } 
-        }
-
-        if (!empty($clauses)) $sql .= " WHERE " . implode(" $operator ", $clauses);
-
+    private function _deleteExpiredTokensAndUserTokens (int $userId): void{
+        $sql = "DELETE FROM remember_tokens WHERE expires_at < NOW() OR user_id = ?";
         $stmt = $this -> pdo -> prepare($sql); 
-        $stmt ->execute($params); 
-    }
-
-    private function deleteExpiredRememberTokens(): void{
-        $this -> delete(table: 'remember_tokens', conditions: ['expires_at' => 'expired']);
-    }
-
-    private function deleteRememberTokensByUserId(int $userId): void{
-        $this -> delete(table: 'remember_tokens', conditions: ['user_id' => $userId]);
+        $stmt -> execute([$userId]); 
     }
 
     public function deleteRememberTokensByTokenHash(string $tokenHash): void{
-        $this -> delete(table: 'remember_tokens', conditions: ['token_hash' => $tokenHash]);
+        $sql = "DELETE FROM remember_tokens WHERE token_hash = ?";
+        $stmt = $this -> pdo -> prepare($sql); 
+        $stmt -> execute([$tokenHash]); 
     }
 
     public function deleteUserById(int $userId): void {
-        $this -> delete(table: 'users', conditions: ['id' => $userId]);
+        $sql = "DELETE FROM users WHERE id = ?";
+        $stmt = $this -> pdo -> prepare($sql); 
+        $stmt -> execute([$userId]); 
     }
 
     public function deleteCardById(int $cardId): void {
-        $this -> delete(table: 'cards', conditions: ['id' => $cardId]);
+        $sql = "DELETE FROM cards WHERE id = ?";
+        $stmt = $this -> pdo -> prepare($sql); 
+        $stmt -> execute([$cardId]); 
     }
 
-    public function deleteUserFromRoom(int $userId, int $roomId): void{
-        $this -> delete(table: "room_player", conditions: ["user_id" => $userId]);
-        $stmt = $this -> pdo -> prepare("UPDATE rooms SET current_players = current_players - 1 WHERE id = ? AND current_players > 0");
+    private function _deleteUserFromRoom(int $userId): void{
+        $sql = "DELETE FROM room_player WHERE user_id = ?";
+        $stmt = $this -> pdo -> prepare($sql); 
+        $stmt -> execute([$userId]);
+    }
+
+    private function _decrementRoomPlayerCount(int $roomId){
+        $sql = "UPDATE rooms SET current_players = current_players - 1 WHERE id = ? AND current_players > 0";
+        $stmt = $this -> pdo -> prepare($sql);
         $stmt -> execute([$roomId]);
     }
 
-    private function exists(string $table, array $conditions, string $operator = "AND"): bool {
-        $allowed = [
-            'users' => ['email', 'pseudo'],
-            'rooms' => ['code'],
-            'roles' => ['id'],
-            'rarities' => ['id'],
-            'room_player' => ['room_id', 'user_id']
-        ];
-
-        if (!array_key_exists($table, $allowed)) throw new InvalidArgumentException("Table non autorisée");
-
-        $sql = "SELECT 1 FROM $table"; 
-        $params = [];
-        $clauses = [];
-
-        foreach ($conditions as $column => $value) {
-            if (!in_array($column, $allowed[$table])) throw new InvalidArgumentException("Colonne non autorisée");
-            $clauses[] = "$column = ?";
-            $params[] = $value; 
-        }
-
-        if (!empty($clauses)) $sql .= " WHERE " . implode(" $operator ", $clauses);
-
-        $sql .= " LIMIT 1";
-        $stmt = $this -> pdo -> prepare($sql);
-        $stmt -> execute($params);
-
-        return (bool) $stmt->fetchColumn(); 
+    public function deleteUserFromRoom(int $userId, int $roomId): void{
+        $this -> _deleteUserFromRoom($userId);
+        $this -> _decrementRoomPlayerCount($roomId);
     }
 
     public function existsUserEmail(string $email): bool{
-        return $this -> exists(table: 'users', conditions: ['email' => $email]);
+        $sql = "SELECT 1 FROM users WHERE email = ? LIMIT 1";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$email]);
+        return (bool) $stmt->fetchColumn();
     }
 
     public function existsRole(int $roleId): bool{
-        return $this -> exists(table: 'roles', conditions: ['id' => $roleId]);
+        $sql = "SELECT 1 FROM roles WHERE id = ? LIMIT 1";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$roleId]);
+        return (bool) $stmt->fetchColumn();
     }
 
     public function existsRarity(int $rarityId): bool{
-        return $this -> exists(table: 'rarities', conditions: ['id' => $rarityId]);
+        $sql = "SELECT 1 FROM rarities WHERE id = ? LIMIT 1";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$rarityId]);
+        return (bool) $stmt->fetchColumn();
     }
 
     public function existsRoom(string $code): bool{
-        return $this -> exists(table: 'rooms', conditions: ['code' => $code]);
+        $sql = "SELECT 1 FROM rooms WHERE code = ? LIMIT 1";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$code]);
+        return (bool) $stmt->fetchColumn();
     }
 
-    public function existsUserInRoom(int $userId, int $roomId): bool{
-        return $this -> exists(table: 'room_player', conditions: ['user_id' => $userId, 'room_id' => $roomId]);
+    public function existsUserInRoom(int $userId, int $roomId){
+        $sql = "SELECT 1 FROM room_player WHERE user_id = ? AND room_id = ? LIMIT 1";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$userId, $roomId]);
+        return (bool) $stmt->fetchColumn();
     }
     
     /**
     * @param string $table Nom de la table cible.
     * @param array<array<string,mixed>> $data Liste des lignes à insérer.
     */
-    private function insert(string $table, array $data): int {
+    private function insert(string $table, array $data) {
         $allowed = [
             'users' => ['email', 'pseudo', 'password'],
             'cards' => ['path', 'rarity_id', 'role_id', 'added_by'],
@@ -146,62 +117,52 @@ class DbTools{
             }
         }
         $sql = "INSERT INTO $table (" . implode(',', array_keys($data[0])) . ") VALUES " . implode(',', $placeholdersGroup);
-        $stmt = $this -> pdo -> prepare($sql);
-        $stmt->execute($values);
+        echo $sql;
 
-        return (int) $this -> pdo -> lastInsertId();
+        // $stmt = $this -> pdo -> prepare($sql);
+        // $stmt->execute($values);
+
+        // return (int) $this -> pdo -> lastInsertId();
     }
 
     public function insertUser(string $pseudo, string $email, string $password): int{
-        return $this -> insert(
-            table: 'users',
-            data: [[
-                'pseudo' => $pseudo, 
-                'email' => $email, 
-                'password' => password_hash($password, PASSWORD_DEFAULT)
-            ]]
-        );
+        $sql = "INSERT INTO users (pseudo, email, password) VALUES (?, ?, ?)";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$pseudo, $email, $password]);
+        return (int) $this -> pdo -> lastInsertId();
     }
 
     public function insertRememberToken(int $userId): array {
-        $this -> deleteExpiredRememberTokens();
-        $this -> deleteRememberTokensByUserId($userId);
+        $this -> _deleteExpiredTokensAndUserTokens($userId);
         $token = bin2hex(random_bytes(32));
         $expiresAt = new DateTime('+30 days');
-        $this -> insert(
-            table: 'remember_tokens',
-            data: [[
-                'user_id' => $userId,
-                'token_hash' => hash('sha256', $token),
-                'expires_at' => $expiresAt -> format('Y-m-d H:i:s')
-            ]]
-        );
+        $sql = "INSERT INTO remember_tokens (user_id,token_hash,expires_at) VALUES (?,?,?)";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$userId, hash('sha256', $token), $$expiresAt -> format('Y-m-d H:i:s')]);
         return ['token' => $token, 'expiresAt' => $expiresAt];
     }
 
-    public function insertCard(string $imgPath, int $rarityId, int $roleId, int $userId): void{
-        $this -> insert(
-            table: 'cards',
-            data: [[
-                'path' => $imgPath,
-                'rarity_id' => $rarityId,
-                'role_id' => $roleId,
-                'added_by' => $userId
-            ]]
-        );
+    public function insertCard(string $imgPath, int $rarityId, int $roleId, int $userId): void {
+        $sql = "INSERT INTO cards (path,rarity_id,role_id,added_by) VALUES (?,?,?,?)";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$imgPath, $rarityId, $roleId, $userId]);
     }
 
     public function insertRoom(string $code, int $maxPlayer): int{
-        return $this -> insert(
-            table: 'rooms',
-            data: [[
-                'code' => $code,
-                'max_player' => $maxPlayer
-            ]]
-        );
+        $sql = "INSERT INTO rooms (code,max_player) VALUES (?,?)";
+        $stmt = $this -> pdo -> prepare($sql);
+        $stmt -> execute([$code, $maxPlayer]);
+        return (int) $this -> pdo -> lastInsertId();
     }
 
     public function insertCardsToRoom(int $roomId, array $cardsIds): void{
+        $sql = "INSERT INTO room_card (code,max_player) VALUES";
+        $values = [];
+        foreach ($cardsIds as $cardId) {
+            $sql .= " (?, ?)";
+            $values[] = $roomId;
+            $values[] = $cardId;
+        }
         $this-> insert(
             table: 'room_card',
             data: array_map(fn($cardId) => [
@@ -440,6 +401,11 @@ class DbTools{
 
 }
 
+require_once __DIR__ . "/db/connexion.php";
+$db = new DbTools($pdo);
+echo "<pre>";
+var_dump($db -> insertCardsToRoom(1, [1,2,3]));
+echo "</pre>";
 
 
 
