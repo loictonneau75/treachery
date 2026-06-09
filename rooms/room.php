@@ -16,7 +16,7 @@ $pageName = "Salon " . $roomCode ." - ". TITLE;
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
 $userId = SessionTools::getData("id");
-$roomId = $db -> getRoomByCode("$roomCode")["id"];
+$roomId = $db -> getRoomId("$roomCode");
 
 if (!$userId || !$roomCode || !$roomId || !$db -> existsUserInRoom($userId, $roomId)) {
     header("Location: " . BASE_URL);

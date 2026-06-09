@@ -40,11 +40,11 @@ function validateAmountOfCardsSelected(array $cardsSelected, int $nbPlayerinRoom
 }
 
 function validateAmountOfCardByRoles(DbTools $db, int $nbPlayerinRoom, array $cardsSelected): void{
-    foreach (RoleRules::getRoleDistribution($nbPlayerinRoom) as $roleId => $required){
-        if (array_count_values($db -> getCardRoles($cardsSelected))[$roleId] < $required){
+    foreach (RoleRules::getRoleDistribution($nbPlayerinRoom) as $roleId => $requiredNumber){
+        if ($db -> countRolesInCards($cardsSelected)[$roleId] < $requiredNumber){
             echo json_encode([
                 'valid'  => false,
-                'errors' => [["Vous devez sélectionner au moins $required cartes du rôle " . $db -> getRolebyId($roleId)["name"], ["fakeCheckboxSelectAllCard"]]]
+                'errors' => [["Vous devez sélectionner au moins $requiredNumber cartes du rôle " . $db -> getRolebyId($roleId)["name"], ["fakeCheckboxSelectAllCard"]]]
             ], JSON_UNESCAPED_UNICODE);
             exit;
         }

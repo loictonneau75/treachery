@@ -12,8 +12,7 @@ header('Content-Type: application/json');
 $db = new DbTools($pdo);
 
 $roles = [];
-$room = $db -> getRoomByCode($_GET["code"]);
-foreach(RoleRules::getRoleDistribution($db -> getMaxPlayerForRoom($room["id"])) as $roleId => $count){
+foreach(RoleRules::getRoleDistribution($db -> getMaxPlayerForRoom($db -> getRoomId($_GET["code"]))) as $roleId => $count){
     $roles[$roleId] = [...$db -> getRolebyId($roleId), "count" => $count];
 };
 

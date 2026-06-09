@@ -9,6 +9,6 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 header('Content-Type: application/json');
 $db = new DbTools($pdo);
 
-$roomId = $db -> getRoomByCode($_GET["code"])["id"];
+$roomId = $db -> getRoomId($_GET["code"]);
 echo json_encode(["playerName" => $db -> getPlayersInRoomName($roomId), "started" => $db -> isGameStarted($roomId)]);
 ?>

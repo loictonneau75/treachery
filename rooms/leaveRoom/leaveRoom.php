@@ -10,7 +10,7 @@ require_once dirname(__DIR__,2) . "/db/tools.php";
 
 $db = new DbTools($pdo);
 $session = new SessionTools($db);
-$roomId = $db -> getRoomByCode($_GET["code"])["id"];
+$roomId = $db -> getRoomId($_GET["code"]);
 $db -> deleteUserFromRoom(SessionTools::getData("id"), $roomId);
 
 echo json_encode(["success" => true, "redirect" => BASE_URL . "/index.php"]);
